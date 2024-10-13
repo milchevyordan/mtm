@@ -1,19 +1,3 @@
-import { InertiaForm, router, usePage } from "@inertiajs/vue3";
-import {Enum, Form, Statusable, Vehicleable} from "@/types";
-import {
-    computed,
-    defineAsyncComponent,
-    onMounted,
-    onUnmounted,
-    Ref,
-    ref,
-} from "vue";
-
-import { setFlashMessages } from "@/globals";
-import {SalesOrderStatus} from "@/Enums/SalesOrderStatus";
-import {ServiceOrderStatus} from "@/Enums/ServiceOrderStatus";
-import {WorkOrderStatus} from "@/Enums/WorkOrderStatus";
-
 export function dateToLocaleString(date: Date | string | null | undefined) {
     if (date === null || date === undefined) {
         return;
@@ -141,4 +125,14 @@ export function debounce(callback: Callback, delay = 300): Callback {
             callback.apply(this, args);
         }, delay);
     };
+}
+
+export function isNotEmpty(value: Array<any> | object | unknown): boolean {
+    return !isEmpty(value);
+}
+
+export function isEmpty(value: Array<any> | object | unknown): boolean {
+    return Array.isArray(value)
+        ? value.length === 0
+        : !value || Object.keys(value as object).length === 0;
 }

@@ -51,14 +51,14 @@ const handlePerPageItems = async () => {
         class="flex justify-center sm:justify-between my-2 px-5 items-center"
     >
         <div class="hidden sm:block text-sm text-gray-500">
-            {{ __("Showing") }}
+            Showing
             <span class="font-semibold">
                 {{
                     paginator.currentPage * paginator.perPage -
                     (paginator.perPage - 1)
                 }}
             </span>
-            {{ __("to") }}
+            to
             <span class="font-semibold">
                 {{
                     paginator.currentPage == paginator.lastPage
@@ -66,11 +66,11 @@ const handlePerPageItems = async () => {
                         : paginator.currentPage * paginator.perPage
                 }}
             </span>
-            {{ __("of") }}
+            of
             <span class="font-semibold">
                 {{ paginator.itemsLength }}
             </span>
-            {{ __("Entries") }}
+            Entries
         </div>
 
         <div v-if="perPageOptions" class="flex gap-x-2">
@@ -79,7 +79,7 @@ const handlePerPageItems = async () => {
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
                 @change="handlePerPageItems"
             >
-                <option :value="null">{{ __("Default") }}</option>
+                <option :value="null">Default</option>
                 <option v-for="option in perPageOptions" :value="option">
                     {{ option }}
                 </option>

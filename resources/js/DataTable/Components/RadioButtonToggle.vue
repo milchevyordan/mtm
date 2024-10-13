@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import { Ref } from "vue";
-import { computed } from "vue";
-import { inject } from "vue";
-
 import RadioButton from "./RadioButton.vue";
-import { GlobalInputErrors } from "@/types";
 
 const emit = defineEmits(["change"]);
 
@@ -33,15 +28,6 @@ const handleModelChange = (value: boolean) => {
         value: value,
     });
 };
-
-const inputErrors = inject<Ref<GlobalInputErrors>>("globalInputErrors");
-
-const errorMessage = computed(() => {
-    const errorMessages = inputErrors?.value?.errorMessages ?? {};
-    const propName = props.name;
-
-    return propName ? errorMessages[propName] || null : null;
-});
 </script>
 
 <template>
@@ -70,12 +56,6 @@ const errorMessage = computed(() => {
                     @click="handleModelChange(false)"
                 />
             </div>
-        </div>
-        <div
-            v-if="errorMessage"
-            class="block text-red-500 text-sm mt-0.5 ml-0.5 text-right"
-        >
-            {{ __(errorMessage) }}
         </div>
     </div>
 </template>

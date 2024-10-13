@@ -38,7 +38,7 @@ const advancedSearch = debounce(() => {
             class="w-full border border-[#E9E7E7] rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 my-2 sm:my-0"
             @click="showModal = true"
         >
-            {{ __("Filters") }}
+            Filters
         </button>
 
         <Modal
@@ -48,7 +48,7 @@ const advancedSearch = debounce(() => {
             <div
                 class="border-b border-[#E9E7E7] px-3.5 p-3 text-xl font-medium"
             >
-                {{ __("Filters") }}
+                Filters
             </div>
 
             <slot />
@@ -58,14 +58,14 @@ const advancedSearch = debounce(() => {
                     class="bg-[#F0F0F0] px-12 py-2 rounded hover:opacity-80 active:scale-95 transition"
                     @click="closeModal"
                 >
-                    {{ __("Cancel") }}
+                    Cancel
                 </button>
 
                 <button
                     class="bg-[#00A793] text-white px-12 py-2 rounded hover:opacity-80 active:scale-95 transition"
                     @click="advancedSearch()"
                 >
-                    {{ __("Search") }}
+                    Search
                 </button>
             </div>
         </Modal>

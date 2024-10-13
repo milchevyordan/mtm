@@ -279,7 +279,7 @@ const handleRestoreRecord = async (id: number) => {
                         >
                             <button
                                 class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition bg-blue-100 text-blue-500 duration-300 ease-in-out hover:bg-blue-200"
-                                :title="__('Restore')"
+                                :title="'Restore'"
                                 @click="handleRestoreRecord(rowData['id'])"
                             >
                                 <IconRestore classes="w-4 h-4" />
@@ -297,7 +297,7 @@ const handleRestoreRecord = async (id: number) => {
                         class="bg-white text-center py-5 text-lg font-semibold"
                         :colspan="Object.keys(props.dataTable.columns).length"
                     >
-                        {{ __("No found data") }}
+                        No found data
                     </td>
                 </tr>
             </tbody>

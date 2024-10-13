@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Notifications\NewUserPasswordCreate;
+use App\Services\ChangeLoggerService;
 use App\Services\DataTable\DataTable;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -50,9 +52,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreUserRequest $request
+     * @param  StoreUserRequest $request
+     * @return RedirectResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): RedirectResponse
     {
         DB::beginTransaction();
 
@@ -92,20 +95,44 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $id
+     * @param  User     $user
+     * @return Response
      */
-    public function edit(string $id)
+    public function edit(User $user): Response
     {
+        $user->load(['changeLogs']);
+
+        return Inertia::render('Users/Edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param string  $id
+     * @param  UpdateUserRequest $request
+     * @param  User              $user
+     * @return RedirectResponse
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
+        DB::beginTransaction();
+
+        try {
+            $changeLoggerService = new ChangeLoggerService($user);
+
+            $user->update($request->validated());
+
+            $changeLoggerService->logChanges($user);
+
+            DB::commit();
+
+            return back()->with('success', __('The record has been successfully updated.'));
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors([__('Error updating record.')]);
+        }
     }
 
     /**

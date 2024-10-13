@@ -3,23 +3,31 @@ import {Head, useForm} from "@inertiajs/vue3";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { UserForm } from "@/types";
+import {User, UserForm} from "@/types";
+import {withFlash} from "@/utils";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
+import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
+
+const props = defineProps<{
+    user: User;
+}>();
 
 const form = useForm<UserForm>({
-    id: null!,
-    name: null!,
-    email: null!,
+    _method: "put",
+    id: props.user.id,
+    name: props.user.name,
+    email: props.user.email,
 });
 
 const save = async (only?: Array<string>) => {
     return new Promise<void>((resolve, reject) => {
-        form.post(route("users.store"), {
+        form.post(route("users.update", props.user.id as number), {
             preserveScroll: true,
             preserveState: true,
-            only: only,
+            forceFormData: true, // preserves all form data
+            only: withFlash(only),
             onSuccess: () => {
                 resolve();
             },
@@ -44,7 +52,7 @@ const save = async (only?: Array<string>) => {
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
@@ -55,7 +63,7 @@ const save = async (only?: Array<string>) => {
                                 @submit.prevent="save()"
                             >
                                 <div>
-                                    <InputLabel for="name" value="Name" />
+                                    <InputLabel for="name" value="Name"/>
 
                                     <TextInput
                                         id="name"
@@ -67,11 +75,11 @@ const save = async (only?: Array<string>) => {
                                         autocomplete="name"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.name" />
+                                    <InputError class="mt-2" :message="form.errors.name"/>
                                 </div>
 
                                 <div>
-                                    <InputLabel for="email" value="Email" />
+                                    <InputLabel for="email" value="Email"/>
 
                                     <TextInput
                                         id="email"
@@ -82,7 +90,7 @@ const save = async (only?: Array<string>) => {
                                         autocomplete="username"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.email" />
+                                    <InputError class="mt-2" :message="form.errors.email"/>
                                 </div>
 
                                 <ResetSaveButtons
@@ -94,6 +102,8 @@ const save = async (only?: Array<string>) => {
                         </div>
                     </div>
                 </div>
+
+                <ChangeLogs :change-logs="user.change_logs"/>
             </div>
         </div>
 

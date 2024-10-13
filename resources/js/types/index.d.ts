@@ -13,10 +13,11 @@ export interface User {
     email: string;
     email_verified_at?: string;
     creator?: User;
+    change_logs?: ChangeLog[];
 }
 
 export interface UserForm extends Omit<User, 'creator_id'>, Form {
-
+    _method?: string;
 }
 
 interface Flash {
@@ -24,4 +25,19 @@ interface Flash {
     error?: string;
     warning?: string;
     success?: string;
+}
+
+export interface ChangeLog {
+    id: string;
+    creator_id: number;
+    creator: User;
+    changeable_type: string;
+    changeable_id: number;
+    change: string;
+    created_at: string;
+}
+
+interface ChangeLogsChange {
+    old: string;
+    new: string;
 }

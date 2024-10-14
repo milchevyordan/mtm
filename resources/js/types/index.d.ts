@@ -1,3 +1,5 @@
+import {Warehouse} from "@/Enums/Warehouse";
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -5,6 +7,8 @@ export type PageProps<
         user: User;
     };
 };
+
+export type Enum<T> = T[keyof T];
 
 export interface User {
     id: number;
@@ -40,4 +44,24 @@ export interface ChangeLog {
 interface ChangeLogsChange {
     old: string;
     new: string;
+}
+
+export interface Product {
+    id: number;
+    creator_id: number;
+    name: string;
+    internal_id: string;
+    availability?: Availability[];
+    creator?: User;
+    change_logs?: ChangeLog[];
+}
+
+export interface ProductForm extends Omit<Product, 'creator_id'>, Form {
+    _method?: string;
+}
+
+export interface Availability {
+    product_id: number;
+    warehouse: Enum<typeof Warehouse>;
+    quantity: number;
 }

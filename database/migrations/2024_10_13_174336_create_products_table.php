@@ -20,8 +20,8 @@ return new class () extends Migration {
                 ->nullable()
                 ->constrained('users');
 
-            $table->string('internal_id')->nullable();
-            $table->string('name');
+            $table->string('internal_id')->nullable()->unique();
+            $table->string('name')->unique();
 
             $table->timestamps();
         });

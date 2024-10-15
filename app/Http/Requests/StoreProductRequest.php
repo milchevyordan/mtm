@@ -26,8 +26,10 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => 'required|string|max:255|unique:' . Product::class,
-            'internal_id' => 'nullable|string|max:255|unique:' . Product::class,
+            'name'                 => 'required|string|max:255|unique:' . Product::class,
+            'internal_id'          => 'nullable|string|max:255|unique:' . Product::class,
+            'quantity_france'      => 'nullable|integer|max:2147483647',
+            'quantity_netherlands' => 'nullable|integer|max:2147483647',
         ];
     }
 }

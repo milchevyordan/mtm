@@ -131,7 +131,7 @@ const handleRestoreRecord = async (id: number) => {
         v-if="
             globalSearch || $slots.advancedFilters || $slots.additionalContent
         "
-        class="bg-white border border-[#E9E7E7] rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow"
+        class="bg-white dark:bg-gray-800 border border-[#E9E7E7] dark:border-gray-700 rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow"
     >
         <!-- GlobalFilter -->
         <GlobalSearch v-if="globalSearch" :prop-name="propName" />
@@ -154,13 +154,13 @@ const handleRestoreRecord = async (id: number) => {
     <!-- / Filters  -->
 
     <div class="table-container max-w-full overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-500">
-            <thead class="text-xs uppercase text-black bg-[#F0F0F0]">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs uppercase text-black dark:text-gray-200 bg-[#F0F0F0] dark:bg-gray-700">
                 <tr>
                     <th
                         v-for="(column, key) in dataTable.columns"
                         scope="col"
-                        class="px-6 py-3 border-r"
+                        class="px-6 py-3 border-r dark:border-gray-600"
                         :class="
                             column.orderable
                                 ? 'cursor-pointer'
@@ -186,7 +186,7 @@ const handleRestoreRecord = async (id: number) => {
                     v-if="dataTable.data.length > 0"
                     :class="[
                         rowIndex !== dataTable.data.length - 1
-                            ? 'border-b'
+                            ? 'border-b dark:border-gray-600'
                             : '',
                         selectedRowIndexes &&
                         selectedRowColumn &&
@@ -197,7 +197,7 @@ const handleRestoreRecord = async (id: number) => {
                                 rowData[selectedRowColumn]
                             ))
                             ? 'bg-blue-400 text-white'
-                            : 'bg-white',
+                            : 'bg-white dark:bg-gray-800',
                         { 'cursor-pointer': isRowClickLinkSet && !isTrashed() },
                     ]"
                     @click="handleRowClick($event, rowData.id)"
@@ -294,7 +294,7 @@ const handleRestoreRecord = async (id: number) => {
 
                 <tr v-else>
                     <td
-                        class="bg-white text-center py-5 text-lg font-semibold"
+                        class="bg-white dark:bg-gray-800 text-center py-5 text-lg font-semibold text-gray-900 dark:text-gray-100"
                         :colspan="Object.keys(props.dataTable.columns).length"
                     >
                         No found data
@@ -304,7 +304,7 @@ const handleRestoreRecord = async (id: number) => {
 
             <tfoot>
                 <td
-                    class="bg-[#F0F0F0]"
+                    class="bg-[#F0F0F0] dark:bg-gray-700"
                     :colspan="Object.keys(props.dataTable.columns).length"
                 >
                     <Pagination

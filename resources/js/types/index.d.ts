@@ -51,17 +51,12 @@ export interface Product {
     creator_id: number;
     name: string;
     internal_id: string;
-    availability?: Availability[];
+    quantity_france: number;
+    quantity_netherlands: number;
     creator?: User;
     change_logs?: ChangeLog[];
 }
 
 export interface ProductForm extends Omit<Product, 'creator_id'>, Form {
     _method?: string;
-}
-
-export interface Availability {
-    product_id: number;
-    warehouse: Enum<typeof Warehouse>;
-    quantity: number;
 }

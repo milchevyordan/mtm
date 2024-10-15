@@ -19,6 +19,8 @@ const form = useForm<ProductForm>({
     id: props.product.id,
     name: props.product.name,
     internal_id: props.product.internal_id,
+    quantity_france: props.product.quantity_france,
+    quantity_netherlands: props.product.quantity_netherlands,
 });
 
 const save = async (only?: Array<string>) => {
@@ -89,6 +91,34 @@ const save = async (only?: Array<string>) => {
                                     />
 
                                     <InputError class="mt-2" :message="form.errors.internal_id"/>
+                                </div>
+
+                                <div>
+                                    <InputLabel for="quantity_france" value="Quantity France" />
+
+                                    <TextInput
+                                        id="quantity_france"
+                                        type="number"
+                                        step="1"
+                                        class="mt-1 block w-full"
+                                        v-model="form.quantity_france"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.quantity_france" />
+                                </div>
+
+                                <div>
+                                    <InputLabel for="quantity_netherlands" value="Quantity Netherlands" />
+
+                                    <TextInput
+                                        id="quantity_netherlands"
+                                        type="number"
+                                        step="1"
+                                        class="mt-1 block w-full"
+                                        v-model="form.quantity_netherlands"
+                                    />
+
+                                    <InputError class="mt-2" :message="form.errors.quantity_netherlands" />
                                 </div>
 
                                 <ResetSaveButtons

@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -22,6 +21,8 @@ class Product extends Model
     protected $fillable = [
         'name',
         'internal_id',
+        'quantity_france',
+        'quantity_netherlands',
     ];
 
     /**
@@ -29,15 +30,5 @@ class Product extends Model
      *
      * @var array|string[]
      */
-    public static array $defaultSelectFields = ['id', 'name', 'internal_id', 'created_at'];
-
-    /**
-     * Availability relation.
-     *
-     * @return HasMany
-     */
-    public function availability(): HasMany
-    {
-        return $this->hasMany(AvailabilityProduct::class);
-    }
+    public static array $defaultSelectFields = ['id', 'name', 'internal_id', 'quantity_france', 'quantity_netherlands', 'created_at'];
 }

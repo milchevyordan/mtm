@@ -40,7 +40,7 @@ defineProps<{
                             <template #additionalContent>
                                 <div class="w-full flex gap-2">
                                     <Link
-                                        class="w-full md:w-auto border border-[#E9E7E7] rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50"
+                                        class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('users.create')"
                                     >
                                         Create User

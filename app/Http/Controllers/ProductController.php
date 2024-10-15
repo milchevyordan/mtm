@@ -26,12 +26,11 @@ class ProductController extends Controller
         $dataTable = (new DataTable(
             Product::select(Product::$defaultSelectFields)
         ))
-            ->setRelation('availability')
             ->setColumn('id', '#', true, true)
             ->setColumn('name', __('Name'), true, true)
             ->setColumn('internal_id', __('Internal Id'), true, true)
-            ->setColumn('availability_france', __('France'), true, true)
-            ->setColumn('availability_netherlands', __('Netherlands'), true, true)
+            ->setColumn('quantity_france', __('France'), true, true)
+            ->setColumn('quantity_netherlands', __('Netherlands'), true, true)
             ->setColumn('created_at', __('Date'), true, true)
             ->setColumn('action', __('Action'))
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
@@ -95,7 +94,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product): Response
     {
-        $product->load(['changeLogs', 'availability']);
+        $product->load(['changeLogs']);
 
         return Inertia::render('Products/Edit', compact('product'));
     }

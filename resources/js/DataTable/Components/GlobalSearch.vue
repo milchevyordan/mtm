@@ -49,13 +49,13 @@ const globalSearch = debounce(() => {
                 class="absolute inset-y-0 left-0 flex items-center pl-3 z-10 cursor-pointer"
                 @click="globalSearch"
             >
-                <Magnifying stroke="2" :classes="'w-5 h-5 text-gray-400'" />
+                <Magnifying stroke="2" :classes="'w-5 h-5 text-gray-400 dark:text-gray-300'" />
             </div>
 
             <div class="relative">
                 <input
                     v-model="inputValue"
-                    class="border border-gray-200 text-gray-900 pl-10 pr-4 text-sm rounded-md focus:outline-none focus:ring-0 focus:border-gray-300 block w-full p-2.5 placeholder-gray-400 peer transition hover:bg-gray-50 focus:bg-gray-50 z-0"
+                    class="border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-300 pl-10 pr-4 text-sm rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-900 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 block w-full p-2.5 placeholder-gray-400 dark:placeholder-gray-500 peer transition hover:bg-gray-50 dark:hover:bg-gray-800 focus:bg-gray-50 dark:focus:bg-gray-900 z-0"
                     :placeholder="'Search...'"
                     @input="globalSearch"
                 />

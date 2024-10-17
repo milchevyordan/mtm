@@ -1,5 +1,3 @@
-import {Warehouse} from "@/Enums/Warehouse";
-
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -52,6 +50,7 @@ export interface Product {
     name: string;
     internal_id: string;
     quantity_france: number;
+    minimum_quantity: number;
     quantity_netherlands: number;
     creator?: User;
     change_logs?: ChangeLog[];

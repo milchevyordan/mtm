@@ -28,6 +28,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name'                 => 'required|string|max:255|unique:' . Product::class,
             'internal_id'          => 'nullable|string|max:255|unique:' . Product::class,
+            'minimum_quantity'     => 'nullable|integer|max:2147483647',
             'quantity_france'      => 'nullable|integer|max:2147483647',
             'quantity_netherlands' => 'nullable|integer|max:2147483647',
         ];

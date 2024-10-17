@@ -28,6 +28,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'name'                 => 'required', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id),
             'internal_id'          => 'nullable', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id),
+            'minimum_quantity'     => 'nullable', 'integer', 'max:2147483647',
             'quantity_france'      => 'nullable', 'integer', 'max:2147483647',
             'quantity_netherlands' => 'nullable', 'integer', 'max:2147483647',
         ];

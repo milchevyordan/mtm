@@ -21,6 +21,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'internal_id',
+        'minimum_quantity',
         'quantity_france',
         'quantity_netherlands',
     ];

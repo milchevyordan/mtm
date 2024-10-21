@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { useForm } from '@inertiajs/vue3';
+import { nextTick, ref } from 'vue';
+
 import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
@@ -54,9 +55,14 @@ const closeModal = () => {
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <DangerButton @click="confirmUserDeletion">
+            Delete Account
+        </DangerButton>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
+        <Modal
+            :show="confirmingUserDeletion"
+            @close="closeModal"
+        >
             <div class="p-6">
                 <h2
                     class="text-lg font-medium text-gray-900 dark:text-gray-100"
@@ -87,7 +93,10 @@ const closeModal = () => {
                         @keyup.enter="deleteUser"
                     />
 
-                    <InputError :message="form.errors.password" class="mt-2" />
+                    <InputError
+                        :message="form.errors.password"
+                        class="mt-2"
+                    />
                 </div>
 
                 <div class="mt-6 flex justify-end">

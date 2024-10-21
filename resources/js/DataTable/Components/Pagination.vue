@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { Link, router } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 import IconChevronDoubleLeft from "../Icons/ChevronDoubleLeft.vue";
 import IconChevronLeft from "../Icons/ChevronLeft.vue";
@@ -55,7 +55,7 @@ const handlePerPageItems = async () => {
             <span class="font-semibold">
                 {{
                     paginator.currentPage * paginator.perPage -
-                    (paginator.perPage - 1)
+                        (paginator.perPage - 1)
                 }}
             </span>
             to
@@ -73,14 +73,22 @@ const handlePerPageItems = async () => {
             Entries
         </div>
 
-        <div v-if="perPageOptions" class="flex gap-x-2">
+        <div
+            v-if="perPageOptions"
+            class="flex gap-x-2"
+        >
             <select
                 v-model="selectedPerPageOption"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
                 @change="handlePerPageItems"
             >
-                <option :value="null">Default</option>
-                <option v-for="option in perPageOptions" :value="option">
+                <option :value="null">
+                    Default
+                </option>
+                <option
+                    v-for="option in perPageOptions"
+                    :value="option"
+                >
                     {{ option }}
                 </option>
             </select>
@@ -128,11 +136,13 @@ const handlePerPageItems = async () => {
             <div
                 v-if="
                     paginator.currentPage + paginator.pagesRange <
-                    paginator.lastPage
+                        paginator.lastPage
                 "
                 class="flex items-center gap-2 ml-2"
             >
-                <div class="text-xl tracking-widest mt-2">...</div>
+                <div class="text-xl tracking-widest mt-2">
+                    ...
+                </div>
                 <Link
                     class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]"
                     :only="[propName]"

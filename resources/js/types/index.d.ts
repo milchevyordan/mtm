@@ -59,3 +59,9 @@ export interface Product {
 export interface ProductForm extends Omit<Product, 'creator_id'>, Form {
     _method?: string;
 }
+
+export interface ProductFranceForm extends Form {
+    id: number;
+    name: string;
+    quantity_france: number;
+}

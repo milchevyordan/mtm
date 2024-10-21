@@ -52,7 +52,10 @@ watchEffect(() => {
                 v-if="isNotEmpty(flash?.errors)"
                 class="'text-red-800 bg-red-100 text-red-700 py-4 px-10 text-sm rounded-lg cursor-pointer text-center fixed top-6 left-1/2 transform -translate-x-1/2 z-[80]'"
             >
-                <div v-for="(error, index) in flash?.errors" :key="index">
+                <div
+                    v-for="(error, index) in flash?.errors"
+                    :key="index"
+                >
                     {{ error[0] ?? error }}
                 </div>
             </div>

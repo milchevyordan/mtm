@@ -134,11 +134,17 @@ const handleRestoreRecord = async (id: number) => {
         class="bg-white dark:bg-gray-800 border border-[#E9E7E7] dark:border-gray-700 rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow"
     >
         <!-- GlobalFilter -->
-        <GlobalSearch v-if="globalSearch" :prop-name="propName" />
+        <GlobalSearch
+            v-if="globalSearch"
+            :prop-name="propName"
+        />
         <!-- / GlobalFilter -->
 
         <!-- Trashed records -->
-        <TrashedRecords v-if="showTrashed" :prop-name="propName" />
+        <TrashedRecords
+            v-if="showTrashed"
+            :prop-name="propName"
+        />
         <!-- / Trashed records -->
 
         <!-- AdvancedFilters -->
@@ -189,13 +195,13 @@ const handleRestoreRecord = async (id: number) => {
                             ? 'border-b dark:border-gray-600'
                             : '',
                         selectedRowIndexes &&
-                        selectedRowColumn &&
-                        (selectedRowIndexes.includes(
-                            Number(rowData[selectedRowColumn])
-                        ) ||
-                            selectedRowIndexes.includes(
-                                rowData[selectedRowColumn]
-                            ))
+                            selectedRowColumn &&
+                            (selectedRowIndexes.includes(
+                                Number(rowData[selectedRowColumn])
+                            ) ||
+                                selectedRowIndexes.includes(
+                                    rowData[selectedRowColumn]
+                                ))
                             ? 'bg-blue-400 text-white'
                             : 'bg-white dark:bg-gray-800',
                         { 'cursor-pointer': isRowClickLinkSet && !isTrashed() },
@@ -209,11 +215,11 @@ const handleRestoreRecord = async (id: number) => {
                         <div
                             v-if="
                                 column.relation &&
-                                $slots[
-                                    `cell(${relationWithColumn(
-                                        column.relationWithColumn
-                                    )})`
-                                ]
+                                    $slots[
+                                        `cell(${relationWithColumn(
+                                            column.relationWithColumn
+                                        )})`
+                                    ]
                             "
                         >
                             <slot
@@ -228,7 +234,7 @@ const handleRestoreRecord = async (id: number) => {
                         <div
                             v-else-if="
                                 column.relation &&
-                                !$slots[`cell(${String(key)})`]
+                                    !$slots[`cell(${String(key)})`]
                             "
                         >
                             {{
@@ -259,8 +265,8 @@ const handleRestoreRecord = async (id: number) => {
                         <div
                             v-else-if="
                                 $slots[`cell(${String(key)})`] &&
-                                isTrashed() &&
-                                key !== 'action'
+                                    isTrashed() &&
+                                    key !== 'action'
                             "
                         >
                             <slot
@@ -273,8 +279,8 @@ const handleRestoreRecord = async (id: number) => {
                         <div
                             v-else-if="
                                 $slots[`cell(${String(key)})`] &&
-                                isTrashed() &&
-                                key === 'action'
+                                    isTrashed() &&
+                                    key === 'action'
                             "
                         >
                             <button
@@ -310,7 +316,7 @@ const handleRestoreRecord = async (id: number) => {
                     <Pagination
                         v-if="
                             dataTable.data.length > 1 ||
-                            dataTable.paginator.currentPage > 1
+                                dataTable.paginator.currentPage > 1
                         "
                         :paginator="dataTable.paginator"
                         :prop-name="propName"

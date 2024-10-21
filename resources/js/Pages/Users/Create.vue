@@ -2,11 +2,11 @@
 import {Head, useForm} from "@inertiajs/vue3";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { UserForm } from "@/types";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
 
 const form = useForm<UserForm>({
     id: null!,
@@ -32,7 +32,7 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'User'"/>
+    <Head :title="'User'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -55,34 +55,46 @@ const save = async (only?: Array<string>) => {
                                 @submit.prevent="save()"
                             >
                                 <div>
-                                    <InputLabel for="name" value="Name" />
+                                    <InputLabel
+                                        for="name"
+                                        value="Name"
+                                    />
 
                                     <TextInput
                                         id="name"
+                                        v-model="form.name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        v-model="form.name"
                                         required
                                         autofocus
                                         autocomplete="name"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.name" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.name"
+                                    />
                                 </div>
 
                                 <div>
-                                    <InputLabel for="email" value="Email" />
+                                    <InputLabel
+                                        for="email"
+                                        value="Email"
+                                    />
 
                                     <TextInput
                                         id="email"
+                                        v-model="form.email"
                                         type="email"
                                         class="mt-1 block w-full"
-                                        v-model="form.email"
                                         required
                                         autocomplete="username"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.email" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.email"
+                                    />
                                 </div>
 
                                 <ResetSaveButtons
@@ -96,6 +108,5 @@ const save = async (only?: Array<string>) => {
                 </div>
             </div>
         </div>
-
     </AuthenticatedLayout>
 </template>

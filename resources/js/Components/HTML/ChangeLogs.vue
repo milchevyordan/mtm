@@ -19,39 +19,45 @@ defineProps<{
                 </div>
             </template>
 
-            <div v-if="changeLogs" class="overflow-y-auto max-h-96">
+            <div
+                v-if="changeLogs"
+                class="overflow-y-auto max-h-96"
+            >
                 <div
                     v-for="(changeLog, index) in changeLogs"
                     :key="index"
                     :class="[
-                    'grid lg:grid-cols-2 gap-4 mb-4 pb-4',
-                    {
-                        'border-b border-[#E9E7E7] dark:border-gray-700': index !== changeLogs.length - 1,
-                    },
-                ]"
+                        'grid lg:grid-cols-2 gap-4 mb-4 pb-4',
+                        {
+                            'border-b border-[#E9E7E7] dark:border-gray-700': index !== changeLogs.length - 1,
+                        },
+                    ]"
                 >
                     <div class="lg:border-r border-[#E9E7E7] dark:border-gray-700 lg:pr-8 sm:gap-y-2 items-center flex flex-col">
                         <div class="element-center">
-                        <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
-                            Creator
-                        </span>
+                            <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
+                                Creator
+                            </span>
                             <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
-                            {{ changeLog.creator.name }}
-                        </span>
+                                {{ changeLog.creator.name }}
+                            </span>
                         </div>
                         <div class="element-center">
-                        <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
-                            Date
-                        </span>
+                            <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
+                                Date
+                            </span>
                             <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
-                            {{ dateTimeToLocaleString(changeLog.created_at) }}
-                        </span>
+                                {{ dateTimeToLocaleString(changeLog.created_at) }}
+                            </span>
                         </div>
                     </div>
 
                     <div class="lg:pl-4 items-center flex flex-row">
                         <ul class="flex flex-wrap">
-                            <li v-for="(changeItem, indexChange) in JSON.parse(changeLog.change)" :key="indexChange">
+                            <li
+                                v-for="(changeItem, indexChange) in JSON.parse(changeLog.change)"
+                                :key="indexChange"
+                            >
                                 <ul class="flex flex-wrap">
                                     <li
                                         v-for="(item, indexItem) in changeItem as ChangeLogsChange[]"
@@ -61,13 +67,16 @@ defineProps<{
                                     >
                                         <span v-if="String(indexChange) != 'main'">{{ indexChange }} |</span>
                                         <span>{{ indexItem }} |</span>
-                                        <span v-if="item?.old" class="text-gray-500 dark:text-gray-400">
-                                        {{ item?.old }}
-                                    </span>
+                                        <span
+                                            v-if="item?.old"
+                                            class="text-gray-500 dark:text-gray-400"
+                                        >
+                                            {{ item?.old }}
+                                        </span>
                                         <span v-if="item?.old && item?.new">&rarr;</span>
                                         <span v-if="item?.new">
-                                        {{ item?.new }}
-                                    </span>
+                                            {{ item?.new }}
+                                        </span>
                                     </li>
                                 </ul>
                             </li>

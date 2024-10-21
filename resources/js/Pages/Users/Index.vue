@@ -4,9 +4,9 @@ import { Head, Link } from "@inertiajs/vue3";
 import Table from "@/DataTable/Table.vue";
 import { DataTable } from "@/DataTable/types";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { User } from "@/types";
 import { dateTimeToLocaleString } from "@/utils";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 defineProps<{
     dataTable: DataTable<User>;

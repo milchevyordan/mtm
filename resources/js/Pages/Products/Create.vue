@@ -2,11 +2,11 @@
 import {Head, useForm} from "@inertiajs/vue3";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductForm} from "@/types";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
 
 const form = useForm<ProductForm>({
     id: null!,
@@ -35,7 +35,7 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Product'"/>
+    <Head :title="'Product'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -58,74 +58,104 @@ const save = async (only?: Array<string>) => {
                                 @submit.prevent="save()"
                             >
                                 <div>
-                                    <InputLabel for="name" value="Name" />
+                                    <InputLabel
+                                        for="name"
+                                        value="Name"
+                                    />
 
                                     <TextInput
                                         id="name"
+                                        v-model="form.name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        v-model="form.name"
                                         required
                                         autofocus
                                         autocomplete="name"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.name" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.name"
+                                    />
                                 </div>
 
                                 <div>
-                                    <InputLabel for="internal_id" value="Internal Id" />
+                                    <InputLabel
+                                        for="internal_id"
+                                        value="Internal Id"
+                                    />
 
                                     <TextInput
                                         id="internal_id"
+                                        v-model="form.internal_id"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        v-model="form.internal_id"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.internal_id" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.internal_id"
+                                    />
                                 </div>
 
                                 <div>
-                                    <InputLabel for="minimum_quantity" value="Minimum Quantity" />
+                                    <InputLabel
+                                        for="minimum_quantity"
+                                        value="Minimum Quantity"
+                                    />
 
                                     <TextInput
                                         id="minimum_quantity"
+                                        v-model="form.minimum_quantity"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
-                                        v-model="form.minimum_quantity"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.minimum_quantity" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.minimum_quantity"
+                                    />
                                 </div>
 
                                 <div>
-                                    <InputLabel for="quantity_france" value="Quantity France" />
+                                    <InputLabel
+                                        for="quantity_france"
+                                        value="Quantity France"
+                                    />
 
                                     <TextInput
                                         id="quantity_france"
+                                        v-model="form.quantity_france"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
-                                        v-model="form.quantity_france"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.quantity_france" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.quantity_france"
+                                    />
                                 </div>
 
                                 <div>
-                                    <InputLabel for="quantity_netherlands" value="Quantity Netherlands" />
+                                    <InputLabel
+                                        for="quantity_netherlands"
+                                        value="Quantity Netherlands"
+                                    />
 
                                     <TextInput
                                         id="quantity_netherlands"
+                                        v-model="form.quantity_netherlands"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
-                                        v-model="form.quantity_netherlands"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.quantity_netherlands" />
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.quantity_netherlands"
+                                    />
                                 </div>
 
                                 <ResetSaveButtons

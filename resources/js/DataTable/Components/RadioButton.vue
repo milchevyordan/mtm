@@ -38,7 +38,7 @@ const disabledClasses = `bg-slate-300 cursor-default ${
         :name="name"
         class="peer hidden"
         :checked="checked"
-    />
+    >
 
     <label
         :for="id"

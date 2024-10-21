@@ -14,10 +14,10 @@ const props = defineProps<{
         <button
             :disabled="processing"
             :class="{
-            'bg-[#E50000] hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-600': !processing,
-            'bg-gray-400 cursor-not-allowed': processing,
-            'rounded p-2 active:scale-95 transition': true,
-        }"
+                'bg-[#E50000] hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-600': !processing,
+                'bg-gray-400 cursor-not-allowed': processing,
+                'rounded p-2 active:scale-95 transition': true,
+            }"
             @click="$emit('reset')"
         >
             <Reset />
@@ -26,10 +26,10 @@ const props = defineProps<{
         <button
             :disabled="processing"
             :class="{
-            'bg-[#00A793] hover:bg-emerald-500 dark:bg-emerald-700 dark:hover:bg-emerald-600': !processing,
-            'bg-gray-400 cursor-not-allowed': processing,
-            'rounded px-5 py-2 font-light active:scale-95 transition': true,
-        }"
+                'bg-[#00A793] hover:bg-emerald-500 dark:bg-emerald-700 dark:hover:bg-emerald-600': !processing,
+                'bg-gray-400 cursor-not-allowed': processing,
+                'rounded px-5 py-2 font-light active:scale-95 transition': true,
+            }"
             type="submit"
         >
             Save

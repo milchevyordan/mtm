@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Services\ChangeLoggerService;
@@ -24,7 +25,7 @@ class ProductController extends Controller
     public function index()
     {
         $dataTable = (new DataTable(
-            Product::select(Product::$defaultSelectFields)
+            Product::query()
         ))
             ->setColumn('id', '#', true, true)
             ->setColumn('name', __('Name'), true, true)
@@ -136,5 +137,35 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  UpdateProductQuantityRequest $request
+     * @return RedirectResponse
+     */
+    public function updateQuantity(UpdateProductQuantityRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $product = Product::findOrFail($request->id);
+            $changeLoggerService = new ChangeLoggerService($product);
+
+            $product->update($request->validated());
+
+            $changeLoggerService->logChanges($product);
+
+            DB::commit();
+
+            return back()->with('success', __('The record has been successfully updated.'));
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors([__('Error updating record.')]);
+        }
     }
 }

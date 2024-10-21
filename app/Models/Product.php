@@ -25,11 +25,4 @@ class Product extends Model
         'quantity_france',
         'quantity_netherlands',
     ];
-
-    /**
-     * Array holding fields that should be selected in the default datatable structure.
-     *
-     * @var array|string[]
-     */
-    public static array $defaultSelectFields = ['id', 'name', 'internal_id', 'quantity_france', 'quantity_netherlands', 'created_at'];
 }

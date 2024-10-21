@@ -22,13 +22,6 @@ export interface UserForm extends Omit<User, 'creator_id'>, Form {
     _method?: string;
 }
 
-interface Flash {
-    errors?: string[];
-    error?: string;
-    warning?: string;
-    success?: string;
-}
-
 export interface ChangeLog {
     id: string;
     creator_id: number;
@@ -50,18 +43,12 @@ export interface Product {
     name: string;
     internal_id: string;
     quantity_france: number;
-    minimum_quantity: number;
     quantity_netherlands: number;
+    minimum_quantity: number;
     creator?: User;
     change_logs?: ChangeLog[];
 }
 
 export interface ProductForm extends Omit<Product, 'creator_id'>, Form {
     _method?: string;
-}
-
-export interface ProductFranceForm extends Form {
-    id: number;
-    name: string;
-    quantity_france: number;
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Reset from "@/Icons/Reset.vue";
 
-const props = defineProps<{
+defineProps<{
     processing: boolean;
     recentlySuccessful: boolean;
 }>();
@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template>
     <div
-        class="w-40 rounded-lg shadow-lg bg-white dark:bg-gray-800 bottom-20 md:bottom-2.5 right-2 sm:right-5 md:right-4 p-2 element-center gap-2 text-black dark:text-white"
+        class="w-40 rounded-lg shadow-lg bg-white dark:bg-gray-800 bottom-20 md:bottom-2.5 right-2 sm:right-5 md:right-4 p-2 element-center gap-2 text-white"
     >
         <button
             :disabled="processing"

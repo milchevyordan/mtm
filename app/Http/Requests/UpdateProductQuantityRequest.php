@@ -6,9 +6,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateProductRequest extends FormRequest
+class UpdateProductQuantityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +25,6 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'                 => ['required', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
-            'internal_id'          => ['nullable', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
-            'minimum_quantity'     => ['nullable', 'integer', 'max:2147483647'],
             'quantity_france'      => ['nullable', 'integer', 'max:2147483647'],
             'quantity_netherlands' => ['nullable', 'integer', 'max:2147483647'],
         ];

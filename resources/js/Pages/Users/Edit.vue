@@ -74,7 +74,6 @@ const save = async (only?: Array<string>) => {
                                         type="text"
                                         class="mt-1 block w-full"
                                         required
-                                        autofocus
                                         autocomplete="name"
                                     />
 

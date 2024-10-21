@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserController::class)->except('destroy');
 
+    Route::put('/products/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.update-quantity');
     Route::resource('products', ProductController::class);
 });
 

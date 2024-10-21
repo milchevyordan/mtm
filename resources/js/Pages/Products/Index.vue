@@ -2,54 +2,73 @@
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 
-import ModalSaveButtons from "@/Components/HTML/ModalSaveButtons.vue";
+import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Modal from "@/Components/Modal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Product, ProductForm, ProductFranceForm} from "@/types";
+import {Enum, Product} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
-
-
 
 defineProps<{
     dataTable: DataTable<Product>;
 }>();
 
-const showChangeQuantityFranceModal = ref(false);
+const showChangeQuantityModal = ref(false);
 
-const openChangeQuantityFranceModal = (item: Product) => {
-    storeFormFrance.id = item.id;
-    storeFormFrance.name = item.name;
-    storeFormFrance.quantity_france = item.quantity_france;
-
-    showChangeQuantityFranceModal.value = true;
+const closeChangeQuantityModal = () => {
+    showChangeQuantityModal.value = false;
+    updateQuantityForm.reset();
 };
 
-const closeChangeQuantityFranceModal = () => {
-    showChangeQuantityFranceModal.value = false;
-    storeFormFrance.reset();
-};
-
-const storeFormFrance = useForm<ProductFranceForm>({
+const updateQuantityForm = useForm<{
+    _method: string;
+    id: number;
+    name: string;
+    type: Enum<typeof Warehouse>;
+    quantity_france?: number;
+    quantity_netherlands?: number;
+}>({
+    _method: "put",
     id: null!,
     name: null!,
+    type: null!,
     quantity_france: null!,
+    quantity_netherlands: null!,
 });
 
-const handleFranceUpdate = () => {
-    storeFormFrance.put(route("items.update", storeFormFrance.id as number), {
-        preserveScroll: true,
-        onSuccess: () => {
-            closeChangeQuantityFranceModal();
-            storeFormFrance.reset();
-        },
-        onError: () => {
-        },
+const openChangeQuantityModal = (item: Product, type: Enum<typeof Warehouse>) => {
+    updateQuantityForm.type = type;
+
+    updateQuantityForm.id = item.id;
+    updateQuantityForm.name = item.name;
+    updateQuantityForm.quantity_france = item.quantity_france;
+    updateQuantityForm.quantity_netherlands = item.quantity_netherlands;
+
+    showChangeQuantityModal.value = true;
+};
+
+const handleQuantityUpdate = () => {
+    return new Promise<void>((resolve, reject) => {
+        updateQuantityForm.post(
+            route("products.update-quantity", updateQuantityForm.id as number),
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    resolve();
+                },
+                onError: () => {
+                    reject();
+                },
+            }
+        );
+        closeChangeQuantityModal();
     });
 };
 </script>
@@ -96,12 +115,29 @@ const handleFranceUpdate = () => {
                             </template>
 
                             <template #cell(quantity_france)="{ value, item }">
-                                <span
-                                    class="cursor-pointer"
-                                    @click="openChangeQuantityFranceModal(item)"
+                                <div
+                                    class="cursor-pointer text-center rounded"
+                                    :class="{
+                                        'bg-red-500 text-white': value < item.minimum_quantity,
+                                        'bg-transparent': value >= item.minimum_quantity
+                                    }"
+                                    @click="openChangeQuantityModal(item, Warehouse.France)"
                                 >
                                     {{ value }}
-                                </span>
+                                </div>
+                            </template>
+
+                            <template #cell(quantity_netherlands)="{ value, item }">
+                                <div
+                                    class="cursor-pointer text-center rounded"
+                                    :class="{
+                                        'bg-red-500 text-white': value < item.minimum_quantity,
+                                        'bg-transparent': value >= item.minimum_quantity
+                                    }"
+                                    @click="openChangeQuantityModal(item, Warehouse.Netherlands)"
+                                >
+                                    {{ value }}
+                                </div>
                             </template>
 
                             <template #cell(action)="{ value, item }">
@@ -125,40 +161,68 @@ const handleFranceUpdate = () => {
     </AuthenticatedLayout>
 
     <Modal
-        :show="showChangeQuantityFranceModal"
-        @close="closeChangeQuantityFranceModal"
+        :show="showChangeQuantityModal"
+        max-width="lg"
+        @close="closeChangeQuantityModal"
     >
         <div
-            class="border-b border-[#E9E7E7] px-3.5 p-3 text-xl font-medium"
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Change quantity of product # {{ storeFormFrance?.id }}</div>
-            <div>{{ storeFormFrance?.name }}</div>
+            <div>Change quantity of product # {{ updateQuantityForm?.id }}</div>
+            <div>{{ updateQuantityForm?.name }}</div>
         </div>
 
-        <div class="p-6">
-            <InputLabel
-                for="quantity_france"
-                value="Quantity France"
-            />
+        <form
+            class="p-6"
+            @submit.prevent="handleQuantityUpdate"
+        >
+            <div v-if="updateQuantityForm.type == Warehouse.France">
+                <InputLabel
+                    for="quantity_france"
+                    value="Quantity France"
+                />
 
-            <TextInput
-                id="quantity_france"
-                v-model="storeFormFrance.quantity_france"
-                type="number"
-                step="1"
-                class="mt-1 block w-full"
-            />
+                <TextInput
+                    id="quantity_france"
+                    v-model="updateQuantityForm.quantity_france"
+                    type="number"
+                    step="1"
+                    class="mt-1 block w-full"
+                />
 
-            <InputError
-                class="mt-2"
-                :message="storeFormFrance.errors.quantity_france"
-            />
-        </div>
+                <InputError
+                    class="mt-2"
+                    :message="updateQuantityForm.errors.quantity_france"
+                />
+            </div>
 
-        <ModalSaveButtons
-            :processing="storeFormFrance.processing"
-            @cancel="closeChangeQuantityFranceModal"
-            @save="handleFranceUpdate"
-        />
+            <div v-else>
+                <InputLabel
+                    for="quantity_netherlands"
+                    value="Quantity Netherlands"
+                />
+
+                <TextInput
+                    id="quantity_netherlands"
+                    v-model="updateQuantityForm.quantity_netherlands"
+                    type="number"
+                    step="1"
+                    class="mt-1 block w-full"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="updateQuantityForm.errors.quantity_netherlands"
+                />
+            </div>
+
+            <div class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4">
+                <ResetSaveButtons
+                    :processing="updateQuantityForm.processing"
+                    :recently-successful="updateQuantityForm.recentlySuccessful"
+                    @reset="form.reset()"
+                />
+            </div>
+        </form>
     </Modal>
 </template>

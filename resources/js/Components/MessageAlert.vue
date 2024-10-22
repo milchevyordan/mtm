@@ -4,7 +4,17 @@ import { ref, watchEffect } from "vue";
 
 import { isNotEmpty } from "@/utils";
 
-const page = usePage();
+interface FlashMessages {
+    errors?: any;
+    error?: string;
+    success?: string;
+}
+
+interface PageProps {
+    flash?: FlashMessages;
+}
+
+const page = usePage() as { props: PageProps };
 const showAlert = ref(false);
 
 const clearFlashMessages = () => {

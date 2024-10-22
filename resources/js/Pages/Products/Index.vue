@@ -220,7 +220,7 @@ const handleQuantityUpdate = () => {
                 <ResetSaveButtons
                     :processing="updateQuantityForm.processing"
                     :recently-successful="updateQuantityForm.recentlySuccessful"
-                    @reset="form.reset()"
+                    @reset="updateQuantityForm.reset()"
                 />
             </div>
         </form>

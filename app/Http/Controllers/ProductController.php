@@ -8,8 +8,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Services\ChangeLoggerService;
 use App\Services\DataTable\DataTable;
+use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +19,13 @@ use Throwable;
 
 class ProductController extends Controller
 {
+    public ProductService $service;
+
+    public function __construct()
+    {
+        $this->service = new ProductService();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -112,11 +119,7 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            $changeLoggerService = new ChangeLoggerService($product);
-
-            $product->update($request->validated());
-
-            $changeLoggerService->logChanges($product);
+            $this->service->setProduct($product)->updateProduct($request);
 
             DB::commit();
 
@@ -150,12 +153,7 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            $product = Product::findOrFail($request->id);
-            $changeLoggerService = new ChangeLoggerService($product);
-
-            $product->update($request->validated());
-
-            $changeLoggerService->logChanges($product);
+            $this->service->setProduct(Product::findOrFail($request->id))->updateProduct($request);
 
             DB::commit();
 

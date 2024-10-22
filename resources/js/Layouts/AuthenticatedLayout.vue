@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
@@ -64,6 +64,18 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('products.*')"
                                 >
                                     Product
+                                </NavLink>
+                            </div>
+
+                            <div
+                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                            >
+                                <NavLink
+                                    :href="route('notifications.index')"
+                                    :active="route().current('notifications.*')"
+                                    :notifications-count="usePage().props.auth.notificationsCount"
+                                >
+                                    Notification
                                 </NavLink>
                             </div>
                         </div>
@@ -186,6 +198,13 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('products.*')"
                         >
                             Product
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('notifications.index')"
+                            :active="route().current('notifications.*')"
+                            :notifications-count="usePage().props.auth.notificationsCount"
+                        >
+                            Notification
                         </ResponsiveNavLink>
                     </div>
 

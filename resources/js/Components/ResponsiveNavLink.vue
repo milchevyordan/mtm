@@ -5,6 +5,7 @@ import { computed } from 'vue';
 const props = defineProps<{
     href: string;
     active?: boolean;
+    notificationsCount?: number | null;
 }>();
 
 const classes = computed(() =>
@@ -20,5 +21,16 @@ const classes = computed(() =>
         :class="classes"
     >
         <slot />
+
+        <div
+            v-if="notificationsCount && notificationsCount > 0"
+            class="relative"
+        >
+            <div
+                class="absolute top-0 right-0 -mt-5 -mr-3 bg-red-500 text-white rounded-full px-2 text-xs"
+            >
+                {{ notificationsCount }}
+            </div>
+        </div>
     </Link>
 </template>

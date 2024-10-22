@@ -202,7 +202,7 @@ const handleRestoreRecord = async (id: number) => {
                                 selectedRowIndexes.includes(
                                     rowData[selectedRowColumn]
                                 ))
-                            ? 'bg-blue-400 text-white'
+                            ? 'bg-blue-400 dark:bg-blue-800 text-white'
                             : 'bg-white dark:bg-gray-800',
                         { 'cursor-pointer': isRowClickLinkSet && !isTrashed() },
                     ]"

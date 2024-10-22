@@ -31,8 +31,8 @@ const updateQuantityForm = useForm<{
     id: number;
     name: string;
     type: Enum<typeof Warehouse>;
-    quantity_france?: number;
-    quantity_netherlands?: number;
+    quantity_france: number;
+    quantity_netherlands: number;
 }>({
     _method: "put",
     id: null!,

@@ -31,6 +31,7 @@ const updateQuantityForm = useForm<{
     id: number;
     name: string;
     type: Enum<typeof Warehouse>;
+    quantity_varna: number;
     quantity_france: number;
     quantity_netherlands: number;
 }>({
@@ -38,6 +39,7 @@ const updateQuantityForm = useForm<{
     id: null!,
     name: null!,
     type: null!,
+    quantity_varna: null!,
     quantity_france: null!,
     quantity_netherlands: null!,
 });
@@ -47,6 +49,7 @@ const openChangeQuantityModal = (item: Product, type: Enum<typeof Warehouse>) =>
 
     updateQuantityForm.id = item.id;
     updateQuantityForm.name = item.name;
+    updateQuantityForm.quantity_varna = item.quantity_varna;
     updateQuantityForm.quantity_france = item.quantity_france;
     updateQuantityForm.quantity_netherlands = item.quantity_netherlands;
 
@@ -111,6 +114,19 @@ const handleQuantityUpdate = () => {
                             <template #cell(created_at)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     {{ dateTimeToLocaleString(value) }}
+                                </div>
+                            </template>
+
+                            <template #cell(quantity_varna)="{ value, item }">
+                                <div
+                                    class="cursor-pointer text-center rounded"
+                                    :class="{
+                                        'bg-red-500 text-white': value < item.minimum_quantity,
+                                        'bg-transparent': value >= item.minimum_quantity
+                                    }"
+                                    @click="openChangeQuantityModal(item, Warehouse.Varna)"
+                                >
+                                    {{ value }}
                                 </div>
                             </template>
 
@@ -193,6 +209,26 @@ const handleQuantityUpdate = () => {
                 <InputError
                     class="mt-2"
                     :message="updateQuantityForm.errors.quantity_france"
+                />
+            </div>
+
+            <div v-else-if="updateQuantityForm.type == Warehouse.Varna">
+                <InputLabel
+                    for="quantity_varna"
+                    value="Quantity Varna"
+                />
+
+                <TextInput
+                    id="quantity_varna"
+                    v-model="updateQuantityForm.quantity_varna"
+                    type="number"
+                    step="1"
+                    class="mt-1 block w-full"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="updateQuantityForm.errors.quantity_varna"
                 />
             </div>
 

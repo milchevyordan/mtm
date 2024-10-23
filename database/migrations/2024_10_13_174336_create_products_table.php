@@ -24,6 +24,7 @@ return new class () extends Migration {
             $table->string('name')->unique();
 
             $table->integer('minimum_quantity')->nullable();
+            $table->integer('quantity_varna')->nullable();
             $table->integer('quantity_france')->nullable();
             $table->integer('quantity_netherlands')->nullable();
 

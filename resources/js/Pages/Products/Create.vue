@@ -13,6 +13,7 @@ const form = useForm<ProductForm>({
     internal_id: null!,
     name: null!,
     minimum_quantity: 10,
+    quantity_varna: null!,
     quantity_france: null!,
     quantity_netherlands: null!,
 });
@@ -114,6 +115,26 @@ const save = async (only?: Array<string>) => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.minimum_quantity"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="quantity_varna"
+                                        value="Quantity Varna"
+                                    />
+
+                                    <TextInput
+                                        id="quantity_varna"
+                                        v-model="form.quantity_varna"
+                                        type="number"
+                                        step="1"
+                                        class="mt-1 block w-full"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.quantity_varna"
                                     />
                                 </div>
 

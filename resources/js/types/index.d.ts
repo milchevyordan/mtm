@@ -43,6 +43,7 @@ export interface Product {
     creator_id: number;
     name: string;
     internal_id: string;
+    quantity_varna: number;
     quantity_france: number;
     quantity_netherlands: number;
     minimum_quantity: number;

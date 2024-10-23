@@ -37,6 +37,7 @@ class ProductController extends Controller
             ->setColumn('id', '#', true, true)
             ->setColumn('name', __('Name'), true, true)
             ->setColumn('internal_id', __('Internal Id'), true, true)
+            ->setColumn('quantity_varna', __('Varna'), true, true)
             ->setColumn('quantity_france', __('France'), true, true)
             ->setColumn('quantity_netherlands', __('Netherlands'), true, true)
             ->setColumn('created_at', __('Date'), true, true)

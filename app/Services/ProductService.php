@@ -61,7 +61,7 @@ class ProductService
 
         $changeLoggerService = new ChangeLoggerService($product);
 
-        if ($product->quantity_france < $product->minimum_quantity || $product->quantity_netherlands < $product->minimum_quantity) {
+        if ((! is_null($product->quantity_france) && ($product->quantity_france < $product->minimum_quantity)) || (! is_null($product->quantity_netherlands) && ($product->quantity_netherlands < $product->minimum_quantity))) {
             event(new MinimumQuantityReached($product));
         }
 

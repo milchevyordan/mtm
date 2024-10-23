@@ -22,6 +22,7 @@ class Product extends Model
         'name',
         'internal_id',
         'minimum_quantity',
+        'quantity_varna',
         'quantity_france',
         'quantity_netherlands',
     ];

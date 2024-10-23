@@ -19,6 +19,7 @@ enum Warehouse: int
 {
     use Enum;
 
-    case France = 1;
-    case Netherlands = 2;
+    case Varna = 1;
+    case France = 2;
+    case Netherlands = 3;
 }

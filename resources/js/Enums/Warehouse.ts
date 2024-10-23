@@ -1,4 +1,5 @@
 export enum Warehouse {
-    France = 1,
-    Netherlands = 2,
+    Varna = 1,
+    France = 2,
+    Netherlands = 3,
 }

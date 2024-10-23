@@ -20,6 +20,7 @@ const form = useForm<ProductForm>({
     name: props.product.name,
     internal_id: props.product.internal_id,
     minimum_quantity: props.product.minimum_quantity,
+    quantity_varna: props.product.quantity_varna,
     quantity_france: props.product.quantity_france,
     quantity_netherlands: props.product.quantity_netherlands,
 });
@@ -122,6 +123,26 @@ const save = async (only?: Array<string>) => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.minimum_quantity"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="quantity_varna"
+                                        value="Quantity Varna"
+                                    />
+
+                                    <TextInput
+                                        id="quantity_varna"
+                                        v-model="form.quantity_varna"
+                                        type="number"
+                                        step="1"
+                                        class="mt-1 block w-full"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.quantity_varna"
                                     />
                                 </div>
 

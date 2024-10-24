@@ -26,13 +26,11 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'                   => 'required|string|max:255|unique:' . Product::class,
-            'internal_id'            => 'nullable|string|max:255|unique:' . Product::class,
-            'minimum_quantity'       => 'nullable|integer|max:2147483647',
-            'quantities'             => ['required', 'array'],
-            'quantities.Varna'       => ['nullable', 'integer', 'max:2147483647'],
-            'quantities.France'      => ['nullable', 'integer', 'max:2147483647'],
-            'quantities.Netherlands' => ['nullable', 'integer', 'max:2147483647'],
+            'name'             => 'required|string|max:255|unique:' . Product::class,
+            'internal_id'      => 'nullable|string|max:255|unique:' . Product::class,
+            'minimum_quantity' => 'nullable|integer|max:2147483647',
+            'quantities'       => ['required', 'array'],
+            'quantities.*'     => ['nullable', 'integer', 'max:2147483647'],
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +24,6 @@ class Product extends Model
         'name',
         'internal_id',
         'minimum_quantity',
-        'quantity_varna',
-        'quantity_france',
-        'quantity_netherlands',
     ];
 
     /**
@@ -36,5 +34,35 @@ class Product extends Model
     public function quantity(): HasMany
     {
         return $this->hasMany(ProductQuantity::class);
+    }
+
+    /**
+     * Product quantity in Varna.
+     *
+     * @return mixed
+     */
+    public function quantityVarna(): mixed
+    {
+        return $this->quantity()->where('warehouse', Warehouse::Varna->value);
+    }
+
+    /**
+     * Product quantity in France.
+     *
+     * @return mixed
+     */
+    public function quantityFrance(): mixed
+    {
+        return $this->quantity()->where('warehouse', Warehouse::France->value);
+    }
+
+    /**
+     * Product quantity in the Netherlands.
+     *
+     * @return mixed
+     */
+    public function quantityNetherlands(): mixed
+    {
+        return $this->quantity()->where('warehouse', Warehouse::Netherlands->value);
     }
 }

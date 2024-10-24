@@ -48,12 +48,16 @@ interface ChangeLogsChange {
 }
 
 export interface ProductQuantity {
+    id: number;
     product_id: number;
     warehouse: Enum<typeof Warehouse>;
     quantity: number;
     Varna?: number;
     France?: number;
     Netherlands?: number;
+}
+
+export interface ProductQuantityForm extends ProductQuantity, Form, FormMethod {
 }
 
 export interface Product {

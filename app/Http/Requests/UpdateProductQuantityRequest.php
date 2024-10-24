@@ -25,9 +25,8 @@ class UpdateProductQuantityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity_varna'       => ['nullable', 'integer', 'max:2147483647'],
-            'quantity_france'      => ['nullable', 'integer', 'max:2147483647'],
-            'quantity_netherlands' => ['nullable', 'integer', 'max:2147483647'],
+            'id'       => ['required', 'integer'],
+            'quantity' => ['nullable', 'integer', 'max:2147483647'],
         ];
     }
 }

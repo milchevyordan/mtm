@@ -27,20 +27,16 @@ class SendProductNotification
     public function handle(MinimumQuantityReached $event): void
     {
         $user = User::find(1);
-        $location = null;
+        $event->product->load('quantity');
 
-        if ($event->product->quantity_netherlands < $event->product->minimum_quantity) {
-            $location = 'Netherlands';
-        } elseif ($event->product->quantity_france < $event->product->minimum_quantity) {
-            $location = 'France';
+        foreach ($event->product->quantity as $quantity) {
+            if ($quantity->quantity >= $event->product->minimum_quantity) {
+                continue;
+            }
+
+            $message = "Product {$event->product->name} is running out of stock in {$quantity->warehouse->name}.";
+            Notification::send($user, new DatabaseNotification($message));
         }
-
-        if (! $location) {
-            return;
-        }
-
-        $message = "Product {$event->product->name} is running out of stock in {$location}.";
-        Notification::send($user, new DatabaseNotification($message));
 
         Cache::forget("user_{$user->id}");
     }

@@ -12,8 +12,8 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Enum, Product, ProductQuantity} from "@/types";
-import {dateTimeToLocaleString} from "@/utils";
+import {Product, ProductQuantity, ProductQuantityForm} from "@/types";
+import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Product>;
@@ -26,25 +26,19 @@ const closeChangeQuantityModal = () => {
     updateQuantityForm.reset();
 };
 
-const updateQuantityForm = useForm<{
-    _method: string;
-    id: number;
-    name: string;
-    type: Enum<typeof Warehouse>;
-    quantity: number;
-}>({
+const updateQuantityForm = useForm<ProductQuantityForm>({
     _method: "put",
     id: null!,
-    name: null!,
-    type: null!,
+    product_id: null!,
+    warehouse: null!,
     quantity: null!
 });
 
-const openChangeQuantityModal = (item: Product, type: Enum<typeof Warehouse>) => {
-    updateQuantityForm.type = type;
-
+const openChangeQuantityModal = (item: ProductQuantity) => {
     updateQuantityForm.id = item.id;
-    updateQuantityForm.name = item.name;
+    updateQuantityForm.product_id = item.product_id;
+    updateQuantityForm.warehouse = item.warehouse;
+    updateQuantityForm.quantity = item.quantity;
 
     showChangeQuantityModal.value = true;
 };
@@ -114,12 +108,12 @@ const handleQuantityUpdate = () => {
                                 <div
                                     class="cursor-pointer text-center rounded"
                                     :class="{
-                                        'bg-red-500 text-white': value < item.minimum_quantity,
-                                        'bg-transparent': value >= item.minimum_quantity
+                                        'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
-                                    @click="openChangeQuantityModal(item, Warehouse.Varna)"
+                                    @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.Varna)?.quantity }}
+                                    {{ value[0].quantity ?? '' }}
                                 </div>
                             </template>
 
@@ -127,12 +121,12 @@ const handleQuantityUpdate = () => {
                                 <div
                                     class="cursor-pointer text-center rounded"
                                     :class="{
-                                        'bg-red-500 text-white': value < item.minimum_quantity,
-                                        'bg-transparent': value >= item.minimum_quantity
+                                        'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
-                                    @click="openChangeQuantityModal(item, Warehouse.France)"
+                                    @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.France)?.quantity }}
+                                    {{ value[0].quantity ?? '' }}
                                 </div>
                             </template>
 
@@ -140,12 +134,12 @@ const handleQuantityUpdate = () => {
                                 <div
                                     class="cursor-pointer text-center rounded"
                                     :class="{
-                                        'bg-red-500 text-white': value < item.minimum_quantity,
-                                        'bg-transparent': value >= item.minimum_quantity
+                                        'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
-                                    @click="openChangeQuantityModal(item, Warehouse.Netherlands)"
+                                    @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.Netherlands)?.quantity }}
+                                    {{ value[0].quantity ?? '' }}
                                 </div>
                             </template>
 
@@ -177,8 +171,7 @@ const handleQuantityUpdate = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Change quantity of product # {{ updateQuantityForm?.id }}</div>
-            <div>{{ updateQuantityForm?.name }}</div>
+            <div>Change quantity of product # {{ updateQuantityForm?.product_id }}</div>
         </div>
 
         <form
@@ -187,12 +180,12 @@ const handleQuantityUpdate = () => {
         >
             <div>
                 <InputLabel
-                    for="quantity_france"
-                    value="Quantity France"
+                    for="quantity"
+                    :value="`Quantity ${findEnumKeyByValue(Warehouse, updateQuantityForm?.warehouse)}`"
                 />
 
                 <TextInput
-                    id="quantity_france"
+                    id="quantity"
                     v-model="updateQuantityForm.quantity"
                     type="number"
                     step="1"

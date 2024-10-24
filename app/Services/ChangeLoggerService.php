@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\Warehouse;
 use App\Models\ChangeLog;
 use App\Support\EnumHelper;
 use Illuminate\Database\Eloquent\Model;
@@ -381,7 +382,11 @@ class ChangeLoggerService
             $relationName = ucfirst($relation);
             foreach ($array as $key => $item) {
                 $indexed[$key] = $item;
-                $indexed[$key]['real_name'] = $relationName . ' ' . $key + 1;
+                if ('quantity' == $relation) {
+                    $indexed[$key]['real_name'] = EnumHelper::getEnumName(Warehouse::class, $item['warehouse']);
+                } else {
+                    $indexed[$key]['real_name'] = $relationName . ' ' . $key + 1;
+                }
             }
         } else {
             $indexed['main'] = $array;

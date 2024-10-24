@@ -93,7 +93,7 @@ class ProductService
     {
         $product = $this->getProduct();
 
-        $changeLoggerService = new ChangeLoggerService($product);
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
 
         $validatedRequest = $request->validated();
 
@@ -139,20 +139,24 @@ class ProductService
     {
         $validatedRequest = $request->validated();
 
-        $productQuantity = ProductQuantity::find($validatedRequest['id']);
+        $productQuantity = ProductQuantity::find($validatedRequest['id'])->load('product');
 
         if (! $productQuantity) {
             return $this;
         }
 
+        $product = $productQuantity->product;
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+
         $productQuantity->update([
             'quantity' => $validatedRequest['quantity'],
         ]);
 
-        $product = $productQuantity->product;
         if ($validatedRequest['quantity'] < $product->minimum_quantity) {
             event(new MinimumQuantityReached($product));
         }
+
+        $changeLoggerService->logChanges($product);
 
         return $this;
     }

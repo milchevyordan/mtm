@@ -1,3 +1,5 @@
+import {Warehouse} from "@/Enums/Warehouse";
+
 export function dateToLocaleString(date: Date | string | null | undefined) {
     if (date === null || date === undefined) {
         return;
@@ -17,6 +19,13 @@ export function dateToLocaleString(date: Date | string | null | undefined) {
         year: "numeric",
     });
 }
+
+export const warehouses = Object.entries(Warehouse)
+    .filter(([name]) => isNaN(Number(name)))
+    .map(([name, value]) => ({
+        name,
+        value,
+    }));
 
 export function dateTimeToLocaleString(
     dateTime: Date | string | null

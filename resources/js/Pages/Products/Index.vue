@@ -12,7 +12,7 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Enum, Product} from "@/types";
+import {Enum, Product, ProductQuantity} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
 
 defineProps<{
@@ -31,17 +31,13 @@ const updateQuantityForm = useForm<{
     id: number;
     name: string;
     type: Enum<typeof Warehouse>;
-    quantity_varna: number;
-    quantity_france: number;
-    quantity_netherlands: number;
+    quantity: number;
 }>({
     _method: "put",
     id: null!,
     name: null!,
     type: null!,
-    quantity_varna: null!,
-    quantity_france: null!,
-    quantity_netherlands: null!,
+    quantity: null!
 });
 
 const openChangeQuantityModal = (item: Product, type: Enum<typeof Warehouse>) => {
@@ -49,9 +45,6 @@ const openChangeQuantityModal = (item: Product, type: Enum<typeof Warehouse>) =>
 
     updateQuantityForm.id = item.id;
     updateQuantityForm.name = item.name;
-    updateQuantityForm.quantity_varna = item.quantity_varna;
-    updateQuantityForm.quantity_france = item.quantity_france;
-    updateQuantityForm.quantity_netherlands = item.quantity_netherlands;
 
     showChangeQuantityModal.value = true;
 };
@@ -126,7 +119,7 @@ const handleQuantityUpdate = () => {
                                     }"
                                     @click="openChangeQuantityModal(item, Warehouse.Varna)"
                                 >
-                                    {{ value }}
+                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.Varna)?.quantity }}
                                 </div>
                             </template>
 
@@ -139,7 +132,7 @@ const handleQuantityUpdate = () => {
                                     }"
                                     @click="openChangeQuantityModal(item, Warehouse.France)"
                                 >
-                                    {{ value }}
+                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.France)?.quantity }}
                                 </div>
                             </template>
 
@@ -152,7 +145,7 @@ const handleQuantityUpdate = () => {
                                     }"
                                     @click="openChangeQuantityModal(item, Warehouse.Netherlands)"
                                 >
-                                    {{ value }}
+                                    {{ item.quantity.find((productQuantity: ProductQuantity) => productQuantity.warehouse == Warehouse.Netherlands)?.quantity }}
                                 </div>
                             </template>
 
@@ -192,7 +185,7 @@ const handleQuantityUpdate = () => {
             class="p-6"
             @submit.prevent="handleQuantityUpdate"
         >
-            <div v-if="updateQuantityForm.type == Warehouse.France">
+            <div>
                 <InputLabel
                     for="quantity_france"
                     value="Quantity France"
@@ -200,7 +193,7 @@ const handleQuantityUpdate = () => {
 
                 <TextInput
                     id="quantity_france"
-                    v-model="updateQuantityForm.quantity_france"
+                    v-model="updateQuantityForm.quantity"
                     type="number"
                     step="1"
                     class="mt-1 block w-full"
@@ -208,47 +201,7 @@ const handleQuantityUpdate = () => {
 
                 <InputError
                     class="mt-2"
-                    :message="updateQuantityForm.errors.quantity_france"
-                />
-            </div>
-
-            <div v-else-if="updateQuantityForm.type == Warehouse.Varna">
-                <InputLabel
-                    for="quantity_varna"
-                    value="Quantity Varna"
-                />
-
-                <TextInput
-                    id="quantity_varna"
-                    v-model="updateQuantityForm.quantity_varna"
-                    type="number"
-                    step="1"
-                    class="mt-1 block w-full"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="updateQuantityForm.errors.quantity_varna"
-                />
-            </div>
-
-            <div v-else>
-                <InputLabel
-                    for="quantity_netherlands"
-                    value="Quantity Netherlands"
-                />
-
-                <TextInput
-                    id="quantity_netherlands"
-                    v-model="updateQuantityForm.quantity_netherlands"
-                    type="number"
-                    step="1"
-                    class="mt-1 block w-full"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="updateQuantityForm.errors.quantity_netherlands"
+                    :message="updateQuantityForm.errors.quantity"
                 />
             </div>
 

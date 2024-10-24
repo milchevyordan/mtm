@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\Warehouse;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,20 +13,15 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product_quantities', function (Blueprint $table) {
             $table->id();
-
-            $table
-                ->foreignId('creator_id')
-                ->nullable()
-                ->constrained('users');
-
-            $table->string('internal_id')->nullable()->unique();
-            $table->string('name')->unique();
-
-            $table->integer('minimum_quantity')->nullable();
+            $table->foreignId('product_id')->constrained();
+            $table->enum('warehouse', Warehouse::values());
+            $table->integer('quantity')->nullable();
 
             $table->timestamps();
+
+            $table->unique(['product_id', 'warehouse']);
         });
     }
 
@@ -34,6 +30,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('product_quantities');
     }
 };

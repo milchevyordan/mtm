@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductQuantity;
 use App\Services\DataTable\DataTable;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
@@ -34,6 +36,7 @@ class ProductController extends Controller
         $dataTable = (new DataTable(
             Product::query()
         ))
+            ->setRelation('quantity')
             ->setColumn('id', '#', true, true)
             ->setColumn('name', __('Name'), true, true)
             ->setColumn('internal_id', __('Internal Id'), true, true)
@@ -74,6 +77,14 @@ class ProductController extends Controller
             $product->creator_id = auth()->id();
             $product->save();
 
+            foreach ($validatedRequest['quantities'] as $key => $quantity) {
+                $productQuantity = new ProductQuantity();
+                $productQuantity->product_id = $product->id;
+                $productQuantity->warehouse = Warehouse::getCaseByName($key)->value;
+                $productQuantity->quantity = $quantity;
+                $productQuantity->save();
+            }
+
             DB::commit();
 
             return redirect()->route('products.edit', ['product' => $product->id])->with('success', __('The record has been successfully created.'));
@@ -103,7 +114,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product): Response
     {
-        $product->load(['changeLogs']);
+        $product->load(['changeLogs', 'quantity']);
 
         return Inertia::render('Products/Edit', compact('product'));
     }

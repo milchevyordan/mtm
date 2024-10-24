@@ -6,9 +6,10 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Product, ProductForm} from "@/types";
-import {withFlash} from "@/utils";
+import {Product, ProductForm, ProductQuantity} from "@/types";
+import {warehouses, withFlash} from "@/utils";
 
 const props = defineProps<{
     product: Product;
@@ -20,9 +21,11 @@ const form = useForm<ProductForm>({
     name: props.product.name,
     internal_id: props.product.internal_id,
     minimum_quantity: props.product.minimum_quantity,
-    quantity_varna: props.product.quantity_varna,
-    quantity_france: props.product.quantity_france,
-    quantity_netherlands: props.product.quantity_netherlands,
+    quantities: {
+        Varna: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Varna)?.quantity ?? null!,
+        France: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.France)?.quantity ?? null!,
+        Netherlands: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Netherlands)?.quantity ?? null!,
+    }
 });
 
 const save = async (only?: Array<string>) => {
@@ -126,15 +129,18 @@ const save = async (only?: Array<string>) => {
                                     />
                                 </div>
 
-                                <div>
+                                <div
+                                    v-for="(warehouse, index) in warehouses"
+                                    :key="index"
+                                >
                                     <InputLabel
-                                        for="quantity_varna"
-                                        value="Quantity Varna"
+                                        :for="'quantities_' + warehouse.name"
+                                        :value="`Quantity ${warehouse.name}`"
                                     />
 
                                     <TextInput
-                                        id="quantity_varna"
-                                        v-model="form.quantity_varna"
+                                        :id="'quantities_' + warehouse.name"
+                                        v-model="form.quantities[warehouse.name]"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
@@ -142,47 +148,7 @@ const save = async (only?: Array<string>) => {
 
                                     <InputError
                                         class="mt-2"
-                                        :message="form.errors.quantity_varna"
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        for="quantity_france"
-                                        value="Quantity France"
-                                    />
-
-                                    <TextInput
-                                        id="quantity_france"
-                                        v-model="form.quantity_france"
-                                        type="number"
-                                        step="1"
-                                        class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.quantity_france"
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        for="quantity_netherlands"
-                                        value="Quantity Netherlands"
-                                    />
-
-                                    <TextInput
-                                        id="quantity_netherlands"
-                                        v-model="form.quantity_netherlands"
-                                        type="number"
-                                        step="1"
-                                        class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.quantity_netherlands"
+                                        :message="form.errors['quantities.' + warehouse.name]"
                                     />
                                 </div>
 

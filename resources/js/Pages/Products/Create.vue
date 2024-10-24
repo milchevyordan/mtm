@@ -7,15 +7,18 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductForm} from "@/types";
+import {warehouses} from "@/utils";
 
 const form = useForm<ProductForm>({
     id: null!,
     internal_id: null!,
     name: null!,
     minimum_quantity: 10,
-    quantity_varna: null!,
-    quantity_france: null!,
-    quantity_netherlands: null!,
+    quantities: {
+        Varna: null!,
+        France: null!,
+        Netherlands: null!,
+    }
 });
 
 const save = async (only?: Array<string>) => {
@@ -33,10 +36,11 @@ const save = async (only?: Array<string>) => {
         });
     });
 };
+
 </script>
 
 <template>
-    <Head :title="'Product'" />
+    <Head :title="'Product'"/>
 
     <AuthenticatedLayout>
         <template #header>
@@ -118,15 +122,18 @@ const save = async (only?: Array<string>) => {
                                     />
                                 </div>
 
-                                <div>
+                                <div
+                                    v-for="(warehouse, index) in warehouses"
+                                    :key="index"
+                                >
                                     <InputLabel
-                                        for="quantity_varna"
-                                        value="Quantity Varna"
+                                        :for="'quantities_' + warehouse.name"
+                                        :value="`Quantity ${warehouse.name}`"
                                     />
 
                                     <TextInput
-                                        id="quantity_varna"
-                                        v-model="form.quantity_varna"
+                                        :id="'quantities_' + warehouse.name"
+                                        v-model="form.quantities[warehouse.name]"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
@@ -134,47 +141,7 @@ const save = async (only?: Array<string>) => {
 
                                     <InputError
                                         class="mt-2"
-                                        :message="form.errors.quantity_varna"
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        for="quantity_france"
-                                        value="Quantity France"
-                                    />
-
-                                    <TextInput
-                                        id="quantity_france"
-                                        v-model="form.quantity_france"
-                                        type="number"
-                                        step="1"
-                                        class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.quantity_france"
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        for="quantity_netherlands"
-                                        value="Quantity Netherlands"
-                                    />
-
-                                    <TextInput
-                                        id="quantity_netherlands"
-                                        v-model="form.quantity_netherlands"
-                                        type="number"
-                                        step="1"
-                                        class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.quantity_netherlands"
+                                        :message="form.errors['quantities.' + warehouse.name]"
                                     />
                                 </div>
 

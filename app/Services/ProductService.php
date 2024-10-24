@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\Warehouse;
 use App\Events\MinimumQuantityReached;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductQuantity;
 
 class ProductService
 {
@@ -61,11 +63,27 @@ class ProductService
 
         $changeLoggerService = new ChangeLoggerService($product);
 
-        if ((! is_null($product->quantity_france) && ($product->quantity_france < $product->minimum_quantity)) || (! is_null($product->quantity_netherlands) && ($product->quantity_netherlands < $product->minimum_quantity))) {
-            event(new MinimumQuantityReached($product));
+        $validatedRequest = $request->validated();
+
+        $product->update($validatedRequest);
+
+        foreach ($validatedRequest['quantities'] as $key => $quantity) {
+            $warehouseId = Warehouse::getCaseByName($key)->value;
+
+            ProductQuantity::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'warehouse'  => $warehouseId,
+                ],
+                [
+                    'quantity' => $quantity,
+                ]
+            );
         }
 
-        $product->update($request->validated());
+        //        if ((! is_null($product->quantity_france) && ($product->quantity_france < $product->minimum_quantity)) || (! is_null($product->quantity_netherlands) && ($product->quantity_netherlands < $product->minimum_quantity))) {
+        //            event(new MinimumQuantityReached($product));
+        //        }
 
         $changeLoggerService->logChanges($product);
 

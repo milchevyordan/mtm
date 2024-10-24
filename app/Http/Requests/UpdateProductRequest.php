@@ -26,12 +26,13 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'                 => ['required', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
-            'internal_id'          => ['nullable', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
-            'minimum_quantity'     => ['nullable', 'integer', 'max:2147483647'],
-            'quantity_varna'       => ['nullable', 'integer', 'max:2147483647'],
-            'quantity_france'      => ['nullable', 'integer', 'max:2147483647'],
-            'quantity_netherlands' => ['nullable', 'integer', 'max:2147483647'],
+            'name'                   => ['required', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
+            'internal_id'            => ['nullable', 'string', 'max:255', Rule::unique('products')->ignore($this->product->id)],
+            'minimum_quantity'       => ['nullable', 'integer', 'max:2147483647'],
+            'quantities'             => ['required', 'array'],
+            'quantities.Varna'       => ['nullable', 'integer', 'max:2147483647'],
+            'quantities.France'      => ['nullable', 'integer', 'max:2147483647'],
+            'quantities.Netherlands' => ['nullable', 'integer', 'max:2147483647'],
         ];
     }
 }

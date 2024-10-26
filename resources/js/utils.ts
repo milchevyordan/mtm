@@ -20,6 +20,35 @@ export function dateToLocaleString(date: Date | string | null | undefined) {
     });
 }
 
+export function enumToOptions(
+    enumObject: any,
+    capitalize: boolean = false
+): { name: string; value: number }[] {
+    const options: { name: string; value: number }[] = [];
+
+    for (const key in enumObject) {
+        if (typeof enumObject[key] === "number") {
+            options.push({
+                name: capitalize ? capitalizeFirstLetter(key) : key,
+                value: enumObject[key],
+            });
+        }
+    }
+
+    return options;
+}
+
+export function replaceUnderscores(object: { [key: string]: any }) {
+    const newObject: { [key: string]: any } = {};
+
+    for (let key in object) {
+        const newKey = key.replace(/_/g, " ");
+        newObject[newKey] = object[key];
+    }
+
+    return newObject;
+}
+
 export const warehouses = Object.entries(Warehouse)
     .filter(([name]) => isNaN(Number(name)))
     .map(([name, value]) => ({

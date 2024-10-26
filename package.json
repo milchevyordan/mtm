@@ -6,6 +6,9 @@
         "build": "vue-tsc && vite build"
     },
     "devDependencies": {
+        "@eslint/compat": "^1.2.1",
+        "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.13.0",
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
         "@typescript-eslint/eslint-plugin": "^8.10.0",
@@ -22,10 +25,10 @@
         "typescript": "^5.5.3",
         "vite": "^5.0",
         "vue": "^3.4.0",
-        "vue-tsc": "^2.0.24",
-        "@eslint/compat": "^1.2.1",
-        "@eslint/eslintrc": "^3.1.0",
-        "@eslint/js": "^9.13.0",
-        "vue-eslint-parser": "^9.4.3"
+        "vue-eslint-parser": "^9.4.3",
+        "vue-tsc": "^2.0.24"
+    },
+    "dependencies": {
+        "vue-multiselect": "^3.1.0"
     }
 }

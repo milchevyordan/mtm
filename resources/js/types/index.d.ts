@@ -19,6 +19,11 @@ export type Form = {
 
 export type Enum<T> = T[keyof T];
 
+export interface Option {
+    name: string;
+    value: string | number | null;
+}
+
 export interface User {
     id: number;
     creator_id: number;
@@ -77,4 +82,16 @@ export interface Product {
 }
 
 export interface ProductForm extends Omit<Product, "creator_id", "quantity">, Form, FormMethod {
+}
+
+export interface Project {
+    id: number;
+    creator_id: number;
+    warehouse: Enum<typeof Warehouse>;
+    name: string;
+    creator?: User;
+    change_logs?: ChangeLog[];
+}
+
+export interface ProjectForm extends Omit<Project, "creator_id">, Form, FormMethod {
 }

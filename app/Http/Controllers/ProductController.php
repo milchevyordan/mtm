@@ -39,13 +39,13 @@ class ProductController extends Controller
             ->setRelation('quantityFrance')
             ->setRelation('quantityNetherlands')
             ->setColumn('id', '#', true, true)
-            ->setColumn('name', __('Name'), true, true)
-            ->setColumn('internal_id', __('Internal Id'), true, true)
-            ->setColumn('quantity_varna', __('Varna'), true, true)
-            ->setColumn('quantity_france', __('France'), true, true)
-            ->setColumn('quantity_netherlands', __('Netherlands'), true, true)
-            ->setColumn('created_at', __('Date'), true, true)
-            ->setColumn('action', __('Action'))
+            ->setColumn('name', 'Name', true, true)
+            ->setColumn('internal_id', 'Internal Id', true, true)
+            ->setColumn('quantity_varna', 'Varna', true, true)
+            ->setColumn('quantity_france', 'France', true, true)
+            ->setColumn('quantity_netherlands', 'Netherlands', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
 
@@ -75,13 +75,13 @@ class ProductController extends Controller
 
             DB::commit();
 
-            return redirect()->route('products.edit', ['product' => $this->service->getProduct()->id])->with('success', __('The record has been successfully created.'));
+            return redirect()->route('products.edit', ['product' => $this->service->getProduct()->id])->with('success', 'The record has been successfully created.');
         } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error creating record.')]);
+            return redirect()->back()->withErrors(['Error creating record.']);
         }
     }
 
@@ -123,13 +123,13 @@ class ProductController extends Controller
 
             DB::commit();
 
-            return back()->with('success', __('The record has been successfully updated.'));
+            return back()->with('success', 'The record has been successfully updated.');
         } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error updating record.')]);
+            return redirect()->back()->withErrors(['Error updating record.']);
         }
     }
 
@@ -157,13 +157,13 @@ class ProductController extends Controller
 
             DB::commit();
 
-            return back()->with('success', __('The record has been successfully updated.'));
+            return back()->with('success', 'The record has been successfully updated.');
         } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error updating record.')]);
+            return redirect()->back()->withErrors(['Error updating record.']);
         }
     }
 }

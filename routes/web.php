@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/products/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.update-quantity');
     Route::resource('products', ProductController::class);
+
+    Route::resource('projects', ProjectController::class);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');

@@ -29,9 +29,9 @@ class NotificationController extends Controller
         $dataTable = (new DataTable(
             $user->notifications()->orderByRaw('read_at IS NULL DESC')->getQuery()
         ))
-            ->setColumn('data', __('Message'), true)
-            ->setColumn('created_at', __('Date'), true)
-            ->setColumn('read_at', __('Read'), true)
+            ->setColumn('data', 'Message', true)
+            ->setColumn('created_at', 'Date', true)
+            ->setColumn('read_at', 'Read', true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setDateColumn('read_at', 'dd.mm.YYYY H:i');
 
@@ -59,11 +59,11 @@ class NotificationController extends Controller
 
             Cache::forget("user_{$user->id}");
 
-            return redirect()->back()->with('success', __('Notification marked as read.'));
+            return redirect()->back()->with('success', 'Notification marked as read.');
         } catch (Throwable $th) {
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error marking notification.')]);
+            return redirect()->back()->withErrors(['Error marking notification.']);
         }
     }
 }

@@ -31,10 +31,10 @@ class UserController extends Controller
             User::select(User::$defaultSelectFields)
         ))
             ->setColumn('id', '#', true, true)
-            ->setColumn('name', __('Name'), true, true)
-            ->setColumn('email', __('Email'), true, true)
-            ->setColumn('created_at', __('Date'), true, true)
-            ->setColumn('action', __('Action'))
+            ->setColumn('name', 'Name', true, true)
+            ->setColumn('email', 'Email', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
 
@@ -68,18 +68,18 @@ class UserController extends Controller
             $user->creator_id = auth()->id();
             $user->save();
 
-            //            $token = app('auth.password.broker')->createToken($user);
-            //            Notification::send($user, new NewUserPasswordCreate($token));
+            $token = app('auth.password.broker')->createToken($user);
+            Notification::send($user, new NewUserPasswordCreate($token));
 
             DB::commit();
 
-            return redirect()->route('users.edit', ['user' => $user->id])->with('success', __('The record has been successfully created.'));
+            return redirect()->route('users.edit', ['user' => $user->id])->with('success', 'The record has been successfully created.');
         } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error creating record.')]);
+            return redirect()->back()->withErrors(['Error creating record.']);
         }
     }
 
@@ -125,13 +125,13 @@ class UserController extends Controller
 
             DB::commit();
 
-            return back()->with('success', __('The record has been successfully updated.'));
+            return back()->with('success', 'The record has been successfully updated.');
         } catch (Throwable $th) {
             DB::rollBack();
 
             Log::error($th->getMessage(), ['exception' => $th]);
 
-            return redirect()->back()->withErrors([__('Error updating record.')]);
+            return redirect()->back()->withErrors(['Error updating record.']);
         }
     }
 

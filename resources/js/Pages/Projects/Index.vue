@@ -3,10 +3,11 @@ import {Head, Link} from "@inertiajs/vue3";
 
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Project} from "@/types";
-import {dateTimeToLocaleString} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Project>;
@@ -45,6 +46,12 @@ defineProps<{
                                     >
                                         Create Project
                                     </Link>
+                                </div>
+                            </template>
+
+                            <template #cell(warehouse)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    {{ findEnumKeyByValue(Warehouse, value) }}
                                 </div>
                             </template>
 

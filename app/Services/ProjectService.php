@@ -78,7 +78,7 @@ class ProjectService
     {
         $product = $this->getProject();
 
-        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+        $changeLoggerService = new ChangeLoggerService($product);
 
         $validatedRequest = $request->validated();
 

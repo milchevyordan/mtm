@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\Warehouse;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
@@ -39,6 +40,7 @@ class ProjectController extends Controller
             ->setColumn('created_at', 'Date', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
 
         return Inertia::render('Projects/Index', compact('dataTable'));
@@ -89,10 +91,14 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Project $project
+     * @param  Project  $project
+     * @return Response
      */
-    public function edit(Project $project)
+    public function edit(Project $project): Response
     {
+        $project->load(['changeLogs']);
+
+        return Inertia::render('Projects/Edit', compact('project'));
     }
 
     /**
@@ -103,6 +109,21 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        DB::beginTransaction();
+
+        try {
+            $this->service->setProject($project)->updateProject($request);
+
+            DB::commit();
+
+            return back()->with('success', 'The record has been successfully updated.');
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error updating record.']);
+        }
     }
 
     /**

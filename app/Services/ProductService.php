@@ -11,9 +11,32 @@ use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductQuantity;
+use App\Services\DataTable\DataTable;
 
 class ProductService
 {
+    /**
+     * Map of warehouse names to relations.
+     *
+     * @var array
+     */
+    private array $warehouseRelations = [
+        Warehouse::Varna->name       => 'quantityVarna',
+        Warehouse::France->name      => 'quantityFrance',
+        Warehouse::Netherlands->name => 'quantityNetherlands',
+    ];
+
+    /**
+     * Map of warehouse names to input column and name.
+     *
+     * @var array
+     */
+    private array $warehouseColumns = [
+        Warehouse::Varna->name       => ['quantity_varna', 'Varna'],
+        Warehouse::France->name      => ['quantity_france', 'France'],
+        Warehouse::Netherlands->name => ['quantity_netherlands', 'Netherlands'],
+    ];
+
     /**
      * Context product.
      *
@@ -50,6 +73,45 @@ class ProductService
     public function __construct()
     {
         $this->setProduct(new Product());
+    }
+
+    /**
+     * Create a new ProductService instance.
+     *
+     * @param  null|string $slug
+     * @return DataTable
+     */
+    public function getIndexMethodDatatable(?string $slug): DataTable
+    {
+        $dataTable = (new DataTable(Product::query()))
+            ->setRelation('quantity');
+
+        if (isset($this->warehouseRelations[$slug])) {
+            $dataTable->setRelation($this->warehouseRelations[$slug]);
+        } else {
+            foreach ($this->warehouseRelations as $relation) {
+                $dataTable->setRelation($relation);
+            }
+        }
+
+        $dataTable->setColumn('id', '#', true, true)
+            ->setColumn('name', 'Name', true, true)
+            ->setColumn('internal_id', 'Internal Id', true, true);
+
+        if (isset($this->warehouseColumns[$slug])) {
+            [$column, $label] = $this->warehouseColumns[$slug];
+            $dataTable->setColumn($column, $label, true, true);
+        } else {
+            foreach ($this->warehouseColumns as [$column, $label]) {
+                $dataTable->setColumn($column, $label, true, true);
+            }
+        }
+
+        return $dataTable
+            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('action', 'Action')
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
     }
 
     /**

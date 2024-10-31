@@ -13,7 +13,7 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::create('change_logs', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->id();
 
             $table
                 ->foreignId('creator_id')

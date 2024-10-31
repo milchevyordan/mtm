@@ -8,9 +8,9 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Services\DataTable\DataTable;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -28,28 +28,15 @@ class ProductController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @param  Request  $request
+     * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $dataTable = (new DataTable(
-            Product::query()
-        ))
-            ->setRelation('quantity')
-            ->setRelation('quantityVarna')
-            ->setRelation('quantityFrance')
-            ->setRelation('quantityNetherlands')
-            ->setColumn('id', '#', true, true)
-            ->setColumn('name', 'Name', true, true)
-            ->setColumn('internal_id', 'Internal Id', true, true)
-            ->setColumn('quantity_varna', 'Varna', true, true)
-            ->setColumn('quantity_france', 'France', true, true)
-            ->setColumn('quantity_netherlands', 'Netherlands', true, true)
-            ->setColumn('created_at', 'Date', true, true)
-            ->setColumn('action', 'Action')
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->run();
-
-        return Inertia::render('Products/Index', compact('dataTable'));
+        return Inertia::render('Products/Index', [
+            'dataTable' => $this->service->getIndexMethodDatatable($request->slug),
+        ]);
     }
 
     /**

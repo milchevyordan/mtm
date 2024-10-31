@@ -8,6 +8,8 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import MessageAlert from "@/Components/MessageAlert.vue";
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import Tooltip from "@/Components/Tooltip.vue";
+import {warehouses} from "@/utils";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -59,12 +61,39 @@ const showingNavigationDropdown = ref(false);
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                                <NavLink
-                                    :href="route('products.index')"
-                                    :active="route().current('products.*')"
-                                >
-                                    Product
-                                </NavLink>
+                                <Tooltip>
+                                    <Link
+                                        :class="
+                                            route().current('products.*')
+                                                ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
+                                                : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out'
+                                        "
+                                        :href="route('products.index')"
+                                    >
+                                        Product
+                                    </Link>
+
+                                    <template #content>
+                                        <div
+                                            class="flex flex-col text-center font-semibold text-sm text-slate-800 whitespace-normal"
+                                        >
+                                            <Link
+                                                v-for="(warehouse, index) in warehouses"
+                                                :key="index"
+                                                class="hover:opacity-70 transition py-1"
+                                                :class="{
+                                                    'bg-gray-100':
+                                                        route().current('products.index'),
+                                                }"
+                                                :href="route('products.index', {
+                                                    slug: warehouse.name
+                                                })"
+                                            >
+                                                {{ warehouse.name }}
+                                            </Link>
+                                        </div>
+                                    </template>
+                                </Tooltip>
                             </div>
 
                             <div

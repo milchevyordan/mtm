@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 
+import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
+import Table from "@/DataTable/Table.vue";
+import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
+import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Project, ProjectForm} from "@/types";
-import {withFlash} from "@/utils";
+import {dateTimeToLocaleString, withFlash} from "@/utils";
 
 const props = defineProps<{
     project: Project;
+    dataTable: DataTable<any>
 }>();
 
 const form = useForm<ProjectForm>({
@@ -113,6 +118,56 @@ const save = async (only?: Array<string>) => {
                             </form>
                         </div>
                     </div>
+                </div>
+
+                <div
+                    class="relative rounded-lg shadow-sm bg-white dark:bg-gray-800 py-4 sm:py-6 px-4 mt-4"
+                >
+                    <Accordion>
+                        <template #head>
+                            <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
+                                Products
+                            </div>
+                        </template>
+
+                        <Table
+                            :data-table="dataTable"
+                            :per-page-options="[5, 10, 15, 20, 50]"
+                            :global-search="true"
+                            :advanced-filters="false"
+                        >
+                            <template #additionalContent>
+                                <div class="w-full flex gap-2">
+                                    <Link
+                                        class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                                        :href="route('products.create')"
+                                    >
+                                        Create Product
+                                    </Link>
+                                </div>
+                            </template>
+
+                            <template #cell(created_at)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    {{ dateTimeToLocaleString(value) }}
+                                </div>
+                            </template>
+
+                            <template #cell(action)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    <Link
+                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        :title="'Edit product'"
+                                        :href="route('products.edit', item.id)"
+                                    >
+                                        <IconPencilSquare
+                                            classes="w-4 h-4 text-[#909090]"
+                                        />
+                                    </Link>
+                                </div>
+                            </template>
+                        </Table>
+                    </Accordion>
                 </div>
 
                 <ChangeLogs :change-logs="project.change_logs" />

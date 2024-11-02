@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -29,13 +28,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param  null|string $slug
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(?string $slug = null): Response
     {
         return Inertia::render('Products/Index', [
-            'dataTable' => $this->service->getIndexMethodDatatable($request->slug),
+            'dataTable' => $this->service->getIndexMethodDatatable($slug),
         ]);
     }
 

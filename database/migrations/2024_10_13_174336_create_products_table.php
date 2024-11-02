@@ -17,7 +17,6 @@ return new class () extends Migration {
 
             $table
                 ->foreignId('creator_id')
-                ->nullable()
                 ->constrained('users');
 
             $table->string('internal_id')->nullable()->unique();

@@ -12,18 +12,19 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('change_logs', function (Blueprint $table) {
+        Schema::create('product_projects', function (Blueprint $table) {
             $table->id();
 
             $table
                 ->foreignId('creator_id')
                 ->constrained('users');
 
-            $table->morphs('changeable');
+            $table->foreignId('project_id')->constrained();
+            $table->foreignId('product_id')->constrained();
 
-            $table->text('change');
+            $table->integer('quantity');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
@@ -32,6 +33,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('change_logs');
+        Schema::dropIfExists('product_projects');
     }
 };

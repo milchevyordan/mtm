@@ -18,7 +18,6 @@ return new class () extends Migration {
 
             $table
                 ->foreignId('creator_id')
-                ->nullable()
                 ->constrained('users');
 
             $table->enum('warehouse', Warehouse::values());

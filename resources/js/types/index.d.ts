@@ -24,6 +24,11 @@ export interface Option {
     value: string | number | null;
 }
 
+export interface SelectInput {
+    name: string;
+    value: number | number[];
+}
+
 export interface User {
     id: number;
     creator_id: number;
@@ -63,6 +68,17 @@ export interface ProductQuantity {
 }
 
 export interface ProductQuantityForm extends ProductQuantity, Form, FormMethod {
+}
+
+export interface ProductProject {
+    id?: number;
+    product_id: number;
+    project_id: number;
+    quantity: number;
+    readonly created_at?: Date;
+}
+
+export interface ProductProjectForm extends ProductProject, Form, FormMethod {
 }
 
 export interface Product {

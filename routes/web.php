@@ -35,8 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except('destroy');
 
     Route::put('/products/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.update-quantity');
-    Route::get('/products/{slug?}', [ProductController::class, 'index'])->name('products.index');
-    Route::resource('products', ProductController::class)->except('show', 'index');
+    Route::get('/products-table/{slug?}', [ProductController::class, 'index'])->name('products.table');
+    Route::post('/products/add-to-project', [ProductController::class, 'addToProject'])->name('products.add-to-project');
+    Route::resource('products', ProductController::class)->except('show');
 
     Route::resource('projects', ProjectController::class);
 

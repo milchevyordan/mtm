@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\Project;
+use App\Services\MultiSelectService;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +37,9 @@ class ProductController extends Controller
     public function index(?string $slug = null): Response
     {
         return Inertia::render('Products/Index', [
-            'dataTable' => $this->service->getIndexMethodDatatable($slug),
+            'dataTable'        => $this->service->getIndexMethodDatatable($slug),
+            'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
+            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('id', 'warehouse')->toArray()),
         ]);
     }
 
@@ -140,6 +145,31 @@ class ProductController extends Controller
 
         try {
             $this->service->updateProductQuantity($request);
+
+            DB::commit();
+
+            return back()->with('success', 'The record has been successfully updated.');
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error updating record.']);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  AddProductToProjectRequest $request
+     * @return RedirectResponse
+     */
+    public function addToProject(AddProductToProjectRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->service->addProductToProject($request);
 
             DB::commit();
 

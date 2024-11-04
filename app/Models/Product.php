@@ -8,6 +8,7 @@ use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
@@ -64,5 +65,15 @@ class Product extends Model
     public function quantityNetherlands(): mixed
     {
         return $this->quantity()->where('warehouse', Warehouse::Netherlands->value);
+    }
+
+    /**
+     * Relation to the projects that this product has been added to.
+     *
+     * @return BelongsToMany
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'product_projects');
     }
 }

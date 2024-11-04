@@ -8,6 +8,7 @@ use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model
 {
@@ -32,4 +33,14 @@ class Project extends Model
     protected $casts = [
         'warehouse' => Warehouse::class,
     ];
+
+    /**
+     * Relation to the products added to the project.
+     *
+     * @return BelongsToMany
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_projects')->withPivot('quantity', 'creator_id')->withTimestamps();
+    }
 }

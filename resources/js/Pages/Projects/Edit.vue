@@ -101,7 +101,7 @@ const save = async (only?: Array<string>) => {
                                         :name="'warehouse'"
                                         :options="Warehouse"
                                         :placeholder="'Warehouse'"
-                                        class="mt-1 block w-full mb-3.5 sm:mb-0"
+                                        class="mt-1 block w-full mb-3.5"
                                     />
 
                                     <InputError
@@ -130,43 +130,34 @@ const save = async (only?: Array<string>) => {
                             </div>
                         </template>
 
-                        <Table
-                            :data-table="dataTable"
-                            :per-page-options="[5, 10, 15, 20, 50]"
-                            :global-search="true"
-                            :advanced-filters="false"
-                        >
-                            <template #additionalContent>
-                                <div class="w-full flex gap-2">
-                                    <Link
-                                        class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
-                                        :href="route('products.create')"
-                                    >
-                                        Create Product
-                                    </Link>
-                                </div>
-                            </template>
+                        <div class="text-gray-900 dark:text-gray-100">
+                            <Table
+                                :data-table="dataTable"
+                                :per-page-options="[5, 10, 15, 20, 50]"
+                                :global-search="true"
+                                :advanced-filters="false"
+                            >
+                                <template #cell(created_at)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
 
-                            <template #cell(created_at)="{ value, item }">
-                                <div class="flex gap-1.5">
-                                    {{ dateTimeToLocaleString(value) }}
-                                </div>
-                            </template>
-
-                            <template #cell(action)="{ value, item }">
-                                <div class="flex gap-1.5">
-                                    <Link
-                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit product'"
-                                        :href="route('products.edit', item.id)"
-                                    >
-                                        <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
-                                        />
-                                    </Link>
-                                </div>
-                            </template>
-                        </Table>
+                                <template #cell(action)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        <Link
+                                            class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                            :title="'Edit product'"
+                                            :href="route('products.edit', item.product?.id)"
+                                        >
+                                            <IconPencilSquare
+                                                classes="w-4 h-4 text-[#909090]"
+                                            />
+                                        </Link>
+                                    </div>
+                                </template>
+                            </Table>
+                        </div>
                     </Accordion>
                 </div>
 

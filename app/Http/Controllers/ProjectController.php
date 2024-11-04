@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Enums\Warehouse;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\ProductProject;
 use App\Models\Project;
 use App\Services\DataTable\DataTable;
 use App\Services\ProjectService;
@@ -98,16 +99,30 @@ class ProjectController extends Controller
     {
         $project->load(['changeLogs']);
 
-        return Inertia::render('Projects/Edit', compact('project'));
+        $dataTable = (new DataTable(
+            ProductProject::where('project_id', $project->id)
+        ))
+            ->setRelation('creator')
+            ->setRelation('product', ['id', 'name'])
+            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('action', 'Action')
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
+
+        return Inertia::render('Projects/Edit', compact('project', 'dataTable'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateProjectRequest $request
-     * @param Project              $project
+     * @param  UpdateProjectRequest $request
+     * @param  Project              $project
+     * @return RedirectResponse
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
         DB::beginTransaction();
 

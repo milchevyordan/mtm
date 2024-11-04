@@ -6,10 +6,12 @@ namespace App\Services;
 
 use App\Enums\Warehouse;
 use App\Events\MinimumQuantityReached;
+use App\Http\Requests\AddProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductProject;
 use App\Models\ProductQuantity;
 use App\Services\DataTable\DataTable;
 
@@ -212,6 +214,46 @@ class ProductService
 
         $productQuantity->update([
             'quantity' => $validatedRequest['quantity'],
+        ]);
+
+        if ($validatedRequest['quantity'] < $product->minimum_quantity) {
+            event(new MinimumQuantityReached($product));
+        }
+
+        $changeLoggerService->logChanges($product);
+
+        return $this;
+    }
+
+    /**
+     * Update the product's quantity.
+     *
+     * @param  AddProductToProjectRequest $request
+     * @return self
+     */
+    public function addProductToProject(AddProductToProjectRequest $request): self
+    {
+        $validatedRequest = $request->validated();
+
+        $productProject = new ProductProject();
+        $productProject->fill($validatedRequest);
+        $productProject->creator_id = auth()->id();
+        $productProject->save();
+
+        $productQuantity = ProductQuantity::where('product_id', $validatedRequest['product_id'])
+            ->where('warehouse', $validatedRequest['warehouse'])
+            ->with('product')
+            ->first();
+
+        if (! $productQuantity) {
+            return $this;
+        }
+
+        $product = $productQuantity->product;
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+
+        $productQuantity->update([
+            'quantity' => $productQuantity->quantity - $validatedRequest['quantity'],
         ]);
 
         if ($validatedRequest['quantity'] < $product->minimum_quantity) {

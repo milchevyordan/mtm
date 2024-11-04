@@ -79,7 +79,7 @@ const showingNavigationDropdown = ref(false);
                                                     'bg-gray-100':
                                                         route().current('products.index'),
                                                 }"
-                                                :href="route('products.index', warehouse.name)"
+                                                :href="route('products.table', warehouse.name)"
                                             >
                                                 {{ warehouse.name }}
                                             </Link>

@@ -89,7 +89,7 @@ const save = async (only?: Array<string>) => {
                                         :name="'warehouse'"
                                         :options="Warehouse"
                                         :placeholder="'Warehouse'"
-                                        class="mt-1 block w-full mb-3.5 sm:mb-0"
+                                        class="mt-1 block w-full mb-3.5"
                                     />
 
                                     <InputError

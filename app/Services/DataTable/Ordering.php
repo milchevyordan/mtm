@@ -59,7 +59,7 @@ class Ordering
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(string $key = 'id', string $direction = 'ASC')
+    public function __construct(string $key = 'id', string $direction = 'DESC')
     {
         $orderByValues = request()->get('ordering', [
             'key'       => $key,

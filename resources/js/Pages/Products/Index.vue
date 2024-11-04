@@ -12,6 +12,7 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import Plus from "@/Icons/Plus.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Product, ProductProjectForm, ProductQuantity, ProductQuantityForm, Project, SelectInput} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, findKeyByValue} from "@/utils";
@@ -223,9 +224,7 @@ const handleAddProductToProject = () => {
                                         :title="'Add to project'"
                                         @click="openAddToProjectModal(item)"
                                     >
-                                        <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
-                                        />
+                                        <Plus classes="w-4 h-4 text-[#909090]" />
                                     </button>
                                 </div>
                             </template>

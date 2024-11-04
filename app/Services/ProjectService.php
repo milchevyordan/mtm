@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\ProductProject;
 use App\Models\Project;
+use App\Services\DataTable\DataTable;
 
 class ProjectService
 {
@@ -49,7 +51,7 @@ class ProjectService
     }
 
     /**
-     * Update the product.
+     * Update the project.
      *
      * @param  StoreProjectRequest $request
      * @return self
@@ -58,34 +60,60 @@ class ProjectService
     {
         $validatedRequest = $request->validated();
 
-        $product = new Project();
-        $product->fill($validatedRequest);
-        $product->creator_id = auth()->id();
-        $product->save();
+        $project = new Project();
+        $project->fill($validatedRequest);
+        $project->creator_id = auth()->id();
+        $project->save();
 
-        $this->setProject($product);
+        $this->setProject($project);
 
         return $this;
     }
 
     /**
-     * Update the product.
+     * Update the project.
      *
      * @param  UpdateProjectRequest $request
      * @return self
      */
     public function updateProject(UpdateProjectRequest $request): self
     {
-        $product = $this->getProject();
+        $project = $this->getProject();
 
-        $changeLoggerService = new ChangeLoggerService($product);
+        $changeLoggerService = new ChangeLoggerService($project);
 
         $validatedRequest = $request->validated();
 
-        $product->update($validatedRequest);
+        $project->update($validatedRequest);
 
-        $changeLoggerService->logChanges($product);
+        $changeLoggerService->logChanges($project);
 
         return $this;
+    }
+
+    /**
+     * Return datatable of products connected to this project.
+     *
+     * @return null|DataTable
+     */
+    public function getShowProductsDataTable(): DataTable|null
+    {
+        $projectId = request()->input('project_id');
+
+        if (! $projectId) {
+            return null;
+        }
+
+        return (new DataTable(
+            ProductProject::where('project_id', $projectId)
+        ))
+            ->setRelation('creator')
+            ->setRelation('product', ['id', 'name'])
+            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
     }
 }

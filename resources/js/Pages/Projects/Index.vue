@@ -1,17 +1,44 @@
 <script setup lang="ts">
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
+import {ref} from "vue";
 
+import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
+import IconDocument from "@/Icons/Document.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Project} from "@/types";
+import {ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
+
 
 defineProps<{
     dataTable: DataTable<Project>;
+    showProductsDataTable?: DataTable<ProductProject>;
 }>();
+
+const showProductsDataTableModal = ref(false);
+
+const closeProductsDataTableModal = () => {
+    showProductsDataTableModal.value = false;
+};
+
+const openShowProductsDataTableModal = async (id: number) => {
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    await new Promise((resolve, reject) => {
+        router.reload({
+            data: { project_id: id },
+            only: ["showProductsDataTable"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    showProductsDataTableModal.value = true;
+};
+
 </script>
 
 <template>
@@ -72,6 +99,14 @@ defineProps<{
                                             classes="w-4 h-4 text-[#909090]"
                                         />
                                     </Link>
+
+                                    <button
+                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        :title="'Edit product'"
+                                        @click="openShowProductsDataTableModal(item.id)"
+                                    >
+                                        <IconDocument classes="w-4 h-4 text-[#909090]" />
+                                    </button>
                                 </div>
                             </template>
                         </Table>
@@ -80,4 +115,35 @@ defineProps<{
             </div>
         </div>
     </AuthenticatedLayout>
+
+    <Modal
+        :show="showProductsDataTableModal"
+        max-width="6xl"
+        @close="closeProductsDataTableModal"
+    >
+        <div
+            class="px-3.5 p-3 text-xl font-medium"
+        >
+            Products
+        </div>
+
+        <div
+            v-if="showProductsDataTable"
+            class="text-gray-900 dark:text-gray-100"
+        >
+            <Table
+                :data-table="showProductsDataTable"
+                :per-page-options="[5, 10, 15, 20, 50]"
+                :global-search="true"
+                :advanced-filters="false"
+                prop-name="showProductsDataTable"
+            >
+                <template #cell(created_at)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        {{ dateTimeToLocaleString(value) }}
+                    </div>
+                </template>
+            </Table>
+        </div>
+    </Modal>
 </template>

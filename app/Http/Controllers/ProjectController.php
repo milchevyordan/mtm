@@ -44,7 +44,10 @@ class ProjectController extends Controller
             ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
 
-        return Inertia::render('Projects/Index', compact('dataTable'));
+        return Inertia::render('Projects/Index', [
+            'dataTable'             => $dataTable,
+            'showProductsDataTable' => Inertia::lazy(fn () => $this->service->getShowProductsDataTable()),
+        ]);
     }
 
     /**

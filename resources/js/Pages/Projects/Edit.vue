@@ -13,12 +13,12 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Project, ProjectForm} from "@/types";
+import {ProductProject, Project, ProjectForm} from "@/types";
 import {dateTimeToLocaleString, withFlash} from "@/utils";
 
 const props = defineProps<{
     project: Project;
-    dataTable: DataTable<any>
+    dataTable: DataTable<ProductProject>
 }>();
 
 const form = useForm<ProjectForm>({

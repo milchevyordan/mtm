@@ -20,7 +20,7 @@ import {dateTimeToLocaleString, findEnumKeyByValue, findKeyByValue} from "@/util
 const props = defineProps<{
     dataTable: DataTable<Product>;
     projects?: Multiselect<Project>;
-    projectWarehouse?: Array<{number: number}>;
+    projectWarehouse?: Record<number, number>;
 }>();
 
 const showChangeQuantityModal = ref(false);
@@ -85,7 +85,7 @@ const updateAvailableQuantity = (input: SelectInput) => {
     }
 
     addToProjectForm.warehouse = props.projectWarehouse[input.value as number] ?? null!;
-    addToProjectForm.available_quantity = addToProjectForm.quantities.find((item: ProductQuantity) => item.warehouse == addToProjectForm.warehouse).quantity ?? null!;
+    addToProjectForm.available_quantity = addToProjectForm.quantities.find((item: ProductQuantity) => item.warehouse == addToProjectForm.warehouse)?.quantity ?? null!;
 };
 
 const handleQuantityUpdate = () => {

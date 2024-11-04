@@ -39,7 +39,7 @@ class ProductController extends Controller
         return Inertia::render('Products/Index', [
             'dataTable'        => $this->service->getIndexMethodDatatable($slug),
             'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
-            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('id', 'warehouse')->toArray()),
+            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
         ]);
     }
 

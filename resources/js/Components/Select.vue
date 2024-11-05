@@ -103,7 +103,6 @@ const resetSelect = () => {
 
 <template>
     <Multiselect
-        :id="id"
         v-model="selectedOptionObject"
         :options="optionObjects"
         label="name"

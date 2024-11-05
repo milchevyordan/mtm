@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/products/add-to-project', [ProductController::class, 'addToProject'])->name('products.add-to-project');
     Route::resource('products', ProductController::class)->except('show');
 
+    Route::delete('/projects/destroy-product', [ProjectController::class, 'destroyProduct'])->name('projects.destroy-product');
     Route::resource('projects', ProjectController::class);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

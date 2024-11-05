@@ -75,6 +75,8 @@ export interface ProductProject {
     product_id: number;
     project_id: number;
     quantity: number;
+    product?: Product;
+    project?: Project;
     readonly created_at?: Date;
 }
 

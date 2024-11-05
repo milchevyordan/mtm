@@ -69,7 +69,6 @@ const save = async (only?: Array<string>) => {
                                         type="text"
                                         class="mt-1 block w-full"
                                         required
-                                        autocomplete="name"
                                     />
 
                                     <InputError
@@ -85,6 +84,7 @@ const save = async (only?: Array<string>) => {
                                     />
 
                                     <Select
+                                        id="warehouse"
                                         v-model="form.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"

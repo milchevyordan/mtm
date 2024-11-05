@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Services\DataTable\DataTable;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -151,5 +152,25 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+    }
+
+    /**
+     * Remove product from project.
+     *
+     * @param  mixed            $request
+     * @return RedirectResponse
+     */
+    public function destroyProduct(Request $request): RedirectResponse
+    {
+        try {
+            $productProject = ProductProject::find($request->id);
+            $productProject->delete();
+
+            return redirect()->back()->with('success', 'The record has been successfully deleted.');
+        } catch (Throwable $th) {
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error deleting record.']);
+        }
     }
 }

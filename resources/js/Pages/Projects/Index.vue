@@ -92,7 +92,7 @@ const openShowProductsDataTableModal = async (id: number) => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit product'"
+                                        :title="'Edit project'"
                                         :href="route('projects.edit', item.id)"
                                     >
                                         <IconPencilSquare
@@ -102,7 +102,7 @@ const openShowProductsDataTableModal = async (id: number) => {
 
                                     <button
                                         class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit product'"
+                                        :title="'Edit project'"
                                         @click="openShowProductsDataTableModal(item.id)"
                                     >
                                         <IconDocument classes="w-4 h-4 text-[#909090]" />

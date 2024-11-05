@@ -4,6 +4,7 @@ import Reset from "@/Icons/Reset.vue";
 defineProps<{
     processing: boolean;
     recentlySuccessful: boolean;
+    isDelete?: boolean;
 }>();
 </script>
 
@@ -18,6 +19,7 @@ defineProps<{
                 'bg-gray-400 cursor-not-allowed': processing,
                 'rounded p-2 active:scale-95 transition': true,
             }"
+            type="button"
             @click="$emit('reset')"
         >
             <Reset />
@@ -32,7 +34,7 @@ defineProps<{
             }"
             type="submit"
         >
-            Save
+            {{ isDelete ? 'Delete' : 'Save' }}
         </button>
 
         <Transition

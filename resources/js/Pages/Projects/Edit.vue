@@ -16,7 +16,7 @@ import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ProductProject, Project, ProjectForm} from "@/types";
+import {DeleteForm, ProductProject, Project, ProjectForm} from "@/types";
 import {dateTimeToLocaleString, withFlash} from "@/utils";
 
 const props = defineProps<{
@@ -48,7 +48,7 @@ const save = async (only?: Array<string>) => {
     });
 };
 
-const showDeleteModal = ref(false);
+const showDeleteModal = ref<boolean>(false);
 
 const closeDeleteModal = () => {
     showDeleteModal.value = false;
@@ -63,16 +63,11 @@ const showDeleteForm = (item: ProductProject) => {
     showDeleteModal.value = true;
 };
 
-const deleteForm = useForm<{
-    id: number,
-    name: string,
-    created_at: Date,
-}>({
+const deleteForm = useForm<DeleteForm>({
     id: null!,
     name: null!,
     created_at: null!,
 });
-
 
 const handleDelete = () => {
     deleteForm.delete(route("projects.destroy-product"), {

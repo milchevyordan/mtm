@@ -70,6 +70,12 @@ export interface ProductQuantity {
 export interface ProductQuantityForm extends ProductQuantity, Form, FormMethod {
 }
 
+export interface DeleteForm {
+    id: number,
+    name: string,
+    created_at: Date,
+}
+
 export interface ProductProject {
     id?: number;
     product_id: number;
@@ -109,6 +115,7 @@ export interface Project {
     name: string;
     creator?: User;
     change_logs?: ChangeLog[];
+    readonly created_at?: Date;
 }
 
 export interface ProjectForm extends Omit<Project, "creator_id">, Form, FormMethod {

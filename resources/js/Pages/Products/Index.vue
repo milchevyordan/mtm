@@ -14,8 +14,17 @@ import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Plus from "@/Icons/Plus.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Product, ProductProjectForm, ProductQuantity, ProductQuantityForm, Project, SelectInput} from "@/types";
+import {
+    DeleteForm,
+    Product,
+    ProductProjectForm,
+    ProductQuantity,
+    ProductQuantityForm,
+    Project,
+    SelectInput
+} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, findKeyByValue} from "@/utils";
+import IconTrash from "@/Icons/Trash.vue";
 
 const props = defineProps<{
     dataTable: DataTable<Product>;
@@ -125,6 +134,34 @@ const handleAddProductToProject = () => {
         closeAddToProjectModal();
     });
 };
+
+const showDeleteModal = ref<boolean>(false);
+
+const deleteForm = useForm<DeleteForm>({
+    id: null!,
+    name: null!,
+    created_at: null!,
+});
+
+const openDeleteModal = (item: Project) => {
+    deleteForm.id = item.id;
+    deleteForm.name = item.name;
+    deleteForm.created_at = item.created_at as Date;
+
+    showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+    showDeleteModal.value = false;
+    deleteForm.reset();
+};
+
+const handleDelete = () => {
+    deleteForm.delete(route("products.destroy", deleteForm.id as number), {
+        preserveScroll: true,
+    });
+    closeDeleteModal();
+};
 </script>
 
 <template>
@@ -149,6 +186,7 @@ const handleAddProductToProject = () => {
                             :data-table="dataTable"
                             :per-page-options="[5, 10, 15, 20, 50]"
                             :global-search="true"
+                            :show-trashed="true"
                             :advanced-filters="false"
                         >
                             <template #additionalContent>
@@ -225,6 +263,14 @@ const handleAddProductToProject = () => {
                                         @click="openAddToProjectModal(item)"
                                     >
                                         <Plus classes="w-4 h-4 text-[#909090]" />
+                                    </button>
+
+                                    <button
+                                        :title="'Delete'"
+                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        @click="openDeleteModal(item)"
+                                    >
+                                        <IconTrash classes="w-4 h-4 text-[#909090]" />
                                     </button>
                                 </div>
                             </template>
@@ -367,6 +413,29 @@ const handleAddProductToProject = () => {
                     @reset="updateQuantityForm.reset()"
                 />
             </div>
+        </form>
+    </Modal>
+
+    <Modal
+        :show="showDeleteModal"
+        @close="closeDeleteModal"
+    >
+        <div
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
+        >
+            Delete project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+        </div>
+
+        <form
+            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
+            @submit.prevent="handleDelete"
+        >
+            <ResetSaveButtons
+                :processing="deleteForm.processing"
+                :recently-successful="deleteForm.recentlySuccessful"
+                :is-delete="true"
+                @reset="deleteForm.reset()"
+            />
         </form>
     </Modal>
 </template>

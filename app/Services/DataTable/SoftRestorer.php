@@ -26,8 +26,6 @@ class SoftRestorer
      */
     public function restore(): RedirectResponse
     {
-        $this->authorize('restore', [$this->model]);
-
         $this->model->restore();
 
         return back()->with('success', __('The record has been successfully restored.'));

@@ -127,10 +127,20 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Product $product
+     * @param  Product          $product
+     * @return RedirectResponse
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): RedirectResponse
     {
+        try {
+            $product->delete();
+
+            return redirect()->back()->with('success', 'The record has been successfully deleted.');
+        } catch (Throwable $th) {
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error deleting record.']);
+        }
     }
 
     /**

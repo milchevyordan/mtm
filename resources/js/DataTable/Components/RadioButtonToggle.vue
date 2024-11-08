@@ -39,7 +39,7 @@ const handleModelChange = (value: boolean) => {
                     :label="leftButtonLabel"
                     :name="name"
                     :disabled="disabled"
-                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-r-0 rounded-l-md bg-white"
+                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-r-0 rounded-l-md bg-white dark:bg-gray-900 dark:border-gray-700"
                     :checked="model == true"
                     @click="handleModelChange(true)"
                 />
@@ -51,7 +51,7 @@ const handleModelChange = (value: boolean) => {
                     :label="rightButtonLabel"
                     :name="name"
                     :disabled="disabled"
-                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-l-0 rounded-r-md bg-white"
+                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-l-0 rounded-r-md bg-white dark:bg-gray-900 dark:border-gray-700"
                     :checked="model == false"
                     @click="handleModelChange(false)"
                 />

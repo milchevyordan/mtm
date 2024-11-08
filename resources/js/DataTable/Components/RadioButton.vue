@@ -25,8 +25,8 @@ const handleClick = () => {
     emit("click");
 };
 
-const disabledClasses = `bg-slate-300 cursor-default ${
-    props.checked ? "bg-slate-500 text-white" : ""
+const disabledClasses = `bg-slate-300 cursor-default dark:bg-gray-800 dark:text-gray-400 ${
+    props.checked ? "bg-slate-500 text-white dark:bg-gray-700 dark:text-white" : ""
 }`;
 </script>
 
@@ -48,7 +48,7 @@ const disabledClasses = `bg-slate-300 cursor-default ${
                 ? 'cursor-default'
                 : 'cursor-pointer transition-all active:scale-95'
         }
-        relative flex shadow-md text-slate-500 border border-blue-200 px-4 py-1.5`"
+        relative flex shadow-md text-slate-500 border border-blue-200 px-4 py-1.5 dark:text-gray-300 dark:border-gray-700 dark:bg-gray-900`"
         @click="handleClick"
     >
         {{ label }}

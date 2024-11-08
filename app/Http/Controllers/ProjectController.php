@@ -148,10 +148,20 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Project $project
+     * @param  Project          $project
+     * @return RedirectResponse
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): RedirectResponse
     {
+        try {
+            $project->delete();
+
+            return redirect()->back()->with('success', 'The record has been successfully deleted.');
+        } catch (Throwable $th) {
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error deleting record.']);
+        }
     }
 
     /**

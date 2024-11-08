@@ -1,24 +1,25 @@
 <script setup lang="ts">
-import {Head, Link, router} from "@inertiajs/vue3";
+import {Head, Link, router, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 
+import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconDocument from "@/Icons/Document.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ProductProject, Project} from "@/types";
+import {DeleteForm, ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
-
 
 defineProps<{
     dataTable: DataTable<Project>;
     showProductsDataTable?: DataTable<ProductProject>;
 }>();
 
-const showProductsDataTableModal = ref(false);
+const showProductsDataTableModal = ref<boolean>(false);
 
 const closeProductsDataTableModal = () => {
     showProductsDataTableModal.value = false;
@@ -39,6 +40,33 @@ const openShowProductsDataTableModal = async (id: number) => {
     showProductsDataTableModal.value = true;
 };
 
+const showDeleteModal = ref<boolean>(false);
+
+const deleteForm = useForm<DeleteForm>({
+    id: null!,
+    name: null!,
+    created_at: null!,
+});
+
+const openDeleteModal = (item: Project) => {
+    deleteForm.id = item.id;
+    deleteForm.name = item.name;
+    deleteForm.created_at = item.created_at as Date;
+
+    showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+    showDeleteModal.value = false;
+    deleteForm.reset();
+};
+
+const handleDelete = () => {
+    deleteForm.delete(route("projects.destroy", deleteForm.id as number), {
+        preserveScroll: true,
+    });
+    closeDeleteModal();
+};
 </script>
 
 <template>
@@ -63,6 +91,7 @@ const openShowProductsDataTableModal = async (id: number) => {
                             :data-table="dataTable"
                             :per-page-options="[5, 10, 15, 20, 50]"
                             :global-search="true"
+                            :show-trashed="true"
                             :advanced-filters="false"
                         >
                             <template #additionalContent>
@@ -107,6 +136,14 @@ const openShowProductsDataTableModal = async (id: number) => {
                                     >
                                         <IconDocument classes="w-4 h-4 text-[#909090]" />
                                     </button>
+
+                                    <button
+                                        :title="'Delete'"
+                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        @click="openDeleteModal(item)"
+                                    >
+                                        <IconTrash classes="w-4 h-4 text-[#909090]" />
+                                    </button>
                                 </div>
                             </template>
                         </Table>
@@ -145,5 +182,28 @@ const openShowProductsDataTableModal = async (id: number) => {
                 </template>
             </Table>
         </div>
+    </Modal>
+
+    <Modal
+        :show="showDeleteModal"
+        @close="closeDeleteModal"
+    >
+        <div
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
+        >
+            Delete project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+        </div>
+
+        <form
+            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
+            @submit.prevent="handleDelete"
+        >
+            <ResetSaveButtons
+                :processing="deleteForm.processing"
+                :recently-successful="deleteForm.recentlySuccessful"
+                :is-delete="true"
+                @reset="deleteForm.reset()"
+            />
+        </form>
     </Modal>
 </template>

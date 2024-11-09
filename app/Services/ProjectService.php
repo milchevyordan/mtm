@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\Warehouse;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\ProductProject;
@@ -73,6 +74,26 @@ class ProjectService
     /**
      * Update the project.
      *
+     * @return DataTable
+     */
+    public function getIndexMethodDataTable(): DataTable
+    {
+        return (new DataTable(
+            Project::query()
+        ))
+            ->setColumn('id', '#', true, true)
+            ->setColumn('warehouse', 'Warehouse', true, true)
+            ->setColumn('name', 'Name', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('action', 'Action')
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('warehouse', Warehouse::class)
+            ->run();;
+    }
+
+    /**
+     * Update the project.
+     *
      * @param  UpdateProjectRequest $request
      * @return self
      */
@@ -109,6 +130,7 @@ class ProjectService
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name'])
+            ->setColumn('id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)

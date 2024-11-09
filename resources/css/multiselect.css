@@ -19,7 +19,7 @@
         --text-color: #e0e0e0;
         --border-color: #3a3a3a;
         --disabled-bg: #3a3a3a;
-        --disabled-text: #757575;
+        --disabled-text: white;
         --spinner-bg: #333;
         --highlight-bg: #358a6b;
         --highlight-text: #ffffff;

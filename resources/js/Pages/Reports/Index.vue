@@ -12,34 +12,12 @@ import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {DeleteForm, ProductProject, Project} from "@/types";
+import {DeleteForm, ProductReport, Report} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
 
 defineProps<{
-    dataTable: DataTable<Project>;
-    showProductsDataTable?: DataTable<ProductProject>;
+    dataTable: DataTable<Report>;
 }>();
-
-const showProductsDataTableModal = ref<boolean>(false);
-
-const closeProductsDataTableModal = () => {
-    showProductsDataTableModal.value = false;
-};
-
-const openShowProductsDataTableModal = async (id: number) => {
-    window.history.replaceState({}, document.title, window.location.pathname);
-
-    await new Promise((resolve, reject) => {
-        router.reload({
-            data: { project_id: id },
-            only: ["showProductsDataTable"],
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
-
-    showProductsDataTableModal.value = true;
-};
 
 const showDeleteModal = ref<boolean>(false);
 
@@ -49,9 +27,8 @@ const deleteForm = useForm<DeleteForm>({
     created_at: null!,
 });
 
-const openDeleteModal = (item: Project) => {
+const openDeleteModal = (item: Report) => {
     deleteForm.id = item.id;
-    deleteForm.name = item.name;
     deleteForm.created_at = item.created_at as Date;
 
     showDeleteModal.value = true;
@@ -63,7 +40,7 @@ const closeDeleteModal = () => {
 };
 
 const handleDelete = () => {
-    deleteForm.delete(route("projects.destroy", deleteForm.id as number), {
+    deleteForm.delete(route("reports.destroy", deleteForm.id as number), {
         preserveScroll: true,
     });
     closeDeleteModal();
@@ -71,14 +48,14 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Report'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Report
             </h2>
         </template>
 
@@ -99,16 +76,10 @@ const handleDelete = () => {
                                 <div class="w-full flex gap-2">
                                     <Link
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
-                                        :href="route('projects.create')"
+                                        :href="route('reports.create')"
                                     >
-                                        Create Project
+                                        Create Report
                                     </Link>
-                                </div>
-                            </template>
-
-                            <template #cell(warehouse)="{ value, item }">
-                                <div class="flex gap-1.5">
-                                    {{ findEnumKeyByValue(Warehouse, value) }}
                                 </div>
                             </template>
 
@@ -122,31 +93,13 @@ const handleDelete = () => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit project'"
-                                        :href="route('projects.edit', item.id)"
-                                    >
-                                        <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
-                                        />
-                                    </Link>
-
-                                    <Link
-                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show project'"
-                                        :href="route('projects.show', item.id)"
+                                        :title="'Show report'"
+                                        :href="route('reports.show', item.id)"
                                     >
                                         <DocumentText
                                             classes="w-4 h-4 text-[#909090]"
                                         />
                                     </Link>
-
-                                    <button
-                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show products'"
-                                        @click="openShowProductsDataTableModal(item.id)"
-                                    >
-                                        <IconDocument classes="w-4 h-4 text-[#909090]" />
-                                    </button>
 
                                     <button
                                         :title="'Delete'"
@@ -165,44 +118,13 @@ const handleDelete = () => {
     </AuthenticatedLayout>
 
     <Modal
-        :show="showProductsDataTableModal"
-        max-width="6xl"
-        @close="closeProductsDataTableModal"
-    >
-        <div
-            class="px-3.5 p-3 text-xl font-medium"
-        >
-            Products
-        </div>
-
-        <div
-            v-if="showProductsDataTable"
-            class="text-gray-900 dark:text-gray-100"
-        >
-            <Table
-                :data-table="showProductsDataTable"
-                :per-page-options="[5, 10, 15, 20, 50]"
-                :global-search="true"
-                :advanced-filters="false"
-                prop-name="showProductsDataTable"
-            >
-                <template #cell(created_at)="{ value, item }">
-                    <div class="flex gap-1.5">
-                        {{ dateTimeToLocaleString(value) }}
-                    </div>
-                </template>
-            </Table>
-        </div>
-    </Modal>
-
-    <Modal
         :show="showDeleteModal"
         @close="closeDeleteModal"
     >
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Delete report #{{ deleteForm?.id ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

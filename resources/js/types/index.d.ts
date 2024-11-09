@@ -120,3 +120,27 @@ export interface Project {
 
 export interface ProjectForm extends Omit<Project, "creator_id">, Form, FormMethod {
 }
+
+export interface Report {
+    id: number;
+    creator_id: number;
+    date_from: Date;
+    date_to: Date;
+    creator?: User;
+    products?: ProductReport[];
+    readonly created_at?: Date;
+}
+
+export interface ReportForm extends Omit<Report, "creator_id">, Form, FormMethod {
+}
+
+export interface ProductReport {
+    product_id: number;
+    report_id: number;
+    quantity: number;
+}
+
+export interface ProjectReport {
+    project_id: number;
+    report_id: number;
+}

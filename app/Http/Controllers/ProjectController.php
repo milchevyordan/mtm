@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\Warehouse;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\ProductProject;
@@ -33,20 +32,8 @@ class ProjectController extends Controller
      */
     public function index(): Response
     {
-        $dataTable = (new DataTable(
-            Project::query()
-        ))
-            ->setColumn('id', '#', true, true)
-            ->setColumn('warehouse', 'Warehouse', true, true)
-            ->setColumn('name', 'Name', true, true)
-            ->setColumn('created_at', 'Date', true, true)
-            ->setColumn('action', 'Action')
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setEnumColumn('warehouse', Warehouse::class)
-            ->run();
-
         return Inertia::render('Projects/Index', [
-            'dataTable'             => $dataTable,
+            'dataTable'             => fn () => $this->service->getIndexMethodDataTable(),
             'showProductsDataTable' => Inertia::lazy(fn () => $this->service->getShowProductsDataTable()),
         ]);
     }
@@ -87,10 +74,27 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Project $project
+     * @param  Project  $project
+     * @return Response
      */
     public function show(Project $project)
     {
+        $project->load(['changeLogs']);
+
+        $dataTable = (new DataTable(
+            ProductProject::where('project_id', $project->id)
+        ))
+            ->setRelation('creator')
+            ->setRelation('product', ['id', 'name'])
+            ->setColumn('id', '#', true, true)
+            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('created_at', 'Date', true, true)
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
+
+        return Inertia::render('Projects/Show', compact('project', 'dataTable'));
     }
 
     /**
@@ -108,6 +112,7 @@ class ProjectController extends Controller
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name'])
+            ->setColumn('id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)

@@ -7,6 +7,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('users', UserController::class)->except('destroy');
+    Route::resource('users', UserController::class)->except('destroy')->except(['show', 'destroy']);
 
     Route::put('/products/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.update-quantity');
     Route::get('/products-table/{slug?}', [ProductController::class, 'index'])->name('products.table');
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/projects/destroy-product', [ProjectController::class, 'destroyProduct'])->name('projects.destroy-product');
     Route::resource('projects', ProjectController::class);
+
+    Route::resource('reports', ReportController::class);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');

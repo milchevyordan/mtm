@@ -127,7 +127,8 @@ export interface Report {
     date_from: Date;
     date_to: Date;
     creator?: User;
-    products?: ProductReport[];
+    products?: Product[];
+    projects?: Project[];
     readonly created_at?: Date;
 }
 

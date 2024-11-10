@@ -40,7 +40,7 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Report'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -110,7 +110,7 @@ const save = async (only?: Array<string>) => {
 
                                     <SelectMultiple
                                         id="warehouse"
-                                        v-model="form.projects"
+                                        v-model="form.projects as unknown as number[]"
                                         :name="'projects'"
                                         :multiple="true"
                                         :options="projects"

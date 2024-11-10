@@ -2,37 +2,35 @@
 import {Head} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
-import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import Select from "@/Components/Select.vue";
+import SelectMultiple from "@/Components/SelectMultiple.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
-import {DataTable} from "@/DataTable/types";
-import {Warehouse} from "@/Enums/Warehouse";
+import {DataTable, Multiselect} from "@/DataTable/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ProductProject, Project} from "@/types";
-import {dateTimeToLocaleString} from "@/utils";
+import {ProductReport, Project, Report} from "@/types";
 
 defineProps<{
-    project: Project;
-    dataTable: DataTable<ProductProject>
+    report: Report;
+    projects: Multiselect<Project>;
+    dataTable: DataTable<ProductReport>
 }>();
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Report'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Report
             </h2>
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
                     class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
@@ -41,31 +39,48 @@ defineProps<{
                             <div class="mt-6 space-y-6">
                                 <div>
                                     <InputLabel
-                                        for="name"
-                                        value="Name"
+                                        for="date_from"
+                                        value="Date From"
                                     />
 
                                     <TextInput
-                                        id="name"
-                                        :model-value="project.name"
-                                        type="text"
+                                        id="date_from"
+                                        :model-value="report.date_from"
+                                        type="date"
                                         class="mt-1 block w-full"
-                                        disabled
+                                        required
                                     />
                                 </div>
 
                                 <div>
                                     <InputLabel
-                                        for="warehouse"
-                                        value="Warehouse"
+                                        for="date_to"
+                                        value="Date To"
                                     />
 
-                                    <Select
-                                        :selected-option-value="project.warehouse"
-                                        :name="'warehouse'"
-                                        :options="Warehouse"
-                                        :placeholder="'Warehouse'"
+                                    <TextInput
+                                        id="date_to"
+                                        :model-value="report.date_to"
+                                        type="date"
+                                        class="mt-1 block w-full"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="projects"
+                                        value="Projects"
+                                    />
+
+                                    <SelectMultiple
+                                        id="warehouse"
+                                        :selected-options-values="(report.projects as Project[]).map((project) => project.id)"
+                                        :name="'projects'"
+                                        :multiple="true"
+                                        :options="projects"
                                         disabled
+                                        :placeholder="'Projects'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
                                 </div>
@@ -90,18 +105,10 @@ defineProps<{
                                 :per-page-options="[5, 10, 15, 20, 50]"
                                 :global-search="true"
                                 :advanced-filters="false"
-                            >
-                                <template #cell(created_at)="{ value, item }">
-                                    <div class="flex gap-1.5">
-                                        {{ dateTimeToLocaleString(value) }}
-                                    </div>
-                                </template>
-                            </Table>
+                            />
                         </div>
                     </Accordion>
                 </div>
-
-                <ChangeLogs :change-logs="project.change_logs" />
             </div>
         </div>
     </AuthenticatedLayout>

@@ -77,7 +77,7 @@ class ProjectController extends Controller
      * @param  Project  $project
      * @return Response
      */
-    public function show(Project $project)
+    public function show(Project $project): Response
     {
         $project->load(['changeLogs']);
 

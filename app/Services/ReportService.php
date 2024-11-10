@@ -101,8 +101,8 @@ class ReportService
             ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setDateColumn('date_from', 'dd.mm.YYYY H:i')
-            ->setDateColumn('date_to', 'dd.mm.YYYY H:i')
+            ->setDateColumn('date_from', 'dd.mm.YYYY')
+            ->setDateColumn('date_to', 'dd.mm.YYYY')
             ->run();
     }
 }

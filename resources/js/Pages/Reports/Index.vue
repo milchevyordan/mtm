@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import {Head, Link, router, useForm} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
-import {Warehouse} from "@/Enums/Warehouse";
-import IconDocument from "@/Icons/Document.vue";
 import DocumentText from "@/Icons/DocumentText.vue";
-import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {DeleteForm, ProductReport, Report} from "@/types";
-import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
+import {DeleteForm, Report} from "@/types";
+import {dateTimeToLocaleString, dateToLocaleString} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Report>;
@@ -86,6 +83,18 @@ const handleDelete = () => {
                             <template #cell(created_at)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     {{ dateTimeToLocaleString(value) }}
+                                </div>
+                            </template>
+
+                            <template #cell(date_from)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    {{ dateToLocaleString(value) }}
+                                </div>
+                            </template>
+
+                            <template #cell(date_to)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    {{ dateToLocaleString(value) }}
                                 </div>
                             </template>
 

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReportRequest;
+use App\Models\ProductReport;
 use App\Models\Project;
 use App\Models\Report;
+use App\Services\DataTable\DataTable;
+use App\Services\DataTable\Ordering;
 use App\Services\MultiSelectService;
 use App\Services\ReportService;
 use Illuminate\Http\RedirectResponse;
@@ -73,10 +76,27 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Report $report
+     * @param  Report   $report
+     * @return Response
      */
-    public function show(Report $report)
+    public function show(Report $report): Response
     {
+        $report->load(['projects:id']);
+
+        $dataTable = (new DataTable(
+            ProductReport::where('report_id', $report->id)
+        ))
+            ->setOrdering(new Ordering('product_id'))
+            ->setRelation('product', ['id', 'name'])
+            ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->run();
+
+        return Inertia::render('Reports/Show', [
+            'report'    => $report,
+            'projects'  => fn () => (new MultiSelectService(Project::query()))->dataForSelect(),
+            'dataTable' => $dataTable,
+        ]);
     }
 
     /**

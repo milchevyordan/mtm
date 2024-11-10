@@ -95,7 +95,7 @@ class ReportController extends Controller
         return Inertia::render('Reports/Show', [
             'report'    => $report,
             'projects'  => fn () => (new MultiSelectService(Project::query()))->dataForSelect(),
-            'dataTable' => $dataTable,
+            'dataTable' => fn () => $dataTable,
         ]);
     }
 

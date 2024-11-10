@@ -9,7 +9,9 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductProject;
 use App\Models\Project;
+use App\Services\DataTable\DataTable;
 use App\Services\MultiSelectService;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
@@ -37,7 +39,7 @@ class ProductController extends Controller
     public function index(?string $slug = null): Response
     {
         return Inertia::render('Products/Index', [
-            'dataTable'        => $this->service->getIndexMethodDatatable($slug),
+            'dataTable'        => fn () => $this->service->getIndexMethodDatatable($slug),
             'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
             'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
         ]);
@@ -95,7 +97,22 @@ class ProductController extends Controller
     {
         $product->load(['changeLogs', 'quantity']);
 
-        return Inertia::render('Products/Edit', compact('product'));
+        $dataTable = (new DataTable(
+            ProductProject::where('product_id', $product->id)
+        ))
+            ->setRelation('project', ['id', 'name'])
+            ->setRelation('creator')
+            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('project.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('created_at', 'Created', true, true)
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
+
+        return Inertia::render('Products/Edit', [
+            'product'   => $product,
+            'dataTable' => fn () => $dataTable,
+        ]);
     }
 
     /**

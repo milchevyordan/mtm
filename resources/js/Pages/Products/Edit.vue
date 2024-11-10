@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import {Head, useForm} from "@inertiajs/vue3";
 
+import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import Table from "@/DataTable/Table.vue";
+import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Product, ProductForm, ProductQuantity} from "@/types";
-import {warehouses, withFlash} from "@/utils";
+import {Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
+import {dateTimeToLocaleString, warehouses, withFlash} from "@/utils";
 
 const props = defineProps<{
     product: Product;
+    dataTable: DataTable<ProductProject>;
 }>();
 
 const form = useForm<ProductForm>({
@@ -163,6 +167,33 @@ const save = async (only?: Array<string>) => {
                 </div>
 
                 <ChangeLogs :change-logs="product.change_logs" />
+
+                <div
+                    class="relative rounded-lg shadow-sm bg-white dark:bg-gray-800 py-4 sm:py-6 px-4 mt-4"
+                >
+                    <Accordion>
+                        <template #head>
+                            <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
+                                Projects
+                            </div>
+                        </template>
+
+                        <div class="text-gray-900 dark:text-gray-100">
+                            <Table
+                                :data-table="dataTable"
+                                :per-page-options="[5, 10, 15, 20, 50]"
+                                :global-search="true"
+                                :advanced-filters="false"
+                            >
+                                <template #cell(created_at)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
+                            </Table>
+                        </div>
+                    </Accordion>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>

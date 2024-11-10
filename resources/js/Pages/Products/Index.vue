@@ -13,6 +13,7 @@ import {DataTable, Multiselect} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Plus from "@/Icons/Plus.vue";
+import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {
     DeleteForm,
@@ -23,8 +24,11 @@ import {
     Project,
     SelectInput
 } from "@/types";
-import {dateTimeToLocaleString, findEnumKeyByValue, findKeyByValue} from "@/utils";
-import IconTrash from "@/Icons/Trash.vue";
+import {
+    dateTimeToLocaleString,
+    findEnumKeyByValue,
+    findKeyByValue
+} from "@/utils";
 
 const props = defineProps<{
     dataTable: DataTable<Product>;
@@ -215,7 +219,7 @@ const handleDelete = () => {
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ value[0].quantity ?? '' }}
+                                    {{ value[0]?.quantity ?? '' }}
                                 </div>
                             </template>
 
@@ -228,7 +232,7 @@ const handleDelete = () => {
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ value[0].quantity ?? '' }}
+                                    {{ value[0]?.quantity ?? '' }}
                                 </div>
                             </template>
 
@@ -241,7 +245,7 @@ const handleDelete = () => {
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
-                                    {{ value[0].quantity ?? '' }}
+                                    {{ value[0]?.quantity ?? '' }}
                                 </div>
                             </template>
 

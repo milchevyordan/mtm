@@ -25,11 +25,21 @@ class ProductProject extends Model
         'quantity',
     ];
 
+    /**
+     * Return project relation.
+     *
+     * @return BelongsTo
+     */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
+    /**
+     * Return product relation.
+     *
+     * @return BelongsTo
+     */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

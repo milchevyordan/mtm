@@ -3,8 +3,6 @@ import {Head, useForm} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
-import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
-import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
@@ -12,7 +10,7 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
-import {dateTimeToLocaleString, warehouses, withFlash} from "@/utils";
+import {dateTimeToLocaleString, warehouses} from "@/utils";
 
 const props = defineProps<{
     product: Product;
@@ -21,34 +19,12 @@ const props = defineProps<{
 }>();
 
 const form = useForm<ProductForm>({
-    _method: "put",
-    id: props.product.id,
-    name: props.product.name,
-    internal_id: props.product.internal_id,
-    minimum_quantity: props.product.minimum_quantity,
     quantities: {
         Varna: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Varna)?.quantity ?? null!,
         France: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.France)?.quantity ?? null!,
         Netherlands: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Netherlands)?.quantity ?? null!,
     }
 });
-
-const save = async (only?: Array<string>) => {
-    return new Promise<void>((resolve, reject) => {
-        form.post(route("products.update", props.product.id as number), {
-            preserveScroll: true,
-            preserveState: true,
-            forceFormData: true, // preserves all form data
-            only: withFlash(only),
-            onSuccess: () => {
-                resolve();
-            },
-            onError: () => {
-                reject(new Error("Error, during update"));
-            },
-        });
-    });
-};
 </script>
 
 <template>
@@ -70,9 +46,8 @@ const save = async (only?: Array<string>) => {
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <div class="grid lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                            <form
+                            <div
                                 class="mt-6 space-y-6"
-                                @submit.prevent="save()"
                             >
                                 <div>
                                     <InputLabel
@@ -82,16 +57,11 @@ const save = async (only?: Array<string>) => {
 
                                     <TextInput
                                         id="name"
-                                        v-model="form.name"
+                                        v-model="product.name"
                                         type="text"
                                         class="mt-1 block w-full"
                                         required
                                         autocomplete="name"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.name"
                                     />
                                 </div>
 
@@ -103,14 +73,9 @@ const save = async (only?: Array<string>) => {
 
                                     <TextInput
                                         id="internal_id"
-                                        v-model="form.internal_id"
+                                        v-model="product.internal_id"
                                         type="text"
                                         class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.internal_id"
                                     />
                                 </div>
 
@@ -122,15 +87,10 @@ const save = async (only?: Array<string>) => {
 
                                     <TextInput
                                         id="minimum_quantity"
-                                        v-model="form.minimum_quantity"
+                                        v-model="product.minimum_quantity"
                                         type="number"
                                         step="1"
                                         class="mt-1 block w-full"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.minimum_quantity"
                                     />
                                 </div>
 
@@ -148,21 +108,11 @@ const save = async (only?: Array<string>) => {
                                         v-model="form.quantities[warehouse.name]"
                                         type="number"
                                         step="1"
+                                        disabled
                                         class="mt-1 block w-full"
                                     />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors['quantities.' + warehouse.name]"
-                                    />
                                 </div>
-
-                                <ResetSaveButtons
-                                    :processing="form.processing"
-                                    :recently-successful="form.recentlySuccessful"
-                                    @reset="form.reset()"
-                                />
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

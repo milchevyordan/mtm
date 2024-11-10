@@ -11,6 +11,7 @@ import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
+import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Plus from "@/Icons/Plus.vue";
 import IconTrash from "@/Icons/Trash.vue";
@@ -257,6 +258,16 @@ const handleDelete = () => {
                                         :href="route('products.edit', item.id)"
                                     >
                                         <IconPencilSquare
+                                            classes="w-4 h-4 text-[#909090]"
+                                        />
+                                    </Link>
+
+                                    <Link
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                        :title="'Show product'"
+                                        :href="route('products.show', item.id)"
+                                    >
+                                        <DocumentText
                                             classes="w-4 h-4 text-[#909090]"
                                         />
                                     </Link>

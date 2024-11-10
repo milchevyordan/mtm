@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\ProductProject;
 use App\Models\Project;
+use App\Services\ChangeLogService;
 use App\Services\DataTable\DataTable;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
@@ -79,7 +80,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project): Response
     {
-        $project->load(['changeLogs']);
+        $project->load(['changeLogsLimited']);
 
         $dataTable = (new DataTable(
             ProductProject::where('project_id', $project->id)
@@ -94,7 +95,11 @@ class ProjectController extends Controller
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
 
-        return Inertia::render('Projects/Show', compact('project', 'dataTable'));
+        return Inertia::render('Projects/Show', [
+            'project'    => $project,
+            'dataTable'  => fn () => $dataTable,
+            'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
+        ]);
     }
 
     /**
@@ -105,7 +110,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): Response
     {
-        $project->load(['changeLogs']);
+        $project->load(['changeLogsLimited']);
 
         $dataTable = (new DataTable(
             ProductProject::where('project_id', $project->id)
@@ -121,7 +126,11 @@ class ProjectController extends Controller
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
 
-        return Inertia::render('Projects/Edit', compact('project', 'dataTable'));
+        return Inertia::render('Projects/Edit', [
+            'project'    => $project,
+            'dataTable'  => fn () => $dataTable,
+            'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
+        ]);
     }
 
     /**

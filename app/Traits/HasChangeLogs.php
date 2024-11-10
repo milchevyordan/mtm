@@ -10,12 +10,20 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 trait HasChangeLogs
 {
     /**
-     * Retrieve change log of the resource
+     * Retrieve change log of the resource.
      *
      * @return MorphMany
      */
     public function changeLogs(): MorphMany
     {
-        return $this->morphMany(ChangeLog::class, 'changeable')->with(['creator']);
+        return $this->morphMany(ChangeLog::class, 'changeable');
+    }
+
+    /**
+     * Retrieve limited change log of the resource shown in edit forms.
+     */
+    public function changeLogsLimited()
+    {
+        return $this->changeLogs()->with(['creator'])->latest()->limit(20);
     }
 }

@@ -6,12 +6,14 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import {DataTable} from "@/DataTable/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {User, UserForm} from "@/types";
+import {ChangeLog, User, UserForm} from "@/types";
 import {withFlash} from "@/utils";
 
 const props = defineProps<{
     user: User;
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 
 const form = useForm<UserForm>({
@@ -114,7 +116,10 @@ const save = async (only?: Array<string>) => {
                     </div>
                 </div>
 
-                <ChangeLogs :change-logs="user.change_logs" />
+                <ChangeLogs
+                    :change-logs-limited="user.change_logs_limited"
+                    :change-logs="changeLogs"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

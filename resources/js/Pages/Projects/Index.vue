@@ -27,8 +27,6 @@ const closeProductsDataTableModal = () => {
 };
 
 const openShowProductsDataTableModal = async (id: number) => {
-    window.history.replaceState({}, document.title, window.location.pathname);
-
     await new Promise((resolve, reject) => {
         router.reload({
             data: { project_id: id },

@@ -10,12 +10,13 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ProductProject, Project} from "@/types";
+import {ChangeLog, ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
 
 defineProps<{
     project: Project;
     dataTable: DataTable<ProductProject>
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 </script>
 
@@ -101,7 +102,10 @@ defineProps<{
                     </Accordion>
                 </div>
 
-                <ChangeLogs :change-logs="project.change_logs" />
+                <ChangeLogs
+                    :change-logs-limited="project.change_logs_limited"
+                    :change-logs="changeLogs"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

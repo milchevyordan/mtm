@@ -16,12 +16,13 @@ import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {DeleteForm, ProductProject, Project, ProjectForm} from "@/types";
+import {ChangeLog, DeleteForm, ProductProject, Project, ProjectForm} from "@/types";
 import {dateTimeToLocaleString, withFlash} from "@/utils";
 
 const props = defineProps<{
     project: Project;
     dataTable: DataTable<ProductProject>
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 
 const form = useForm<ProjectForm>({
@@ -199,7 +200,10 @@ const handleDelete = () => {
                     </Accordion>
                 </div>
 
-                <ChangeLogs :change-logs="project.change_logs" />
+                <ChangeLogs
+                    :change-logs-limited="project.change_logs_limited"
+                    :change-logs="changeLogs"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

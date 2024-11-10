@@ -37,6 +37,7 @@ export interface User {
     email_verified_at?: string;
     creator?: User;
     change_logs?: ChangeLog[];
+    change_logs_limited?: ChangeLog[];
 }
 
 export interface UserForm extends Omit<User, 'creator_id'>, Form, FormMethod {
@@ -103,6 +104,7 @@ export interface Product {
     };
     creator?: User;
     change_logs?: ChangeLog[];
+    change_logs_limited?: ChangeLog[];
 }
 
 export interface ProductForm extends Omit<Product, "creator_id", "quantity">, Form, FormMethod {
@@ -115,6 +117,7 @@ export interface Project {
     name: string;
     creator?: User;
     change_logs?: ChangeLog[];
+    change_logs_limited?: ChangeLog[];
     readonly created_at?: Date;
 }
 

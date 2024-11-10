@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Notifications\NewUserPasswordCreate;
 use App\Services\ChangeLoggerService;
+use App\Services\ChangeLogService;
 use App\Services\DataTable\DataTable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -100,9 +101,12 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
-        $user->load(['changeLogs']);
+        $user->load(['changeLogsLimited']);
 
-        return Inertia::render('Users/Edit', compact('user'));
+        return Inertia::render('Users/Edit', [
+            'user'       => $user,
+            'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($user)),
+        ]);
     }
 
     /**

@@ -44,6 +44,15 @@ class DatabaseSeeder extends Seeder
             'POLISHING PADS',
             'Drilling core bits - Wet',
             'Resuthane™ SL',
+            'Corrosion and chemical protective coatings and paints',
+            'Fire protective coatings and paints',
+            'Vespupark',
+            'PU- coating for outdoor areas',
+            'LITHURIN Hard',
+            'STEEL FIBERS',
+            'POLISHED CONCRETE FLOORINGS',
+            'Diamond grinding wheels',
+            'Marine engine spares',
         ];
 
         $productInserts = [];

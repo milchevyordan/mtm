@@ -23,6 +23,7 @@ return new class () extends Migration {
             $table->date('date_to');
 
             $table->timestamp('created_at')->useCurrent();
+            $table->softDeletes();
         });
     }
 

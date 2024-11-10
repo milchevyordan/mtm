@@ -7,10 +7,12 @@ namespace App\Models;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
     use HasCreator;
+    use SoftDeletes;
 
     public const UPDATED_AT = null;
 

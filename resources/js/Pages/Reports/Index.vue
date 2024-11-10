@@ -101,7 +101,7 @@ const handleDelete = () => {
                             <template #cell(action)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     <Link
-                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         :title="'Show report'"
                                         :href="route('reports.show', item.id)"
                                     >
@@ -112,7 +112,7 @@ const handleDelete = () => {
 
                                     <button
                                         :title="'Delete'"
-                                        class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition"
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
                                         <IconTrash classes="w-4 h-4 text-[#909090]" />

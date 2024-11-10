@@ -65,7 +65,7 @@ class ReportService
         $report->save();
 
         $productReportInserts = [];
-        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])->get() as $productProject) {
+        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])->whereBetween('created_at', [$validatedRequest['date_from'], $validatedRequest['date_to']])->get() as $productProject) {
             $productId = $productProject->product_id;
 
             if (isset($productReportInserts[$productId])) {

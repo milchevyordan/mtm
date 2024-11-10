@@ -65,3 +65,30 @@
     transform: translateX(20px);
     opacity: 0;
 }
+
+input[type="date"] {
+    background-color: #fff;
+    color: #333;
+}
+
+input[type="date"]:focus {
+    outline: none;
+    border-color: #4C51BF;
+    box-shadow: 0 0 0 2px rgba(72, 85, 99, 0.6);
+}
+
+input[type="date"].dark {
+    background-color: #2D3748;
+    color: #E2E8F0;
+}
+
+input[type="date"].dark:focus {
+    border-color: #4C51BF;
+    box-shadow: 0 0 0 2px rgba(72, 85, 99, 0.6);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #4C51BF;
+    color: #fff;
+    border-radius: 50%;
+}

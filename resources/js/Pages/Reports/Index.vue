@@ -139,4 +139,27 @@ const handleDelete = () => {
             />
         </form>
     </Modal>
+
+    <Modal
+        :show="showDeleteModal"
+        @close="closeDeleteModal"
+    >
+        <div
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
+        >
+            Delete report #{{ deleteForm?.id ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+        </div>
+
+        <form
+            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
+            @submit.prevent="handleDelete"
+        >
+            <ResetSaveButtons
+                :processing="deleteForm.processing"
+                :recently-successful="deleteForm.recentlySuccessful"
+                :is-delete="true"
+                @reset="deleteForm.reset()"
+            />
+        </form>
+    </Modal>
 </template>

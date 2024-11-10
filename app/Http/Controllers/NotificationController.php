@@ -30,7 +30,7 @@ class NotificationController extends Controller
             $user->notifications()->orderByRaw('read_at IS NULL DESC')->getQuery()
         ))
             ->setColumn('data', 'Message', true)
-            ->setColumn('created_at', 'Date', true)
+            ->setColumn('created_at', 'Created', true)
             ->setColumn('read_at', 'Read', true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setDateColumn('read_at', 'dd.mm.YYYY H:i');

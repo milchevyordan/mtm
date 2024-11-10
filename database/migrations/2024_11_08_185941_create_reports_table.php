@@ -19,8 +19,8 @@ return new class () extends Migration {
                 ->foreignId('creator_id')
                 ->constrained('users');
 
-            $table->dateTime('date_from');
-            $table->dateTime('date_to');
+            $table->date('date_from');
+            $table->date('date_to');
 
             $table->timestamp('created_at')->useCurrent();
         });

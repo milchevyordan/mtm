@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/destroy-product', [ProjectController::class, 'destroyProduct'])->name('projects.destroy-product');
     Route::resource('projects', ProjectController::class);
 
-    Route::resource('reports', ReportController::class);
+    Route::resource('reports', ReportController::class)->except(['edit', 'update']);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');

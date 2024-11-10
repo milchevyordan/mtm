@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\Warehouse;
 use App\Http\Requests\StoreReportRequest;
+use App\Models\ProductProject;
 use App\Models\Report;
 use App\Services\DataTable\DataTable;
 
@@ -57,6 +57,32 @@ class ReportService
      */
     public function createReport(StoreReportRequest $request): self
     {
+        $validatedRequest = $request->validated();
+
+        $report = new Report();
+        $report->fill($validatedRequest);
+        $report->creator_id = auth()->id();
+        $report->save();
+
+        $productReportInserts = [];
+        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])->get() as $productProject) {
+            $productId = $productProject->product_id;
+
+            if (isset($productReportInserts[$productId])) {
+                $productReportInserts[$productId]['quantity'] += $productProject->quantity;
+            } else {
+                $productReportInserts[$productId] = [
+                    'quantity' => $productProject->quantity,
+                ];
+            }
+        }
+
+        $report->projects()->attach($validatedRequest['projects']);
+        $report->products()->attach($productReportInserts);
+
+        $this->setReport($report);
+
+        return $this;
     }
 
     /**
@@ -70,12 +96,13 @@ class ReportService
             Report::query()
         ))
             ->setColumn('id', '#', true, true)
-            ->setColumn('warehouse', 'Warehouse', true, true)
-            ->setColumn('name', 'Name', true, true)
-            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('date_from', 'Date From', true, true)
+            ->setColumn('date_to', 'Date To', true, true)
+            ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setEnumColumn('warehouse', Warehouse::class)
+            ->setDateColumn('date_from', 'dd.mm.YYYY H:i')
+            ->setDateColumn('date_to', 'dd.mm.YYYY H:i')
             ->run();
     }
 }

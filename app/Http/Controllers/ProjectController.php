@@ -90,7 +90,7 @@ class ProjectController extends Controller
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('created_at', 'Created', true, true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
 
@@ -116,7 +116,7 @@ class ProjectController extends Controller
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Date', true, true)
+            ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();

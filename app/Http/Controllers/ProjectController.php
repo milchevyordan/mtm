@@ -30,11 +30,14 @@ class ProjectController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @param  ?string  $slug
+     * @return Response
      */
-    public function index(): Response
+    public function index(?string $slug = null): Response
     {
         return Inertia::render('Projects/Index', [
-            'dataTable'             => fn () => $this->service->getIndexMethodDataTable(),
+            'dataTable'             => fn () => $this->service->getIndexMethodDataTable($slug),
             'showProductsDataTable' => Inertia::lazy(fn () => $this->service->getShowProductsDataTable()),
         ]);
     }

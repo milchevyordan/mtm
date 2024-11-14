@@ -74,20 +74,29 @@ class ProjectService
     /**
      * Update the project.
      *
+     * @param  null|string $slug
      * @return DataTable
      */
-    public function getIndexMethodDataTable(): DataTable
+    public function getIndexMethodDataTable(?string $slug): DataTable
     {
-        return (new DataTable(
-            Project::query()
+        $warehouseValue = $slug ? Warehouse::getCaseByName($slug)?->value : null;
+
+        $dataTable = (new DataTable(
+            Project::when($warehouseValue, function ($query) use ($warehouseValue) {
+                $query->where('warehouse', $warehouseValue);
+            })
         ))
-            ->setColumn('id', '#', true, true)
-            ->setColumn('warehouse', 'Warehouse', true, true)
-            ->setColumn('name', 'Name', true, true)
+            ->setColumn('id', '#', true, true);
+
+        if (! $warehouseValue) {
+            $dataTable->setColumn('warehouse', 'Warehouse', true, true)
+                ->setEnumColumn('warehouse', Warehouse::class);
+        }
+
+        return $dataTable->setColumn('name', 'Name', true, true)
             ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
     }
 

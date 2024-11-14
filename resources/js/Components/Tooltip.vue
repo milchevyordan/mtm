@@ -39,7 +39,7 @@ const classes = computed(() =>
         >
             <div
                 v-show="showTooltip"
-                class="w-[100px] whitespace-nowrap absolute -ml-6 mt-40 z-[1000] overflow-x-hidden bg-white rounded shadow-xl border border-gray-200"
+                class="w-[100px] whitespace-nowrap absolute -ml-6 mt-40 z-[1000] overflow-x-hidden bg-white dark:bg-gray-700 rounded shadow-xl"
             >
                 <slot name="content" />
             </div>

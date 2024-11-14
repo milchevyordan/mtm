@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
 
     Route::delete('/projects/destroy-product', [ProjectController::class, 'destroyProduct'])->name('projects.destroy-product');
+    Route::get('/projects-table/{slug?}', [ProjectController::class, 'index'])->name('projects.table');
     Route::resource('projects', ProjectController::class);
 
     Route::resource('reports', ReportController::class)->except(['edit', 'update']);

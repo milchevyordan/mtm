@@ -69,15 +69,15 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <div
-                                            class="flex flex-col text-center font-semibold text-sm text-slate-800 whitespace-normal"
+                                            class="flex flex-col text-center font-semibold text-sm whitespace-normal"
                                         >
                                             <Link
                                                 v-for="(warehouse, index) in warehouses"
                                                 :key="index"
-                                                class="hover:opacity-70 transition py-1"
+                                                class="text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition py-1"
                                                 :class="{
-                                                    'bg-gray-100':
-                                                        route().current('products.index'),
+                                                    'bg-gray-100 dark:bg-gray-800':
+                                                        route().current('products.table', warehouse.name),
                                                 }"
                                                 :href="route('products.table', warehouse.name)"
                                             >
@@ -91,12 +91,31 @@ const showingNavigationDropdown = ref(false);
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                                <NavLink
+                                <Tooltip
                                     :href="route('projects.index')"
                                     :active="route().current('projects.*')"
                                 >
                                     Project
-                                </NavLink>
+
+                                    <template #content>
+                                        <div
+                                            class="flex flex-col text-center font-semibold text-sm text-slate-800 whitespace-normal"
+                                        >
+                                            <Link
+                                                v-for="(warehouse, index) in warehouses"
+                                                :key="index"
+                                                class="text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition py-1"
+                                                :class="{
+                                                    'bg-gray-100 dark:bg-gray-800':
+                                                        route().current('projects.table', warehouse.name),
+                                                }"
+                                                :href="route('projects.table', warehouse.name)"
+                                            >
+                                                {{ warehouse.name }}
+                                            </Link>
+                                        </div>
+                                    </template>
+                                </Tooltip>
                             </div>
 
                             <div

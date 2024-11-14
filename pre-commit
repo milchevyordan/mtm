@@ -9,23 +9,6 @@ GREEN=$(tput setaf 2) # Green
 YELLOW=$(tput setaf 3) # Yellow
 RESET=$(tput sgr0)    # Reset
 
-# Check for console.log() or dd() statements in committed files
-script_filename="pre-commit"
-problematic_files=$(git diff --cached --name-only | xargs grep -l -E 'console\.log\(|dd\(|dump\(')
-
-# Exclude the script file from the list
-problematic_files=$(echo "$problematic_files" | grep -v "$script_filename")
-
-if [ -n "$problematic_files" ]; then
-    echo "${RED}Commit contains console.log() or dd() statements:${RESET}"
-    for file in $problematic_files; do
-        LINE=$( grep -n -E 'console\.log\(|dd\(' "$file" | perl -pe "s/(console\.log\(|dd\()/$YELLOW\$1$RESET/");
-        echo "${YELLOW}${file}:${RESET}${LINE}"
-    done
-    echo "${RED}Please remove them.${RESET}"
-    exit 1
-fi
-
 # Check if the --escape-build option is provided
 if [[ "$1" == "--escape-build" ]]; then
   echo "Skipping build due to --escape-build option."

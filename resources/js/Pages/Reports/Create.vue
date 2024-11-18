@@ -9,6 +9,7 @@ import TextInput from "@/Components/TextInput.vue";
 import {Multiselect} from "@/DataTable/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Project, ReportForm} from "@/types";
+import {today} from "@/utils";
 
 defineProps<{
     projects: Multiselect<Project>;
@@ -94,6 +95,7 @@ const save = async (only?: Array<string>) => {
                                         v-model="form.date_to"
                                         type="date"
                                         :min="form.date_from"
+                                        :max="today"
                                         class="mt-1 block w-full"
                                         required
                                     />

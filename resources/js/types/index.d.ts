@@ -34,6 +34,7 @@ export interface User {
     creator_id: number;
     name: string;
     email: string;
+    warehouse: Enum<typeof Warehouse>;
     email_verified_at?: string;
     creator?: User;
     change_logs?: ChangeLog[];

@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\ProductProject;
 use App\Models\Project;
+use App\Services\ChangeLoggerService;
 use App\Services\ChangeLogService;
 use App\Services\DataTable\DataTable;
 use App\Services\ProjectService;
@@ -120,7 +121,7 @@ class ProjectController extends Controller
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name'])
-            ->setColumn('id', '#', true, true)
+            ->setColumn('product.id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
@@ -190,8 +191,17 @@ class ProjectController extends Controller
     public function destroyProduct(Request $request): RedirectResponse
     {
         try {
-            $productProject = ProductProject::find($request->id);
+            $productProject = ProductProject::with('product.quantity', 'project:id,warehouse')->find($request->id);
+            $product = $productProject->product;
+            $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+
+            $productQuantity = $product->quantity->where('warehouse', $productProject->project->warehouse)->first();
+            $productQuantity->quantity = $productQuantity->quantity + $productProject->quantity;
             $productProject->delete();
+
+            $productQuantity->save();
+
+            $changeLoggerService->logChanges($product);
 
             return redirect()->back()->with('success', 'The record has been successfully deleted.');
         } catch (Throwable $th) {

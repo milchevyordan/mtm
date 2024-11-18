@@ -1,4 +1,5 @@
 import {Warehouse} from "@/Enums/Warehouse";
+import {computed} from "vue";
 
 export function dateToLocaleString(date: Date | string | null | undefined) {
     if (date === null || date === undefined) {
@@ -48,6 +49,11 @@ export function replaceUnderscores(object: { [key: string]: any }) {
 
     return newObject;
 }
+
+export const today = computed(() => {
+    const date = new Date();
+    return date.toISOString().split('T')[0];
+});
 
 export const warehouses = Object.entries(Warehouse)
     .filter(([name]) => isNaN(Number(name)))

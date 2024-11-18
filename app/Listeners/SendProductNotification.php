@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Enums\Warehouse;
 use App\Events\MinimumQuantityReached;
 use App\Models\User;
 use App\Notifications\DatabaseNotification;
@@ -26,7 +27,7 @@ class SendProductNotification
      */
     public function handle(MinimumQuantityReached $event): void
     {
-        $user = User::find(1);
+        $users = User::where('warehouse', Warehouse::Varna->value)->get();
         $event->product->load('quantity');
 
         foreach ($event->product->quantity as $quantity) {
@@ -35,9 +36,11 @@ class SendProductNotification
             }
 
             $message = "Product {$event->product->name} is running out of stock in {$quantity->warehouse->name}.";
-            Notification::send($user, new DatabaseNotification($message));
+            Notification::send($users, new DatabaseNotification($message));
         }
 
-        Cache::forget("user_{$user->id}");
+        foreach ($users as $user) {
+            Cache::forget("user_{$user->id}");
+        }
     }
 }

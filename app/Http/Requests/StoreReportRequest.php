@@ -26,7 +26,7 @@ class StoreReportRequest extends FormRequest
     {
         return [
             'date_from' => 'required|date|before_or_equal:date_to',
-            'date_to'   => 'required|date|after_or_equal:date_from',
+            'date_to'   => 'required|date|after_or_equal:date_from|before_or_equal:today',
             'projects'  => 'required',
         ];
     }

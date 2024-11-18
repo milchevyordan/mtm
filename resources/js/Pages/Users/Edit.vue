@@ -5,8 +5,10 @@ import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import {DataTable} from "@/DataTable/types";
+import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, User, UserForm} from "@/types";
 import {withFlash} from "@/utils";
@@ -21,6 +23,7 @@ const form = useForm<UserForm>({
     id: props.user.id,
     name: props.user.name,
     email: props.user.email,
+    warehouse: props.user.warehouse,
 });
 
 const save = async (only?: Array<string>) => {
@@ -103,6 +106,27 @@ const save = async (only?: Array<string>) => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.email"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="warehouse"
+                                        value="Warehouse"
+                                    />
+
+                                    <Select
+                                        id="warehouse"
+                                        v-model="form.warehouse"
+                                        :name="'warehouse'"
+                                        :options="Warehouse"
+                                        :placeholder="'Warehouse'"
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.warehouse"
                                     />
                                 </div>
 

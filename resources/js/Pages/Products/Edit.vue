@@ -12,7 +12,7 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
-import {dateTimeToLocaleString, warehouses, withFlash} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue, warehouses, withFlash} from "@/utils";
 
 const props = defineProps<{
     product: Product;
@@ -189,6 +189,12 @@ const save = async (only?: Array<string>) => {
                                 :global-search="true"
                                 :advanced-filters="false"
                             >
+                                <template #cell(project.warehouse)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ findEnumKeyByValue(Warehouse, item.project.warehouse) }}
+                                    </div>
+                                </template>
+
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ dateTimeToLocaleString(value) }}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'warehouse',
     ];
 
     /**
@@ -51,6 +53,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
+            'warehouse'         => Warehouse::class,
         ];
     }
 
@@ -59,5 +62,5 @@ class User extends Authenticatable
      *
      * @var array|string[]
      */
-    public static array $defaultSelectFields = ['id', 'name', 'email', 'created_at'];
+    public static array $defaultSelectFields = ['id', 'name', 'email', 'warehouse', 'created_at'];
 }

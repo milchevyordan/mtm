@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\Warehouse;
 use App\Http\Requests\AddProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
@@ -92,13 +93,15 @@ class ProductController extends Controller
         $dataTable = (new DataTable(
             ProductProject::where('product_id', $product->id)
         ))
-            ->setRelation('project', ['id', 'name'])
+            ->setRelation('project', ['id', 'name', 'warehouse'])
             ->setRelation('creator')
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('project.name', 'Name', true, true)
+            ->setColumn('project.warehouse', 'Warehouse', false, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->setColumn('created_at', 'Created', true, true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('project.warehouse', Warehouse::class)
             ->run();
 
         return Inertia::render('Products/Show', [
@@ -121,13 +124,15 @@ class ProductController extends Controller
         $dataTable = (new DataTable(
             ProductProject::where('product_id', $product->id)
         ))
-            ->setRelation('project', ['id', 'name'])
+            ->setRelation('project', ['id', 'name', 'warehouse'])
             ->setRelation('creator')
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('project.name', 'Name', true, true)
+            ->setColumn('project.warehouse', 'Warehouse', false, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->setColumn('created_at', 'Created', true, true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('project.warehouse', Warehouse::class)
             ->run();
 
         return Inertia::render('Products/Edit', [

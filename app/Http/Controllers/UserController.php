@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\Warehouse;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
@@ -26,7 +27,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $dataTable = (new DataTable(
             User::select(User::$defaultSelectFields)
@@ -34,9 +35,11 @@ class UserController extends Controller
             ->setColumn('id', '#', true, true)
             ->setColumn('name', 'Name', true, true)
             ->setColumn('email', 'Email', true, true)
+            ->setColumn('warehouse', 'Warehouse', true, true)
             ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
 
         return Inertia::render('Users/Index', compact('dataTable'));

@@ -1,4 +1,5 @@
 import {Warehouse} from "@/Enums/Warehouse";
+import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
@@ -137,6 +138,21 @@ export interface Report {
 }
 
 export interface ReportForm extends Omit<Report, "creator_id">, Form, FormMethod {
+}
+
+export interface ProductRequest {
+    id: number;
+    creator_id: number;
+    status: Enum<typeof ProductRequestStatus>;
+    warehouse: Enum<typeof Warehouse>;
+    accepted_at?: Date;
+    creator?: User;
+    products?: Product[];
+    readonly created_at?: Date;
+}
+
+export interface ProductRequestForm extends Omit<ProductRequest, "creator_id", "status">, Form, FormMethod {
+    productIds: number[];
 }
 
 export interface ProductReport {

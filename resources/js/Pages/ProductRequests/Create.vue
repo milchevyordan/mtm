@@ -1,45 +1,36 @@
 <script setup lang="ts">
-import {Head, Link, useForm} from "@inertiajs/vue3";
-import { ref } from "vue";
+import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
-import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import Modal from "@/Components/Modal.vue";
 import Select from "@/Components/Select.vue";
-import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
-import IconPencilSquare from "@/Icons/PencilSquare.vue";
-import IconTrash from "@/Icons/Trash.vue";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ChangeLog, DeleteForm, ProductProject, Project, ProjectForm} from "@/types";
-import {dateTimeToLocaleString, withFlash} from "@/utils";
 import DocumentText from "@/Icons/DocumentText.vue";
+import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import {Product, ProductRequestForm} from "@/types";
+import {dateTimeToLocaleString} from "@/utils";
 
-const props = defineProps<{
-    project: Project;
-    dataTable: DataTable<ProductProject>
-    changeLogs?: DataTable<ChangeLog>;
+defineProps<{
+    dataTable: DataTable<Product>;
 }>();
 
-const form = useForm<ProjectForm>({
-    _method: "put",
-    id: props.project.id,
-    name: props.project.name,
-    warehouse: props.project.warehouse,
+const form = useForm<ProductRequestForm>({
+    id: null!,
+    warehouse: usePage().props.auth.user.warehouse,
+    productIds: [],
 });
 
 const save = async (only?: Array<string>) => {
     return new Promise<void>((resolve, reject) => {
-        form.post(route("projects.update", props.project.id as number), {
+        form.post(route("reports.store"), {
             preserveScroll: true,
             preserveState: true,
-            forceFormData: true, // preserves all form data
-            only: withFlash(only),
+            only: only,
             onSuccess: () => {
                 resolve();
             },
@@ -50,49 +41,22 @@ const save = async (only?: Array<string>) => {
     });
 };
 
-const showDeleteModal = ref<boolean>(false);
-
-const closeDeleteModal = () => {
-    showDeleteModal.value = false;
-    deleteForm.reset();
-};
-
-const showDeleteForm = (item: ProductProject) => {
-    deleteForm.id = item.id as number;
-    deleteForm.name = item.product?.name as string;
-    deleteForm.created_at = item.created_at as Date;
-
-    showDeleteModal.value = true;
-};
-
-const deleteForm = useForm<DeleteForm>({
-    id: null!,
-    name: null!,
-    created_at: null!,
-});
-
-const handleDelete = () => {
-    deleteForm.delete(route("projects.destroy-product"), {
-        preserveScroll: true,
-    });
-    closeDeleteModal();
-};
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Product Request'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Product Request
             </h2>
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
                     class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
@@ -104,31 +68,12 @@ const handleDelete = () => {
                             >
                                 <div>
                                     <InputLabel
-                                        for="name"
-                                        value="Name"
-                                    />
-
-                                    <TextInput
-                                        id="name"
-                                        v-model="form.name"
-                                        type="text"
-                                        class="mt-1 block w-full"
-                                        required
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.name"
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
                                         for="warehouse"
                                         value="Warehouse"
                                     />
 
                                     <Select
+                                        id="warehouse"
                                         v-model="form.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"
@@ -175,12 +120,45 @@ const handleDelete = () => {
                                     </div>
                                 </template>
 
+                                <template #cell(quantity_varna)="{ value, item }">
+                                    <div
+                                        class="text-center rounded"
+                                        :class="{
+                                            'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        }"
+                                    >
+                                        {{ value[0]?.quantity ?? '' }}
+                                    </div>
+                                </template>
+
+                                <template #cell(quantity_france)="{ value, item }">
+                                    <div
+                                        class="text-center rounded"
+                                        :class="{
+                                            'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        }"
+                                    >
+                                        {{ value[0]?.quantity ?? '' }}
+                                    </div>
+                                </template>
+
+                                <template #cell(quantity_netherlands)="{ value, item }">
+                                    <div
+                                        class="text-center rounded"
+                                        :class="{
+                                            'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        }"
+                                    >
+                                        {{ value[0]?.quantity ?? '' }}
+                                    </div>
+                                </template>
+
                                 <template #cell(action)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Edit product'"
-                                            :href="route('products.edit', item.product?.id)"
+                                            :href="route('products.edit', item.id)"
                                         >
                                             <IconPencilSquare
                                                 classes="w-4 h-4 text-[#909090]"
@@ -190,55 +168,19 @@ const handleDelete = () => {
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Show product'"
-                                            :href="route('products.show', item.product?.id)"
+                                            :href="route('products.show', item.id)"
                                         >
                                             <DocumentText
                                                 classes="w-4 h-4 text-[#909090]"
                                             />
                                         </Link>
-
-                                        <button
-                                            :title="'Delete product'"
-                                            class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            @click="showDeleteForm(item)"
-                                        >
-                                            <IconTrash classes="w-4 h-4 text-[#909090]" />
-                                        </button>
                                     </div>
                                 </template>
                             </Table>
                         </div>
                     </Accordion>
                 </div>
-
-                <ChangeLogs
-                    :change-logs-limited="project.change_logs_limited"
-                    :change-logs="changeLogs"
-                />
             </div>
         </div>
     </AuthenticatedLayout>
-
-    <Modal
-        :show="showDeleteModal"
-        @close="closeDeleteModal"
-    >
-        <div
-            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
-        >
-            Delete product {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
-        </div>
-
-        <form
-            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
-            @submit.prevent="handleDelete"
-        >
-            <ResetSaveButtons
-                :processing="deleteForm.processing"
-                :recently-successful="deleteForm.recentlySuccessful"
-                :is-delete="true"
-                @reset="deleteForm.reset()"
-            />
-        </form>
-    </Modal>
 </template>

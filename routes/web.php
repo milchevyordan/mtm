@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
 
     Route::resource('reports', ReportController::class)->except(['edit', 'update']);
+
+    Route::resource('product-requests', ProductRequestController::class);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');

@@ -95,7 +95,9 @@ class ReportService
         return (new DataTable(
             Report::query()
         ))
+            ->setRelation('creator')
             ->setColumn('id', '#', true, true)
+            ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('date_from', 'Date From', true, true)
             ->setColumn('date_to', 'Date To', true, true)
             ->setColumn('created_at', 'Created', true, true)

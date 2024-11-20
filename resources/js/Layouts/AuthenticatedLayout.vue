@@ -122,6 +122,17 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
+                                    :href="route('product-requests.index')"
+                                    :active="route().current('product-requests.*')"
+                                >
+                                    Request
+                                </NavLink>
+                            </div>
+
+                            <div
+                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                            >
+                                <NavLink
                                     :href="route('reports.index')"
                                     :active="route().current('reports.*')"
                                 >
@@ -266,6 +277,12 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('projects.*')"
                         >
                             Project
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('product-requests.index')"
+                            :active="route().current('product-requests.*')"
+                        >
+                            Request
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('reports.index')"

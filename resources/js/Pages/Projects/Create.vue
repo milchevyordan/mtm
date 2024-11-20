@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, useForm, usePage} from "@inertiajs/vue3";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
@@ -12,7 +12,7 @@ import {ProjectForm} from "@/types";
 
 const form = useForm<ProjectForm>({
     id: null!,
-    warehouse: null!,
+    warehouse: usePage().props.auth.user.warehouse,
     name: null!,
 });
 

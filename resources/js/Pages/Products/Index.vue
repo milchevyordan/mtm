@@ -216,7 +216,6 @@ const handleDelete = () => {
                                     class="cursor-pointer text-center rounded"
                                     :class="{
                                         'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
-                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
@@ -229,7 +228,6 @@ const handleDelete = () => {
                                     class="cursor-pointer text-center rounded"
                                     :class="{
                                         'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
-                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >
@@ -242,7 +240,6 @@ const handleDelete = () => {
                                     class="cursor-pointer text-center rounded"
                                     :class="{
                                         'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
-                                        'bg-transparent': (value[0]?.quantity ?? null) >= item.minimum_quantity
                                     }"
                                     @click="openChangeQuantityModal(value[0] ?? null)"
                                 >

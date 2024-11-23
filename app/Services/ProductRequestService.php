@@ -7,7 +7,7 @@ namespace App\Services;
 use App\Enums\ProductRequestStatus;
 use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequestRequest;
-use App\Models\ProductProject;
+use App\Models\ProductProductRequest;
 use App\Models\ProductRequest;
 use App\Services\DataTable\DataTable;
 
@@ -65,26 +65,34 @@ class ProductRequestService
         $productRequest->fill($validatedRequest);
         $productRequest->creator_id = auth()->id();
         $productRequest->save();
-
-        $productProductRequestInserts = [];
-        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])->whereBetween('created_at', [$validatedRequest['date_from'], $validatedRequest['date_to']])->get() as $productProject) {
-            $productId = $productProject->product_id;
-
-            if (isset($productProductRequestInserts[$productId])) {
-                $productProductRequestInserts[$productId]['quantity'] += $productProject->quantity;
-            } else {
-                $productProductRequestInserts[$productId] = [
-                    'quantity' => $productProject->quantity,
-                ];
-            }
-        }
-
-        $productRequest->projects()->attach($validatedRequest['projects']);
-        $productRequest->products()->attach($productProductRequestInserts);
-
         $this->setProductRequest($productRequest);
 
+        $this->syncProducts($validatedRequest['products']);
+
         return $this;
+    }
+
+    /**
+     * Update vehicles relation of the model resource.
+     *
+     * @param       $products
+     * @return void
+     */
+    public function syncProducts($products): void
+    {
+        $productRequestId = $this->getProductRequest()->id;
+
+        $productProductRequestsInsert = [];
+        foreach ($products as $product) {
+            $productProductRequestsInsert[] = [
+                'product_request_id' => $productRequestId,
+                'product_id'         => $product['product_id'],
+                'quantity'           => $product['quantity'],
+                'created_at'         => now(),
+            ];
+        }
+
+        ProductProductRequest::insert($productProductRequestsInsert);
     }
 
     /**

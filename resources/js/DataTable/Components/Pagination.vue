@@ -50,12 +50,12 @@ const handlePerPageItems = async () => {
         v-if="Object.keys(paginator.links).length > 1"
         class="flex justify-center sm:justify-between my-2 px-5 items-center"
     >
-        <div class="hidden sm:block text-sm text-gray-500">
+        <div class="hidden sm:block text-sm text-gray-500 dark:text-gray-300">
             Showing
             <span class="font-semibold">
                 {{
                     paginator.currentPage * paginator.perPage -
-                        (paginator.perPage - 1)
+                    (paginator.perPage - 1)
                 }}
             </span>
             to
@@ -79,7 +79,7 @@ const handlePerPageItems = async () => {
         >
             <select
                 v-model="selectedPerPageOption"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
+                class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
                 @change="handlePerPageItems"
             >
                 <option :value="null">
@@ -97,7 +97,7 @@ const handlePerPageItems = async () => {
         <div class="flex gap-x-2">
             <Link
                 v-if="paginator.currentPage - paginator.pagesRange > 1"
-                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]"
+                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white dark:bg-gray-900 dark:text-gray-300 hover:bg-indigo-400 dark:hover:bg-indigo-600"
                 :only="[propName, 'paginator']"
                 :preserve-state="true"
                 :href="generateUrlFromCurrent('page', 1)"
@@ -108,7 +108,7 @@ const handlePerPageItems = async () => {
 
             <Link
                 v-if="paginator.currentPage !== 1"
-                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]"
+                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white dark:bg-gray-900 dark:text-gray-300 hover:bg-indigo-400 dark:hover:bg-indigo-600"
                 :href="
                     generateUrlFromCurrent('page', paginator.currentPage - 1)
                 "
@@ -125,8 +125,8 @@ const handlePerPageItems = async () => {
                     :href="link"
                     :class="
                         key == paginator.currentPage
-                            ? 'bg-[#008FE3] text-white'
-                            : 'text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]'
+                            ? 'bg-indigo-400 dark:bg-indigo-600 text-white'
+                            : 'text-gray-500 dark:text-gray-300 hover:text-white bg-white dark:bg-gray-900 hover:bg-indigo-400 dark:hover:bg-indigo-600'
                     "
                 >
                     {{ key }}
@@ -140,11 +140,11 @@ const handlePerPageItems = async () => {
                 "
                 class="flex items-center gap-2 ml-2"
             >
-                <div class="text-xl tracking-widest mt-2">
+                <div class="text-xl tracking-widest mt-2 dark:text-gray-300">
                     ...
                 </div>
                 <Link
-                    class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]"
+                    class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white dark:bg-gray-900 dark:text-gray-300 hover:bg-indigo-400 dark:hover:bg-indigo-600"
                     :only="[propName]"
                     preserve-scroll
                     :preserve-state="true"
@@ -156,7 +156,7 @@ const handlePerPageItems = async () => {
 
             <Link
                 v-if="paginator.currentPage < paginator.lastPage"
-                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white hover:bg-[#008FE3]"
+                class="element-center rounded w-9 h-9 leading-4 text-sm transition text-gray-500 hover:text-white bg-white dark:bg-gray-900 dark:text-gray-300 hover:bg-indigo-400 dark:hover:bg-indigo-600"
                 :only="[propName]"
                 preserve-scroll
                 :preserve-state="true"

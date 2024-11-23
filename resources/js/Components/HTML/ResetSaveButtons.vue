@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Reset from "@/Icons/Reset.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 defineProps<{
     processing: boolean;
@@ -9,33 +10,17 @@ defineProps<{
 </script>
 
 <template>
-    <div
-        class="w-40 rounded-lg shadow-lg bg-white dark:bg-gray-800 bottom-20 md:bottom-2.5 right-2 sm:right-5 md:right-4 p-2 element-center gap-2 text-white"
-    >
-        <button
+    <div class="flex items-center gap-4">
+        <SecondaryButton
             :disabled="processing"
-            :class="{
-                'bg-[#E50000] hover:bg-red-500 dark:bg-red-700 dark:hover:bg-red-600': !processing,
-                'bg-gray-400 cursor-not-allowed': processing,
-                'rounded p-2 active:scale-95 transition': true,
-            }"
-            type="button"
             @click="$emit('reset')"
         >
-            <Reset />
-        </button>
+            Reset
+        </SecondaryButton>
 
-        <button
-            :disabled="processing"
-            :class="{
-                'bg-[#00A793] hover:bg-emerald-500 dark:bg-emerald-700 dark:hover:bg-emerald-600': !processing,
-                'bg-gray-400 cursor-not-allowed': processing,
-                'rounded px-5 py-2 font-light active:scale-95 transition': true,
-            }"
-            type="submit"
-        >
+        <PrimaryButton :disabled="processing">
             {{ isDelete ? 'Delete' : 'Save' }}
-        </button>
+        </PrimaryButton>
 
         <Transition
             enter-active-class="transition ease-in-out"

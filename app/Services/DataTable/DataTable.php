@@ -110,7 +110,7 @@ class DataTable
      * @param  ?callable $callbackBeforePaginate - callback before the function order and paginate -> Gets the model as param
      * @return self
      */
-    public function run(int $paginate = 50, ?callable $callbackBeforePaginate = null): self
+    public function run(int $paginate = 10, ?callable $callbackBeforePaginate = null): self
     {
         $globalFilterText = request(null)->input('filter.global');
         $paginate = request(null)->input('perPage') ?? $paginate;

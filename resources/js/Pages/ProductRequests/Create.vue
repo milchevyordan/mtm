@@ -6,11 +6,14 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
+import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
+import IconMinus from "@/Icons/Minus.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import IconPlus from "@/Icons/Plus.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Product, ProductRequestForm} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
@@ -22,12 +25,13 @@ defineProps<{
 const form = useForm<ProductRequestForm>({
     id: null!,
     warehouse: usePage().props.auth.user.warehouse,
+    products: [],
     productIds: [],
 });
 
 const save = async (only?: Array<string>) => {
     return new Promise<void>((resolve, reject) => {
-        form.post(route("reports.store"), {
+        form.post(route("product-requests.store"), {
             preserveScroll: true,
             preserveState: true,
             only: only,
@@ -39,6 +43,30 @@ const save = async (only?: Array<string>) => {
             },
         });
     });
+};
+
+const addProduct = (item: Product) => {
+    const resultObject = {
+        [item.id]: {
+            product_id: item.id,
+            quantity: null!,
+        },
+    };
+
+    form.products = { ...form.products, ...resultObject };
+    form.productIds.push(item.id);
+};
+
+const removeProduct = (id: number) => {
+    const formIndex = form.productIds.indexOf(id);
+
+    if (form.products.hasOwnProperty(id)) {
+        delete form.products[id];
+    }
+
+    if (formIndex !== -1) {
+        form.productIds.splice(formIndex, 1);
+    }
 };
 
 </script>
@@ -58,47 +86,7 @@ const save = async (only?: Array<string>) => {
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
-                    class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
-                >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <div class="grid lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                            <form
-                                class="mt-6 space-y-6"
-                                @submit.prevent="save()"
-                            >
-                                <div>
-                                    <InputLabel
-                                        for="warehouse"
-                                        value="Warehouse"
-                                    />
-
-                                    <Select
-                                        id="warehouse"
-                                        v-model="form.warehouse"
-                                        :name="'warehouse'"
-                                        :options="Warehouse"
-                                        :placeholder="'Warehouse'"
-                                        class="mt-1 block w-full mb-3.5"
-                                    />
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.warehouse"
-                                    />
-                                </div>
-
-                                <ResetSaveButtons
-                                    :processing="form.processing"
-                                    :recently-successful="form.recentlySuccessful"
-                                    @reset="form.reset()"
-                                />
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="relative rounded-lg shadow-sm bg-white dark:bg-gray-800 py-4 sm:py-6 px-4 mt-4"
+                    class="relative rounded-lg shadow-sm bg-white dark:bg-gray-800 py-4 sm:py-6 px-4"
                 >
                     <Accordion>
                         <template #head>
@@ -113,6 +101,8 @@ const save = async (only?: Array<string>) => {
                                 :per-page-options="[5, 10, 15, 20, 50]"
                                 :global-search="true"
                                 :advanced-filters="false"
+                                :selected-row-indexes="form.productIds"
+                                :selected-row-column="'id'"
                             >
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
@@ -155,6 +145,24 @@ const save = async (only?: Array<string>) => {
 
                                 <template #cell(action)="{ value, item }">
                                     <div class="flex gap-1.5">
+                                        <button
+                                            v-if="form.productIds.includes(item.id)"
+                                            class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            @click="removeProduct(item.id)"
+                                        >
+                                            <IconMinus
+                                                classes="w-4 h-4 text-[#909090]"
+                                            />
+                                        </button>
+                                        <button
+                                            v-else
+                                            class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            @click="addProduct(item)"
+                                        >
+                                            <IconPlus
+                                                classes="w-4 h-4 text-[#909090]"
+                                            />
+                                        </button>
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Edit product'"
@@ -175,10 +183,64 @@ const save = async (only?: Array<string>) => {
                                             />
                                         </Link>
                                     </div>
+
+                                    <div
+                                        v-if="form.productIds.includes(item.id)"
+                                        class="flex gap-1.5 pt-2"
+                                    >
+                                        <TextInput
+                                            :id="'quantities_' + item.id"
+                                            v-model="form.products[item.id].quantity"
+                                            type="number"
+                                            :placeholder="'Quantity'"
+                                            step="1"
+                                            class="block w-full"
+                                        />
+                                    </div>
                                 </template>
                             </Table>
                         </div>
                     </Accordion>
+                </div>
+
+                <div
+                    class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 mt-4"
+                >
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <div class="grid lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                            <form
+                                class="mt-6 space-y-6"
+                                @submit.prevent="save()"
+                            >
+                                <div>
+                                    <InputLabel
+                                        for="warehouse"
+                                        value="To Warehouse"
+                                    />
+
+                                    <Select
+                                        id="warehouse"
+                                        v-model="form.warehouse"
+                                        :name="'warehouse'"
+                                        :options="Warehouse"
+                                        :placeholder="'To Warehouse'"
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.warehouse"
+                                    />
+                                </div>
+
+                                <ResetSaveButtons
+                                    :processing="form.processing"
+                                    :recently-successful="form.recentlySuccessful"
+                                    @reset="form.reset()"
+                                />
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

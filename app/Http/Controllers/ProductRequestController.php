@@ -9,8 +9,12 @@ use App\Http\Requests\UpdateProductRequestRequest;
 use App\Models\ProductRequest;
 use App\Services\ProductRequestService;
 use App\Services\ProductService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class ProductRequestController extends Controller
 {
@@ -44,10 +48,26 @@ class ProductRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreProductRequestRequest $request
+     * @param  StoreProductRequestRequest $request
+     * @return RedirectResponse
      */
-    public function store(StoreProductRequestRequest $request)
+    public function store(StoreProductRequestRequest $request): RedirectResponse
     {
+        DB::beginTransaction();
+
+        try {
+            $this->service->createProductRequest($request);
+
+            DB::commit();
+
+            return redirect()->route('product-requests.show', ['report' => $this->service->getProductRequest()->id])->with('success', 'The record has been successfully created.');
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error creating record.']);
+        }
     }
 
     /**

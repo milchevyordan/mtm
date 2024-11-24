@@ -29,8 +29,8 @@ class StoreProductRequestRequest extends FormRequest
         return [
             'warehouse'             => ['required', Rule::in(Warehouse::values())],
             'products'              => ['array'],
-            'products.*.product_id' => ['sometimes', 'required_with:products', 'integer'],
-            'products.*.quantity'   => ['sometimes', 'required_with:products', 'integer'],
+            'products.*.product_id' => ['required', 'integer'],
+            'products.*.quantity'   => ['required', 'integer'],
         ];
     }
 }

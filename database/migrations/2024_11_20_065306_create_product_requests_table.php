@@ -24,9 +24,8 @@ return new class () extends Migration {
             $table->enum('status', ProductRequestStatus::values());
             $table->enum('warehouse', Warehouse::values());
 
-            $table->timestamp('accepted_at')->nullable();
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

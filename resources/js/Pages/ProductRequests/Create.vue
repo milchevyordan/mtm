@@ -186,15 +186,20 @@ const removeProduct = (id: number) => {
 
                                     <div
                                         v-if="form.productIds.includes(item.id)"
-                                        class="flex gap-1.5 pt-2"
+                                        class="flex-col gap-1.5 pt-2 min-w-[150px]"
                                     >
                                         <TextInput
                                             :id="'quantities_' + item.id"
                                             v-model="form.products[item.id].quantity"
                                             type="number"
-                                            :placeholder="'Quantity'"
+                                            :placeholder="'Order Quantity'"
                                             step="1"
                                             class="block w-full"
+                                        />
+
+                                        <InputError
+                                            class="mt-2"
+                                            :message="form.errors['products.' + item.id + '.quantity']"
                                         />
                                     </div>
                                 </template>

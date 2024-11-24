@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
+import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
+import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
@@ -12,13 +14,47 @@ import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ProductProductRequest, ProductRequest} from "@/types";
+import {ProductProductRequest, ProductRequest, ProductRequestForm} from "@/types";
 import {replaceEnumUnderscores} from "@/utils";
 
-defineProps<{
+const props = defineProps<{
     productRequest: ProductRequest;
     dataTable: DataTable<ProductProductRequest>;
+    productProductRequest: ProductProductRequest[];
 }>();
+
+const form = useForm<ProductRequestForm>({
+    _method: 'put',
+    id: props.productRequest.id,
+    warehouse: usePage().props.auth.user.warehouse,
+    status: null!,
+    products: props.productProductRequest
+});
+
+const checkClickableStatus = (status: number) => {
+    return status > props.productRequest.status;
+};
+
+const handleStatusUpdate = async (status: number) => {
+    if (!checkClickableStatus(status)){
+        return;
+    }
+
+    form.status = status;
+
+    return new Promise<void>((resolve, reject) => {
+        form.post(route("product-requests.update", props.productRequest.id as number), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                resolve();
+            },
+            onError: () => {
+                reject(new Error("Error, during update"));
+            },
+        });
+    });
+};
 
 const statuses = Object.entries(ProductRequestStatus)
     .filter(([name]) => isNaN(Number(name)))
@@ -59,6 +95,26 @@ const statuses = Object.entries(ProductRequestStatus)
                                 :global-search="true"
                                 :advanced-filters="false"
                             >
+                                <template #cell(actual_quantity)="{ value, item }">
+                                    <div
+                                        class="flex-col gap-1.5 pt-2"
+                                    >
+                                        <TextInput
+                                            :id="'actual_quantities_' + item.product_id"
+                                            v-model="form.products[item.product_id].actual_quantity"
+                                            type="number"
+                                            :placeholder="'Actual Quantity Received'"
+                                            step="1"
+                                            class="block w-full"
+                                        />
+
+                                        <InputError
+                                            class="mt-2"
+                                            :message="form.errors['products.' + item.product_id + '.actual_quantity']"
+                                        />
+                                    </div>
+                                </template>
+
                                 <template #cell(action)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         <Link
@@ -101,12 +157,17 @@ const statuses = Object.entries(ProductRequestStatus)
 
                                     <Select
                                         id="warehouse"
-                                        v-model="productRequest.warehouse"
+                                        v-model="form.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"
                                         :placeholder="'To Warehouse'"
                                         disabled
                                         class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.warehouse"
                                     />
                                 </div>
 
@@ -116,6 +177,10 @@ const statuses = Object.entries(ProductRequestStatus)
                                             v-for="(status, index) in statuses"
                                             :key="index"
                                             class="relative w-full mb-6"
+                                            :class="{
+                                                'cursor-pointer': checkClickableStatus(status.value as number)
+                                            }"
+                                            @click="handleStatusUpdate(status.value as number)"
                                         >
                                             <div class="flex items-center">
                                                 <div
@@ -128,7 +193,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                                     <Tick />
                                                 </div>
                                                 <div
-                                                    v-if="(status.value as number) < statuses.length"
+                                                    v-if="status.value as number < statuses.length"
                                                     class="flex w-full bg-gray-200 h-0.5 dark:bg-gray-700"
                                                 />
                                             </div>

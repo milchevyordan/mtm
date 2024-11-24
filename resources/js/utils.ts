@@ -39,6 +39,21 @@ export function enumToOptions(
     return options;
 }
 
+export function replaceEnumUnderscores(
+    string: string | { [key: string]: number } | undefined
+) {
+    if (typeof string === "string") {
+        return string.replace(/_/g, " ");
+    }
+
+    if (typeof string === "undefined") {
+        return "";
+    }
+
+    const keys = Object.keys(string);
+    return keys.map((key) => key.replace(/_/g, " ")).join(" ");
+}
+
 export function replaceUnderscores(object: { [key: string]: any }) {
     const newObject: { [key: string]: any } = {};
 

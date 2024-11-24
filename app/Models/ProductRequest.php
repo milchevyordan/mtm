@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ProductRequestStatus;
 use App\Enums\Warehouse;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductRequest extends Model
 {
     use HasCreator;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +33,7 @@ class ProductRequest extends Model
      */
     protected $casts = [
         'warehouse' => Warehouse::class,
+        'status'    => ProductRequestStatus::class,
     ];
 
     /**
@@ -38,6 +43,16 @@ class ProductRequest extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_product_request');
+        return $this->belongsToMany(Product::class, 'product_product_requests');
+    }
+
+    /**
+     * Return products in this product request.
+     *
+     * @return HasMany
+     */
+    public function productProductRequest(): HasMany
+    {
+        return $this->hasMany(ProductProductRequest::class);
     }
 }

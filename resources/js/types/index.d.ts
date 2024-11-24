@@ -145,14 +145,22 @@ export interface ProductRequest {
     creator_id: number;
     status: Enum<typeof ProductRequestStatus>;
     warehouse: Enum<typeof Warehouse>;
-    accepted_at?: Date;
     creator?: User;
     products?: Product[];
     readonly created_at?: Date;
 }
 
 export interface ProductRequestForm extends Omit<ProductRequest, "creator_id", "status">, Form, FormMethod {
-    productIds: number[];
+    products: any;
+}
+
+export interface ProductProductRequest {
+    id: number;
+    product_request_id: number;
+    product_id: number;
+    quantity: number;
+    actual_quantity: number;
+    readonly created_at?: Date;
 }
 
 export interface ProductReport {

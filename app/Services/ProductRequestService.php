@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Enums\ProductRequestStatus;
 use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequestRequest;
+use App\Http\Requests\UpdateProductRequestRequest;
 use App\Models\ProductProductRequest;
 use App\Models\ProductRequest;
 use App\Services\DataTable\DataTable;
@@ -52,7 +53,7 @@ class ProductRequestService
     }
 
     /**
-     * Create the report.
+     * Create the product request.
      *
      * @param  StoreProductRequestRequest $request
      * @return self
@@ -68,6 +69,34 @@ class ProductRequestService
         $this->setProductRequest($productRequest);
 
         $this->syncProducts($validatedRequest['products']);
+
+        return $this;
+    }
+
+    /**
+     * Create the product request.
+     *
+     * @param  UpdateProductRequestRequest $request
+     * @return self
+     */
+    public function updateProductRequest(UpdateProductRequestRequest $request): self
+    {
+        $productRequest = $this->getProductRequest();
+
+        $changeLoggerService = new ChangeLoggerService($productRequest, ['productProductRequest']);
+
+        $validatedRequest = $request->validated();
+
+        $productRequest->status = $validatedRequest['status'];
+        $productRequest->save();
+
+        $productRequest->productProductRequest()->upsert(
+            $validatedRequest['products'] ?? [],
+            ['id'],
+            ['actual_quantity', 'quantity']
+        );
+
+        $changeLoggerService->logChanges($productRequest);
 
         return $this;
     }
@@ -108,13 +137,13 @@ class ProductRequestService
             ->setRelation('creator')
             ->setColumn('id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
-            ->setColumn('warehouse', 'Warehouse', true, true)
+            ->setColumn('warehouse', 'To Warehouse', true, true)
             ->setColumn('status', 'Status', true, true)
             ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('accepted_at', 'Accepted', true, true)
+            ->setColumn('updated_at', 'Updated', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setDateColumn('accepted_at', 'dd.mm.YYYY H:i')
+            ->setDateColumn('updated_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('status', ProductRequestStatus::class)
             ->setEnumColumn('warehouse', Warehouse::class)
             ->run();

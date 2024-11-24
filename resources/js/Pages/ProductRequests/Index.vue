@@ -12,7 +12,8 @@ import DocumentText from "@/Icons/DocumentText.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {DeleteForm, ProductRequest} from "@/types";
-import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
+import IconPencilSquare from "@/Icons/PencilSquare.vue";
 
 defineProps<{
     dataTable: DataTable<ProductRequest>;
@@ -84,7 +85,7 @@ const handleDelete = () => {
 
                             <template #cell(status)="{ value, item }">
                                 <div class="flex gap-1.5">
-                                    {{ findEnumKeyByValue(ProductRequestStatus, value) }}
+                                    {{ replaceEnumUnderscores(findEnumKeyByValue(ProductRequestStatus, value)) }}
                                 </div>
                             </template>
 
@@ -94,7 +95,7 @@ const handleDelete = () => {
                                 </div>
                             </template>
 
-                            <template #cell(accepted_at)="{ value, item }">
+                            <template #cell(updated_at)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     {{ dateTimeToLocaleString(value) }}
                                 </div>
@@ -109,8 +110,19 @@ const handleDelete = () => {
                             <template #cell(action)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     <Link
+                                        v-if="item.status == ProductRequestStatus.Not_delivered_yet"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show report'"
+                                        :title="'Edit product request'"
+                                        :href="route('product-requests.edit', item.id)"
+                                    >
+                                        <IconPencilSquare
+                                            classes="w-4 h-4 text-[#909090]"
+                                        />
+                                    </Link>
+
+                                    <Link
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                        :title="'Show product request'"
                                         :href="route('product-requests.show', item.id)"
                                     >
                                         <DocumentText

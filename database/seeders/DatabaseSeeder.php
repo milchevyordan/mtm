@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
         ProductQuantity::insert($productQuantityInserts);
 
         $projectInserts = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $projectInserts[] = [
                 'creator_id' => 1,
                 'warehouse'  => $faker->randomElement(Warehouse::values()),

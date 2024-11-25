@@ -236,7 +236,7 @@ const handleDelete = () => {
                             >
                                 <template #cell(project.warehouse)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ findEnumKeyByValue(Warehouse, item.project.warehouse) }}
+                                        {{ item.project ? findEnumKeyByValue(Warehouse, item.project.warehouse) : "" }}
                                     </div>
                                 </template>
 
@@ -251,7 +251,7 @@ const handleDelete = () => {
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Edit project'"
-                                            :href="route('projects.edit', item.project?.id)"
+                                            :href="route('projects.edit', item.project_id)"
                                         >
                                             <IconPencilSquare
                                                 classes="w-4 h-4 text-[#909090]"
@@ -286,7 +286,7 @@ const handleDelete = () => {
         </div>
 
         <form
-            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
+            class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4"
             @submit.prevent="handleDelete"
         >
             <ResetSaveButtons

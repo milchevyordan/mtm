@@ -39,7 +39,10 @@ const handleModelChange = (value: boolean) => {
                     :label="leftButtonLabel"
                     :name="name"
                     :disabled="disabled"
-                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-r-0 rounded-l-md bg-white dark:bg-gray-900 dark:border-gray-700"
+                    classes="peer-checked:bg-indigo-500 peer-checked:text-white peer-checked:border-indigo-200
+                         border border-r-0 rounded-l-md bg-white dark:bg-gray-900
+                         dark:border-gray-700 dark:peer-checked:bg-indigo-600
+                         dark:peer-checked:border-indigo-600"
                     :checked="model == true"
                     @click="handleModelChange(true)"
                 />
@@ -51,7 +54,10 @@ const handleModelChange = (value: boolean) => {
                     :label="rightButtonLabel"
                     :name="name"
                     :disabled="disabled"
-                    classes="peer-checked:bg-[#008FE3] peer-checked:text-white peer-checked:border-blue-200 border border-l-0 rounded-r-md bg-white dark:bg-gray-900 dark:border-gray-700"
+                    classes="peer-checked:bg-indigo-500 peer-checked:text-white peer-checked:border-indigo-200
+                         border border-l-0 rounded-r-md bg-white dark:bg-gray-900
+                         dark:border-gray-700 dark:peer-checked:bg-indigo-600
+                         dark:peer-checked:border-indigo-600"
                     :checked="model == false"
                     @click="handleModelChange(false)"
                 />

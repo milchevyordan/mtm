@@ -53,6 +53,6 @@ class Report extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_reports');
+        return $this->belongsToMany(Product::class, 'product_reports')->withPivot('quantity');
     }
 }

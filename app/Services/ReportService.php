@@ -8,6 +8,10 @@ use App\Http\Requests\StoreReportRequest;
 use App\Models\ProductProject;
 use App\Models\Report;
 use App\Services\DataTable\DataTable;
+use App\Services\Pdf\Pagination\Paginator;
+use App\Services\Pdf\PdfService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ReportService
 {
@@ -65,7 +69,9 @@ class ReportService
         $report->save();
 
         $productReportInserts = [];
-        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])->whereBetween('created_at', [$validatedRequest['date_from'], $validatedRequest['date_to']])->get() as $productProject) {
+        foreach (ProductProject::whereIn('project_id', $validatedRequest['projects'])
+            ->whereBetween('created_at', [Carbon::parse($validatedRequest['date_from'])->startOfDay(), Carbon::parse($validatedRequest['date_to'])->endOfDay()])
+            ->get() as $productProject) {
             $productId = $productProject->product_id;
 
             if (isset($productReportInserts[$productId])) {
@@ -83,6 +89,35 @@ class ReportService
         $this->setReport($report);
 
         return $this;
+    }
+
+    /**
+     * Create pdf and return its name or path.
+     *
+     * @return string
+     */
+    public function createReportPdf(): string
+    {
+        $report = $this->getReport();
+        $report->load('products:id,name,internal_id', 'projects:id,name', 'creator');
+
+        $pdfService = new PdfService(
+            'templates/report',
+            [
+                'report' => $report,
+            ],
+        );
+
+        $fileOutput = $pdfService->setPaginator(new Paginator(x: 40, y: 800))->setCanvasImageRenderers()->generate();
+
+        $uniqueName = "report_{$report->id}" . '_' . time() . '_' . uniqid() . '.pdf';
+
+        Storage::disk('public')->put($uniqueName, $fileOutput);
+
+        $report->pdf_path = $uniqueName;
+        $report->save();
+
+        return $uniqueName;
     }
 
     /**

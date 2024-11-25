@@ -284,7 +284,7 @@ const handleRestoreRecord = async (id: number) => {
                             "
                         >
                             <button
-                                class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition bg-blue-100 text-blue-500 duration-300 ease-in-out hover:bg-blue-200"
+                                class="border border-[#E9E7E7] rounded-md p-1 active:scale-90 transition bg-blue-100 text-blue-500 duration-300 ease-in-out hover:bg-blue-200 dark:border-gray-700 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800"
                                 :title="'Restore'"
                                 @click="handleRestoreRecord(rowData['id'])"
                             >

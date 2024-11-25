@@ -131,6 +131,7 @@ export interface Report {
     creator_id: number;
     date_from: Date;
     date_to: Date;
+    pdf_path?: string;
     creator?: User;
     products?: Product[];
     projects?: Project[];

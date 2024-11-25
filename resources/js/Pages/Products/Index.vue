@@ -328,7 +328,7 @@ const handleDelete = () => {
                 />
             </div>
 
-            <div class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4">
+            <div class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4">
                 <ResetSaveButtons
                     :processing="updateQuantityForm.processing"
                     :recently-successful="updateQuantityForm.recentlySuccessful"
@@ -418,7 +418,7 @@ const handleDelete = () => {
                 />
             </div>
 
-            <div class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4">
+            <div class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4">
                 <ResetSaveButtons
                     :processing="updateQuantityForm.processing"
                     :recently-successful="updateQuantityForm.recentlySuccessful"
@@ -439,7 +439,7 @@ const handleDelete = () => {
         </div>
 
         <form
-            class="col-span-2 flex justify-end gap-3 mt-2 pt-1 px-4"
+            class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4"
             @submit.prevent="handleDelete"
         >
             <ResetSaveButtons

@@ -73,7 +73,7 @@ const save = async (only?: Array<string>) => {
                                         id="date_from"
                                         v-model="form.date_from"
                                         type="date"
-                                        :max="form.date_to"
+                                        :max="form.date_to || today"
                                         class="mt-1 block w-full"
                                         required
                                     />

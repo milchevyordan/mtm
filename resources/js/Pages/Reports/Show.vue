@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -9,12 +9,33 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductReport, Project, Report} from "@/types";
+import {downloadPdf} from "@/utils";
 
-defineProps<{
+const props = defineProps<{
     report: Report;
     projects: Multiselect<Project>;
-    dataTable: DataTable<ProductReport>
+    dataTable: DataTable<ProductReport>;
+    pdfPath?: string;
 }>();
+
+const handleDownloadPdf = async () => {
+    if (props.report.pdf_path) {
+        downloadPdf(props.report.pdf_path);
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        router.reload({
+            only: ["pdfPath"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    if (props.pdfPath){
+        downloadPdf(props.pdfPath);
+    }
+};
 </script>
 
 <template>
@@ -48,7 +69,7 @@ defineProps<{
                                         :model-value="report.date_from"
                                         type="date"
                                         class="mt-1 block w-full"
-                                        required
+                                        disabled
                                     />
                                 </div>
 
@@ -63,7 +84,7 @@ defineProps<{
                                         :model-value="report.date_to"
                                         type="date"
                                         class="mt-1 block w-full"
-                                        required
+                                        disabled
                                     />
                                 </div>
 
@@ -105,7 +126,18 @@ defineProps<{
                                 :per-page-options="[5, 10, 15, 20, 50]"
                                 :global-search="true"
                                 :advanced-filters="false"
-                            />
+                            >
+                                <template #additionalContent>
+                                    <div class="w-full flex gap-2">
+                                        <button
+                                            class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                                            @click="handleDownloadPdf"
+                                        >
+                                            Download Pdf
+                                        </button>
+                                    </div>
+                                </template>
+                            </Table>
                         </div>
                     </Accordion>
                 </div>

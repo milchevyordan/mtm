@@ -22,6 +22,8 @@ return new class () extends Migration {
             $table->date('date_from');
             $table->date('date_to');
 
+            $table->string('pdf_path')->nullable();
+
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
         });

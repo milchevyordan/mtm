@@ -65,9 +65,14 @@ export function replaceUnderscores(object: { [key: string]: any }) {
     return newObject;
 }
 
+export const downloadPdf = (path: string) => {
+    const encodedPath = encodeURIComponent(path);
+    location.replace(route("files.download", encodedPath as string));
+}
+
 export const today = computed(() => {
     const date = new Date();
-    return date.toISOString().split('T')[0];
+    return date.toLocaleDateString('en-CA');
 });
 
 export const warehouses = Object.entries(Warehouse)

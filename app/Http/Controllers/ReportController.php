@@ -87,7 +87,9 @@ class ReportController extends Controller
             ProductReport::where('report_id', $report->id)
         ))
             ->setOrdering(new Ordering('product_id'))
-            ->setRelation('product', ['id', 'name'])
+            ->setRelation('product', ['id', 'name', 'internal_id'])
+            ->setColumn('product.id', '#', true, true)
+            ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->run();
@@ -96,6 +98,7 @@ class ReportController extends Controller
             'report'    => $report,
             'projects'  => fn () => (new MultiSelectService(Project::whereIn('id', $report->projects->pluck('id'))))->dataForSelect(),
             'dataTable' => fn () => $dataTable,
+            'pdfPath'   => Inertia::lazy(fn () => $this->service->setReport($report)->createReportPdf()),
         ]);
     }
 

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductRequestController;
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
+
+    Route::get('/files/download/{path}', [FileController::class, 'download'])->name('files.download');
 });
 
 require __DIR__ . '/auth.php';

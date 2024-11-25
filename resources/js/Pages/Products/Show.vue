@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
@@ -8,6 +8,7 @@ import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
+import DocumentText from "@/Icons/DocumentText.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, warehouses} from "@/utils";
@@ -57,10 +58,10 @@ const form = useForm<ProductForm>({
 
                                     <TextInput
                                         id="name"
-                                        v-model="product.name"
+                                        :model-value="product.name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        required
+                                        disabled
                                         autocomplete="name"
                                     />
                                 </div>
@@ -73,8 +74,9 @@ const form = useForm<ProductForm>({
 
                                     <TextInput
                                         id="internal_id"
-                                        v-model="product.internal_id"
+                                        :model-value="product.internal_id"
                                         type="text"
+                                        disabled
                                         class="mt-1 block w-full"
                                     />
                                 </div>
@@ -87,9 +89,10 @@ const form = useForm<ProductForm>({
 
                                     <TextInput
                                         id="minimum_quantity"
-                                        v-model="product.minimum_quantity"
+                                        :model-value="product.minimum_quantity"
                                         type="number"
                                         step="1"
+                                        disabled
                                         class="mt-1 block w-full"
                                     />
                                 </div>
@@ -105,7 +108,7 @@ const form = useForm<ProductForm>({
 
                                     <TextInput
                                         :id="'quantities_' + warehouse.name"
-                                        v-model="form.quantities[warehouse.name]"
+                                        :model-value="form.quantities[warehouse.name]"
                                         type="number"
                                         step="1"
                                         disabled
@@ -141,13 +144,27 @@ const form = useForm<ProductForm>({
                             >
                                 <template #cell(project.warehouse)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ findEnumKeyByValue(Warehouse, item.project.warehouse) }}
+                                        {{ item.project ? findEnumKeyByValue(Warehouse, item.project.warehouse) : "" }}
                                     </div>
                                 </template>
 
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
+
+                                <template #cell(action)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        <Link
+                                            class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            :title="'Show project'"
+                                            :href="route('projects.show', item.project_id)"
+                                        >
+                                            <DocumentText
+                                                classes="w-4 h-4 text-[#909090]"
+                                            />
+                                        </Link>
                                     </div>
                                 </template>
                             </Table>

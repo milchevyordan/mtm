@@ -95,11 +95,13 @@ class ProductController extends Controller
         ))
             ->setRelation('project', ['id', 'name', 'warehouse'])
             ->setRelation('creator')
+            ->setColumn('project.id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('project.name', 'Name', true, true)
             ->setColumn('project.warehouse', 'Warehouse', false, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->setColumn('created_at', 'Created', true, true)
+            ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('project.warehouse', Warehouse::class)
             ->run();

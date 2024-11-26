@@ -26,7 +26,7 @@ const props = defineProps<{
 const form = useForm<ProductRequestForm>({
     _method: 'put',
     id: props.productRequest.id,
-    warehouse: usePage().props.auth.user.warehouse,
+    warehouse: props.productRequest.warehouse,
     status: null!,
     products: props.productProductRequest
 });

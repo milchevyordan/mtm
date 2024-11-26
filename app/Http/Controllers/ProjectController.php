@@ -10,7 +10,6 @@ use App\Models\ProductProject;
 use App\Models\Project;
 use App\Services\ChangeLoggerService;
 use App\Services\ChangeLogService;
-use App\Services\DataTable\DataTable;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -86,22 +85,9 @@ class ProjectController extends Controller
     {
         $project->load(['changeLogsLimited']);
 
-        $dataTable = (new DataTable(
-            ProductProject::where('project_id', $project->id)
-        ))
-            ->setRelation('creator')
-            ->setRelation('product', ['id', 'name'])
-            ->setColumn('id', '#', true, true)
-            ->setColumn('creator.name', 'Creator', true, true)
-            ->setColumn('product.name', 'Name', true, true)
-            ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->run();
-
         return Inertia::render('Projects/Show', [
             'project'    => $project,
-            'dataTable'  => fn () => $dataTable,
+            'dataTable'  => fn () => $this->service->getProductsDataTable($project->id),
             'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
         ]);
     }
@@ -116,23 +102,9 @@ class ProjectController extends Controller
     {
         $project->load(['changeLogsLimited']);
 
-        $dataTable = (new DataTable(
-            ProductProject::where('project_id', $project->id)
-        ))
-            ->setRelation('creator')
-            ->setRelation('product', ['id', 'name'])
-            ->setColumn('product.id', '#', true, true)
-            ->setColumn('creator.name', 'Creator', true, true)
-            ->setColumn('product.name', 'Name', true, true)
-            ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('action', 'Action')
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->run();
-
         return Inertia::render('Projects/Edit', [
             'project'    => $project,
-            'dataTable'  => fn () => $dataTable,
+            'dataTable'  => fn () => $this->service->getProductsDataTable($project->id),
             'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
         ]);
     }

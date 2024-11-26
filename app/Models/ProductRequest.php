@@ -10,6 +10,7 @@ use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductRequest extends Model
@@ -54,5 +55,22 @@ class ProductRequest extends Model
     public function productProductRequest(): HasMany
     {
         return $this->hasMany(ProductProductRequest::class);
+    }
+
+    /**
+     * Return relation that will be used in change log.
+     *
+     * @return HasManyThrough
+     */
+    public function productQuantities(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ProductQuantity::class,
+            ProductProductRequest::class,
+            'product_request_id',
+            'product_id',
+            'id',
+            'product_id'
+        )->where('product_quantities.warehouse', $this->warehouse);
     }
 }

@@ -134,16 +134,28 @@ class ProjectService
             return null;
         }
 
+        return $this->getProductsDataTable($projectId);
+    }
+
+    /**
+     * Return datatable of products connected to this project.
+     *
+     * @param            $projectId
+     * @return DataTable
+     */
+    public function getProductsDataTable($projectId): DataTable
+    {
         return (new DataTable(
             ProductProject::where('project_id', $projectId)
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name'])
-            ->setColumn('id', '#', true, true)
+            ->setColumn('product.id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->setColumn('created_at', 'Created', true, true)
+            ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
     }

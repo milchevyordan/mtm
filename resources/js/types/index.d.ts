@@ -60,6 +60,16 @@ interface ChangeLogsChange {
     new: string;
 }
 
+export interface Notification {
+    readonly id: number;
+    creator: User;
+    data: {
+        user_name: string;
+        model_name: string;
+        model_id: number;
+    };
+}
+
 export interface ProductQuantity {
     id: number;
     product_id: number;

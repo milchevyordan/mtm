@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
@@ -12,6 +12,7 @@ import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
+import DocumentText from "@/Icons/DocumentText.vue";
 
 defineProps<{
     project: Project;
@@ -95,6 +96,20 @@ defineProps<{
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
+
+                                <template #cell(action)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        <Link
+                                            class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            :title="'Show product'"
+                                            :href="route('products.show', item.product_id)"
+                                        >
+                                            <DocumentText
+                                                classes="w-4 h-4 text-[#909090]"
+                                            />
+                                        </Link>
                                     </div>
                                 </template>
                             </Table>

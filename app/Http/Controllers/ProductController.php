@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\Warehouse;
 use App\Http\Requests\AddProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Models\ProductProject;
 use App\Models\Project;
 use App\Services\ChangeLogService;
-use App\Services\DataTable\DataTable;
 use App\Services\MultiSelectService;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
@@ -41,9 +38,10 @@ class ProductController extends Controller
     public function index(?string $slug = null): Response
     {
         return Inertia::render('Products/Index', [
-            'dataTable'        => fn () => $this->service->getIndexMethodDatatable($slug),
-            'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
-            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
+            'dataTable'             => fn () => $this->service->getIndexMethodDatatable($slug),
+            'projects'              => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
+            'projectWarehouse'      => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
+            'showProjectsDataTable' => Inertia::lazy(fn () => $this->service->getShowProjectsDataTable()),
         ]);
     }
 
@@ -90,25 +88,9 @@ class ProductController extends Controller
     {
         $product->load(['changeLogsLimited', 'quantity']);
 
-        $dataTable = (new DataTable(
-            ProductProject::where('product_id', $product->id)
-        ))
-            ->setRelation('project', ['id', 'name', 'warehouse'])
-            ->setRelation('creator')
-            ->setColumn('project.id', '#', true, true)
-            ->setColumn('creator.name', 'Creator', true, true)
-            ->setColumn('project.name', 'Name', true, true)
-            ->setColumn('project.warehouse', 'Warehouse', false, true)
-            ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('action', 'Action')
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setEnumColumn('project.warehouse', Warehouse::class)
-            ->run();
-
         return Inertia::render('Products/Show', [
             'product'    => $product,
-            'dataTable'  => fn () => $dataTable,
+            'dataTable'  => fn () => $this->service->getProjectsDataTable($product->id),
             'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($product)),
         ]);
     }
@@ -123,25 +105,9 @@ class ProductController extends Controller
     {
         $product->load(['changeLogsLimited', 'quantity']);
 
-        $dataTable = (new DataTable(
-            ProductProject::where('product_id', $product->id)
-        ))
-            ->setRelation('project', ['id', 'name', 'warehouse'])
-            ->setRelation('creator')
-            ->setColumn('project.id', '#', true, true)
-            ->setColumn('creator.name', 'Creator', true, true)
-            ->setColumn('project.name', 'Name', true, true)
-            ->setColumn('project.warehouse', 'Warehouse', false, true)
-            ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('action', 'Action')
-            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-            ->setEnumColumn('project.warehouse', Warehouse::class)
-            ->run();
-
         return Inertia::render('Products/Edit', [
             'product'    => $product,
-            'dataTable'  => fn () => $dataTable,
+            'dataTable'  => fn () => $this->service->getProjectsDataTable($product->id),
             'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($product)),
         ]);
     }

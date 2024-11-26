@@ -7,9 +7,7 @@ namespace App\Http\Controllers;
 use App\Enums\ProductRequestStatus;
 use App\Http\Requests\StoreProductRequestRequest;
 use App\Http\Requests\UpdateProductRequestRequest;
-use App\Models\ProductProductRequest;
 use App\Models\ProductRequest;
-use App\Services\DataTable\DataTable;
 use App\Services\ProductRequestService;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
@@ -81,19 +79,9 @@ class ProductRequestController extends Controller
      */
     public function show(ProductRequest $productRequest): Response
     {
-        $dataTable = (new DataTable(
-            ProductProductRequest::where('product_request_id', $productRequest->id)
-        ))
-            ->setRelation('product', ['id', 'name'])
-            ->setColumn('product.name', 'Name', true, true)
-            ->setColumn('quantity', 'Quantity Ordered', true, true)
-            ->setColumn('actual_quantity', 'Actual Quantity Received', true, true)
-            ->setColumn('action', 'Action')
-            ->run();
-
         return Inertia::render('ProductRequests/Show', [
             'productRequest' => $productRequest,
-            'dataTable'      => fn () => $dataTable,
+            'dataTable'      => fn () => $this->service->getProductsDataTable($productRequest->id),
         ]);
     }
 
@@ -111,19 +99,9 @@ class ProductRequestController extends Controller
 
         $productRequest->load('productProductRequest');
 
-        $dataTable = (new DataTable(
-            ProductProductRequest::where('product_request_id', $productRequest->id)
-        ))
-            ->setRelation('product', ['id', 'name'])
-            ->setColumn('product.name', 'Name', true, true)
-            ->setColumn('quantity', 'Quantity Ordered', true, true)
-            ->setColumn('actual_quantity', 'Actual Quantity Received', true, true)
-            ->setColumn('action', 'Action')
-            ->run();
-
         return Inertia::render('ProductRequests/Edit', [
             'productRequest'        => $productRequest,
-            'dataTable'             => fn () => $dataTable,
+            'dataTable'             => fn () => $this->service->getProductsDataTable($productRequest->id),
             'productProductRequest' => fn () => $productRequest->productProductRequest->pluck(null, 'product_id'),
         ]);
     }

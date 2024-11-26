@@ -143,6 +143,22 @@ class DataTable
         return $this;
     }
 
+    /**
+     * Set timestamps for created at and updated at.
+     *
+     * @return self
+     */
+    public function setTimestamps(): self
+    {
+        $this
+            ->setColumn('created_at', __('Date'), true, true)
+            ->setColumn('updated_at', __('Updated'), true, true)
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setDateColumn('updated_at', 'dd.mm.YYYY H:i');
+
+        return $this;
+    }
+
     private function initRelations(): void
     {
         $builder = $this->getBuilder();
@@ -151,6 +167,10 @@ class DataTable
             $builder->with(
                 [$relation->relationsString => function ($query) use ($relation) {
                     $relationSelectColumns = $relation?->columnsToSelect ?? null;
+
+                    if (method_exists($relation, 'getWithTrashed') && $relation->getWithTrashed() && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($query->getModel()), true)) {
+                        $query->withTrashed();
+                    }
 
                     if ($relationSelectColumns) {
                         $query->select($relationSelectColumns);
@@ -428,13 +448,14 @@ class DataTable
     /**
      * Set the value of relations.
      *
-     * @param  string $relationString
-     * @param  ?array $columnsToSelect
+     * @param  string    $relationString
+     * @param  ?array    $columnsToSelect
+     * @param  null|bool $withTrashed
      * @return self
      */
-    public function setRelation(string $relationString, ?array $columnsToSelect = null): self
+    public function setRelation(string $relationString, ?array $columnsToSelect = null, ?bool $withTrashed = true): self
     {
-        $relation = new TableRelation($relationString);
+        $relation = new TableRelation($relationString, $withTrashed);
 
         if (! empty($columnsToSelect)) {
             $relation->setColumnsToSelect($columnsToSelect);

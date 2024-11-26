@@ -5,18 +5,8 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import Check from "@/Icons/Check.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {User} from "@/types";
+import {FormMethod} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
-
-interface Notification {
-    readonly id: number;
-    creator: User;
-    data: {
-        user_name: string;
-        model_name: string;
-        model_id: number;
-    };
-}
 
 defineProps<{
     dataTable: DataTable<Notification>;
@@ -39,6 +29,20 @@ const markRead = (itemId: number) => {
         },
         onError: () => {
         },
+    });
+};
+
+const markAllReadForm = useForm<FormMethod>({
+    _method: "post",
+});
+
+
+const markAllRead = () => {
+    markAllReadForm.post(route("notifications.read-all"), {
+        preserveScroll: true,
+        onSuccess: () => {
+        },
+        onError: () => {},
     });
 };
 </script>
@@ -68,6 +72,17 @@ const markRead = (itemId: number) => {
                             :selected-row-indexes="unreadNotificationIds"
                             :selected-row-column="'id'"
                         >
+                            <template #additionalContent>
+                                <div class="w-full flex gap-2">
+                                    <button
+                                        class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                                        @click="markAllRead"
+                                    >
+                                        Mark all as read
+                                    </button>
+                                </div>
+                            </template>
+
                             <template #cell(data)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     {{ value.message }}

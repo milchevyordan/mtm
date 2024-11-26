@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\DataTable\DataTable;
-use App\Services\DataTable\RawOrdering;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -35,8 +34,6 @@ class NotificationController extends Controller
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setDateColumn('read_at', 'dd.mm.YYYY H:i');
 
-        $dataTable->setRawOrdering(new RawOrdering('read_at IS NULL'));
-
         return Inertia::render('Notifications/Index', [
             'dataTable'             => fn () => $dataTable->run(),
             'unreadNotificationIds' => fn () => $unreadNotificationIds,
@@ -64,6 +61,29 @@ class NotificationController extends Controller
             Log::error($th->getMessage(), ['exception' => $th]);
 
             return redirect()->back()->withErrors(['Error marking notification.']);
+        }
+    }
+
+    /**
+     * Mark notification as read.
+     *
+     * @return RedirectResponse
+     */
+    public function readAll(): RedirectResponse
+    {
+        try {
+            $user = auth()->user();
+
+            $user->unreadNotifications
+                ->markAsRead();
+
+            Cache::forget("user_{$user->id}");
+
+            return redirect()->back()->with('success', __('All notification marked read.'));
+        } catch (Throwable $th) {
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors([__('Error marking notifications.')]);
         }
     }
 }

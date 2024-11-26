@@ -102,10 +102,10 @@ class ProductService
 
         if (isset($this->warehouseColumns[$slug])) {
             [$column, $label] = $this->warehouseColumns[$slug];
-            $dataTable->setColumn($column, $label, true, true);
+            $dataTable->setColumn($column, $label, true);
         } else {
             foreach ($this->warehouseColumns as [$column, $label]) {
-                $dataTable->setColumn($column, $label, true, true);
+                $dataTable->setColumn($column, $label, true);
             }
         }
 
@@ -263,5 +263,46 @@ class ProductService
         $changeLoggerService->logChanges($product);
 
         return $this;
+    }
+
+    /**
+     * Return datatable of projects connected to this product.
+     *
+     * @return null|DataTable
+     */
+    public function getShowProjectsDataTable(): DataTable|null
+    {
+        $productId = request()->input('product_id');
+
+        if (! $productId) {
+            return null;
+        }
+
+        return $this->getProjectsDataTable($productId);
+    }
+
+    /**
+     * Return datatable of projects connected to this product.
+     *
+     * @param            $productId
+     * @return DataTable
+     */
+    public function getProjectsDataTable($productId): DataTable
+    {
+        return (new DataTable(
+            ProductProject::where('product_id', $productId)
+        ))
+            ->setRelation('project', ['id', 'name', 'warehouse'])
+            ->setRelation('creator')
+            ->setColumn('project.id', '#', true, true)
+            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('project.name', 'Name', true, true)
+            ->setColumn('project.warehouse', 'Warehouse', false, true)
+            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('created_at', 'Created', true, true)
+            ->setColumn('action', 'Action')
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('project.warehouse', Warehouse::class)
+            ->run();
     }
 }

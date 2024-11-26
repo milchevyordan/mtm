@@ -133,7 +133,13 @@ const statuses = Object.entries(ProductRequestStatus)
                                                 />
                                             </div>
                                             <div class="mt-3">
-                                                <h3 class="font-medium text-gray-900 dark:text-white">
+                                                <h3
+                                                    class="font-medium"
+                                                    :class="{
+                                                        'text-gray-900 dark:text-white': productRequest.status >= (status.value as number),
+                                                        'text-gray-200 dark:text-gray-700': productRequest.status < (status.value as number),
+                                                    }"
+                                                >
                                                     {{ replaceEnumUnderscores(status.name) }}
                                                 </h3>
                                             </div>

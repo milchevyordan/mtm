@@ -18,7 +18,7 @@ import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {
     DeleteForm,
-    Product,
+    Product, ProductProject,
     ProductProjectForm,
     ProductQuantity,
     ProductQuantityForm,
@@ -30,12 +30,33 @@ import {
     findEnumKeyByValue,
     findKeyByValue
 } from "@/utils";
+import IconDocument from "@/Icons/Document.vue";
 
 const props = defineProps<{
     dataTable: DataTable<Product>;
     projects?: Multiselect<Project>;
     projectWarehouse?: Record<number, number>;
+    showProjectsDataTable?: DataTable<ProductProject>;
 }>();
+
+const showProjectsDataTableModal = ref<boolean>(false);
+
+const closeProjectsDataTableModal = () => {
+    showProjectsDataTableModal.value = false;
+};
+
+const openShowProjectsDataTableModal = async (id: number) => {
+    await new Promise((resolve, reject) => {
+        router.reload({
+            data: { product_id: id },
+            only: ["showProjectsDataTable"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    showProjectsDataTableModal.value = true;
+};
 
 const showChangeQuantityModal = ref(false);
 const showAddToProjectModal = ref(false);
@@ -278,6 +299,14 @@ const handleDelete = () => {
                                     </button>
 
                                     <button
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                        :title="'Show products'"
+                                        @click="openShowProjectsDataTableModal(item.id)"
+                                    >
+                                        <IconDocument classes="w-4 h-4 text-[#909090]" />
+                                    </button>
+
+                                    <button
                                         :title="'Delete'"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
@@ -426,6 +455,57 @@ const handleDelete = () => {
                 />
             </div>
         </form>
+    </Modal>
+
+    <Modal
+        :show="showProjectsDataTableModal"
+        max-width="6xl"
+        @close="closeProjectsDataTableModal"
+    >
+        <div
+            class="px-3.5 p-3 text-xl font-medium"
+        >
+            Projects
+        </div>
+
+        <div
+            v-if="showProjectsDataTable"
+            class="text-gray-900 dark:text-gray-100"
+        >
+            <Table
+                :data-table="showProjectsDataTable"
+                :per-page-options="[5, 10, 15, 20, 50]"
+                :global-search="true"
+                :advanced-filters="false"
+                prop-name="showProjectsDataTable"
+            >
+                <template #cell(created_at)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        {{ dateTimeToLocaleString(value) }}
+                    </div>
+                </template>
+
+                <template #cell(project.warehouse)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        {{ findEnumKeyByValue(Warehouse, item.project.warehouse) }}
+                    </div>
+                </template>
+
+                <template #cell(action)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        <Link
+                            class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                            :title="'Show project'"
+                            :href="route('projects.show', item.project_id)"
+                        >
+                            <DocumentText
+                                classes="w-4 h-4 text-[#909090]"
+                            />
+                        </Link>
+                    </div>
+                </template>
+            </Table>
+        </div>
     </Modal>
 
     <Modal

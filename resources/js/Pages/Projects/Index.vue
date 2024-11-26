@@ -189,6 +189,20 @@ const handleDelete = () => {
                         {{ dateTimeToLocaleString(value) }}
                     </div>
                 </template>
+
+                <template #cell(action)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        <Link
+                            class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                            :title="'Show product'"
+                            :href="route('products.show', item.product_id)"
+                        >
+                            <DocumentText
+                                classes="w-4 h-4 text-[#909090]"
+                            />
+                        </Link>
+                    </div>
+                </template>
             </Table>
         </div>
     </Modal>

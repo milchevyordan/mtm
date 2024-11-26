@@ -9,8 +9,10 @@ use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequestRequest;
 use App\Http\Requests\UpdateProductRequestRequest;
 use App\Models\ProductProductRequest;
+use App\Models\ProductQuantity;
 use App\Models\ProductRequest;
 use App\Services\DataTable\DataTable;
+use Illuminate\Support\Facades\DB;
 
 class ProductRequestService
 {
@@ -83,8 +85,6 @@ class ProductRequestService
     {
         $productRequest = $this->getProductRequest();
 
-        $changeLoggerService = new ChangeLoggerService($productRequest, ['productProductRequest']);
-
         $validatedRequest = $request->validated();
 
         $productRequest->status = $validatedRequest['status'];
@@ -96,7 +96,25 @@ class ProductRequestService
             ['actual_quantity', 'quantity']
         );
 
-        $changeLoggerService->logChanges($productRequest);
+        //        $changeLoggerService = new ChangeLoggerService($productRequest, ['productQuantities']);
+
+        $data = [];
+        foreach ($validatedRequest['products'] as $product) {
+            $data[] = [
+                'product_id' => $product['product_id'],
+                'warehouse'  => $productRequest->warehouse->value,
+                'quantity'   => $product['actual_quantity'],
+                'updated_at' => now(),
+            ];
+        }
+
+        ProductQuantity::upsert(
+            $data,
+            ['product_id', 'warehouse'],
+            ['quantity' => DB::raw('product_quantities.quantity + VALUES(quantity)')]
+        );
+
+        //        $changeLoggerService->logChanges($productRequest);
 
         return $this;
     }
@@ -146,6 +164,26 @@ class ProductRequestService
             ->setDateColumn('updated_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('status', ProductRequestStatus::class)
             ->setEnumColumn('warehouse', Warehouse::class)
+            ->run();
+    }
+
+    /**
+     * Return datatable shown in index method.
+     *
+     * @param            $productRequestId
+     * @return DataTable
+     */
+    public function getProductsDataTable($productRequestId): DataTable
+    {
+        return (new DataTable(
+            ProductProductRequest::where('product_request_id', $productRequestId)
+        ))
+            ->setRelation('product', ['id', 'name'])
+            ->setColumn('product.id', '#', true, true)
+            ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('quantity', 'Quantity Ordered', true, true)
+            ->setColumn('actual_quantity', 'Actual Quantity Received', true, true)
+            ->setColumn('action', 'Action')
             ->run();
     }
 }

@@ -427,11 +427,11 @@ class PdfService
         if (! $canvasImageRenderers) {
             $this->canvasImageRenderers = new Collection([
                 new CanvasImageRenderer(
-                    x: 450,
-                    y: 770,
+                    x: 460,
+                    y: 780,
                     imagePath: public_path('images/logo.png'),
-                    width: 109,
-                    height: 60,
+                    width: 91,
+                    height: 50,
                     resolution: 'high',
                     isOnEveryPage: true,
                 ),

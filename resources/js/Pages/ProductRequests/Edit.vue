@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputError from "@/Components/InputError.vue";

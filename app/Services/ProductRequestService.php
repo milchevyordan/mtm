@@ -9,10 +9,8 @@ use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequestRequest;
 use App\Http\Requests\UpdateProductRequestRequest;
 use App\Models\ProductProductRequest;
-use App\Models\ProductQuantity;
 use App\Models\ProductRequest;
 use App\Services\DataTable\DataTable;
-use Illuminate\Support\Facades\DB;
 
 class ProductRequestService
 {
@@ -76,7 +74,7 @@ class ProductRequestService
     }
 
     /**
-     * Create the product request.
+     * Update the product request with actual quantity received and update change log of products.
      *
      * @param  UpdateProductRequestRequest $request
      * @return self
@@ -96,25 +94,22 @@ class ProductRequestService
             ['actual_quantity', 'quantity']
         );
 
-        //        $changeLoggerService = new ChangeLoggerService($productRequest, ['productQuantities']);
+        $validatedProducts = collect($validatedRequest['products']);
+        foreach ($productRequest->productQuantities()->with('product')->get() as $productQuantity) {
+            $matchingProduct = $validatedProducts->firstWhere('product_id', $productQuantity->product_id);
 
-        $data = [];
-        foreach ($validatedRequest['products'] as $product) {
-            $data[] = [
-                'product_id' => $product['product_id'],
-                'warehouse'  => $productRequest->warehouse->value,
-                'quantity'   => $product['actual_quantity'],
-                'updated_at' => now(),
-            ];
+            if (! $matchingProduct) {
+                continue;
+            }
+
+            $product = $productQuantity->product;
+            $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+
+            $productQuantity->quantity += $matchingProduct['actual_quantity'];
+            $productQuantity->save();
+
+            $changeLoggerService->logChanges($product);
         }
-
-        ProductQuantity::upsert(
-            $data,
-            ['product_id', 'warehouse'],
-            ['quantity' => DB::raw('product_quantities.quantity + VALUES(quantity)')]
-        );
-
-        //        $changeLoggerService->logChanges($productRequest);
 
         return $this;
     }

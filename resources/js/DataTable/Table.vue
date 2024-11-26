@@ -121,7 +121,7 @@ const handleRestoreRecord = async (id: number) => {
     currentUrl.searchParams.delete("restore_id"); // Remove the restore_id parameter
 
     // Use router.replace to update the URL without reloading the page
-    router.replace(currentUrl.toString());
+    router.get(currentUrl.toString());
 };
 </script>
 
@@ -131,7 +131,7 @@ const handleRestoreRecord = async (id: number) => {
         v-if="
             globalSearch || $slots.advancedFilters || $slots.additionalContent
         "
-        class="bg-white dark:bg-gray-800 border border-[#E9E7E7] dark:border-gray-700 rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow"
+        class="bg-white dark:bg-gray-800 border border-[#E9E7E7] dark:border-gray-700 rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow space-y-2 sm:space-y-0"
     >
         <!-- GlobalFilter -->
         <GlobalSearch

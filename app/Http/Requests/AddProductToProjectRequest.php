@@ -29,7 +29,7 @@ class AddProductToProjectRequest extends FormRequest
         return [
             'product_id'         => ['required', 'integer'],
             'project_id'         => ['required', 'integer'],
-            'quantity'           => ['required', 'integer', 'max:2147483647', 'lte:available_quantity'],
+            'quantity'           => ['required', 'integer', 'min:1', 'max:2147483647', 'lte:available_quantity'],
             'available_quantity' => ['required', 'integer'],
             'warehouse'          => ['required', Rule::in(Warehouse::values())],
         ];

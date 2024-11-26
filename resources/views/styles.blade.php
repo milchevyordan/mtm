@@ -264,6 +264,10 @@
         padding: 4em;
     }
 
+    .py-1 {
+        padding: 1em 0;
+    }
+
     .py-2 {
         padding: 2em 0;
     }

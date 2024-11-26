@@ -20,7 +20,7 @@ import {replaceEnumUnderscores} from "@/utils";
 const props = defineProps<{
     productRequest: ProductRequest;
     dataTable: DataTable<ProductProductRequest>;
-    productProductRequest: ProductProductRequest[];
+    productProductRequest: any;
 }>();
 
 const form = useForm<ProductRequestForm>({

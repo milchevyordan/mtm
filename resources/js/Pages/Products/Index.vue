@@ -436,7 +436,7 @@ const handleDelete = () => {
                     type="number"
                     :placeholder="'Quantity to add'"
                     step="1"
-                    :min="0"
+                    :min="1"
                     :max="addToProjectForm.available_quantity"
                     class="mt-1 block w-full"
                 />

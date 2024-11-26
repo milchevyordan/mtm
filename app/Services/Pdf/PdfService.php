@@ -428,10 +428,10 @@ class PdfService
             $this->canvasImageRenderers = new Collection([
                 new CanvasImageRenderer(
                     x: 450,
-                    y: 800,
+                    y: 770,
                     imagePath: public_path('images/logo.png'),
                     width: 109,
-                    height: 30,
+                    height: 60,
                     resolution: 'high',
                     isOnEveryPage: true,
                 ),

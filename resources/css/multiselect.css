@@ -326,7 +326,7 @@ fieldset[disabled] .multiselect {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom: none;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid var(--background-color);
 }
 
 .multiselect__content::-webkit-scrollbar {

@@ -24,7 +24,7 @@ defineProps<{
 
 const form = useForm<ProductRequestForm>({
     id: null!,
-    warehouse: usePage().props.auth.user.warehouse,
+    warehouse: usePage().props.auth.user.warehouse != Warehouse.Varna ? usePage().props.auth.user.warehouse : null!,
     products: [],
     productIds: [],
 });
@@ -69,6 +69,9 @@ const removeProduct = (id: number) => {
     }
 };
 
+const filteredWarehouse = Object.fromEntries(
+    Object.entries(Warehouse).filter(([key]) => isNaN(Number(key)) && key !== 'Varna')
+);
 </script>
 
 <template>
@@ -227,7 +230,7 @@ const removeProduct = (id: number) => {
                                         id="warehouse"
                                         v-model="form.warehouse"
                                         :name="'warehouse'"
-                                        :options="Warehouse"
+                                        :options="filteredWarehouse"
                                         :placeholder="'To Warehouse'"
                                         class="mt-1 block w-full mb-3.5"
                                     />

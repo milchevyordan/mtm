@@ -23,9 +23,16 @@ class DatabaseSeeder extends Seeder
         $faker = Factory::create();
 
         User::factory()->create([
-            'name'      => 'Test User',
-            'email'     => 'test@example.com',
-            'password'  => Hash::make('test@example.com'),
+            'name'      => 'Valentin Makarov',
+            'email'     => 'valentin.makarov64@gmail.com',
+            'password'  => Hash::make('valentin.makarov64@gmail.com'),
+            'warehouse' => Warehouse::Varna->value,
+        ]);
+
+        User::factory()->create([
+            'name'      => 'Yordan Milchev',
+            'email'     => 'biker4etu@abv.bg',
+            'password'  => Hash::make('biker4etu@abv.bg'),
             'warehouse' => Warehouse::Varna->value,
         ]);
 

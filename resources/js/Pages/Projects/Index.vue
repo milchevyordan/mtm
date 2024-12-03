@@ -182,6 +182,7 @@ const handleDelete = () => {
                 :data-table="showProductsDataTable"
                 :per-page-options="[5, 10, 15, 20, 50]"
                 :global-search="true"
+                :type-search="true"
                 :advanced-filters="false"
                 prop-name="showProductsDataTable"
             >

@@ -147,7 +147,7 @@ class ProjectService
     public function getProductsDataTable($projectId): DataTable
     {
         return (new DataTable(
-            ProductProject::where('project_id', $projectId)
+            ProductProject::with('product')->where('project_id', $projectId)
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name', 'type', 'internal_id'])

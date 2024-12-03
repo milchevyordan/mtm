@@ -17,6 +17,7 @@ const props = withDefaults(
         dataTable: DataTable<any>;
         propName?: string; // By default table will reload 'dataTable' prop
         globalSearch?: boolean;
+        typeSearch?: boolean;
         showTrashed?: boolean;
         advancedFilters?: boolean;
         selectedRowIndexes?: Array<string | number>;
@@ -129,13 +130,14 @@ const handleRestoreRecord = async (id: number) => {
     <!-- Filters  -->
     <div
         v-if="
-            globalSearch || $slots.advancedFilters || $slots.additionalContent
+            globalSearch || typeSearch || $slots.advancedFilters || $slots.additionalContent
         "
         class="bg-white dark:bg-gray-800 border border-[#E9E7E7] dark:border-gray-700 rounded-lg p-4 mb-4 sm:flex items-center justify-between shadow space-y-2 sm:space-y-0"
     >
         <!-- GlobalFilter -->
         <GlobalSearch
-            v-if="globalSearch"
+            v-if="globalSearch || typeSearch"
+            :type-search="typeSearch"
             :prop-name="propName"
         />
         <!-- / GlobalFilter -->

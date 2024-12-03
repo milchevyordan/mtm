@@ -126,6 +126,7 @@ const handleDownloadPdf = async () => {
                                 :data-table="dataTable"
                                 :per-page-options="[5, 10, 15, 20, 50]"
                                 :global-search="true"
+                                :type-search="true"
                                 :advanced-filters="false"
                             >
                                 <template #additionalContent>

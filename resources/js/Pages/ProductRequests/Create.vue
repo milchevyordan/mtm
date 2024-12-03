@@ -105,6 +105,7 @@ const filteredWarehouse = Object.fromEntries(
                                 :per-page-options="[5, 10, 15, 20, 50]"
                                 :global-search="true"
                                 :advanced-filters="false"
+                                :type-search="true"
                                 :selected-row-indexes="form.productIds"
                                 :selected-row-column="'id'"
                             >

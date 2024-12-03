@@ -167,6 +167,7 @@ const handleDelete = () => {
                             <Table
                                 :data-table="dataTable"
                                 :per-page-options="[5, 10, 15, 20, 50]"
+                                :type-search="true"
                                 :global-search="true"
                                 :advanced-filters="false"
                             >

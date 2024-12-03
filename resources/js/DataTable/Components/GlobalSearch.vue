@@ -2,36 +2,47 @@
 import { useForm, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
+import Select from "@/Components/Select.vue";
+import {ProductType} from "@/Enums/ProductType";
 import Magnifying from "@/Icons/Magnifying.vue";
 import { debounce } from "@/utils";
 
 const props = defineProps<{
     propName: string;
+    typeSearch?: boolean;
 }>();
 
 const filterGlobalValue = new URLSearchParams(window.location.search).get(
     "filter[global]"
 );
 
+const filterTypeValue = new URLSearchParams(window.location.search).get(
+    "filter[type]"
+);
+
 const globalSearchForm = useForm({
     filter: {
         global: filterGlobalValue,
+        type: filterTypeValue,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
 });
 
 const inputValue = ref<null | string>(globalSearchForm.filter.global);
+const selectValue = ref<null | string>(globalSearchForm.filter.type);
 
 const globalSearch = debounce(() => {
     const thisRoute = route();
     const params = { ...thisRoute.params, page: 1 };
     globalSearchForm.filter.global = inputValue.value;
+    globalSearchForm.filter.type = selectValue.value;
 
     router.visit(route(thisRoute.current() as string, params), {
         method: "get",
         data: {
             filter: {
                 global: globalSearchForm.filter.global,
+                type: globalSearchForm.filter.type,
                 timeZone: globalSearchForm.filter.timeZone,
             },
         },
@@ -43,7 +54,7 @@ const globalSearch = debounce(() => {
 </script>
 
 <template>
-    <div class="md:flex items-center justify-between">
+    <div class="md:flex items-center justify-between space-x-2">
         <div class="md:w-80 lg:w-96 relative">
             <div
                 class="absolute inset-y-0 left-0 flex items-center pl-3 z-10 cursor-pointer"
@@ -63,6 +74,21 @@ const globalSearch = debounce(() => {
                     @input="globalSearch"
                 >
             </div>
+        </div>
+
+        <div
+            v-if="typeSearch"
+            class="md:w-60 lg:w-72 relative"
+        >
+            <Select
+                v-model="selectValue"
+                :name="'type'"
+                :options="ProductType"
+                :placeholder="'Select Type'"
+                class="block w-full"
+                @select="globalSearch"
+                @remove="globalSearch"
+            />
         </div>
     </div>
 </template>

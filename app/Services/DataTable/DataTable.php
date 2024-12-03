@@ -13,6 +13,7 @@ use App\Traits\Enum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use InvalidArgumentException;
 
 class DataTable
@@ -112,8 +113,10 @@ class DataTable
      */
     public function run(int $paginate = 10, ?callable $callbackBeforePaginate = null): self
     {
-        $globalFilterText = request(null)->input('filter.global');
-        $paginate = request(null)->input('perPage') ?? $paginate;
+        $globalFilterText = request()->input('filter.global');
+        $typeFilterText = request()->input('filter.type');
+
+        $paginate = request()->input('perPage') ?? $paginate;
 
         $this->initRelations();
 
@@ -125,6 +128,10 @@ class DataTable
 
         if ($globalFilterText) {
             $this->applyGlobalFilter($globalFilterText);
+        }
+
+        if ($typeFilterText) {
+            $this->applyTypeFilter($typeFilterText);
         }
 
         $this->applyCallbackBeforePaginate($callbackBeforePaginate);
@@ -361,9 +368,9 @@ class DataTable
      * Example usage: Model with relations: Vehicle::with(['model:id,name', 'model.make']); (DataTable object)->setColumn('make.name', 'Make', true).
      *
      * @param  mixed $searchText the search text
-     * @return self
+     * @return void
      */
-    private function applyGlobalFilter(string $searchText): self
+    private function applyGlobalFilter(string $searchText): void
     {
         $newBuilder = $this->getBuilder();
         $searchableColumns = $this->getAllSearchableColumns()->keys()->toArray();
@@ -385,8 +392,32 @@ class DataTable
         });
 
         $this->setBuilder($newBuilder);
+    }
 
-        return $this;
+    /**
+     * Apply a global search filter on all searchable columns.
+     * Usage with joins: Needs to write the joined table and the column with dot.
+     * Example usage: Model with relations: Vehicle::with(['model:id,name', 'model.make']); (DataTable object)->setColumn('make.name', 'Make', true).
+     *
+     * @param  mixed $searchText the search text
+     * @return void
+     */
+    private function applyTypeFilter(string $searchText): void
+    {
+        $newBuilder = $this->getBuilder();
+
+        $numberType = (int) $searchText;
+        $table = $newBuilder->getQuery()->from;
+
+        if (in_array('type', Schema::getColumnListing($table), true)) {
+            $newBuilder->where('type', $numberType);
+        } else {
+            $newBuilder->whereHas('product', function ($query) use ($numberType) {
+                $query->where('type', $numberType);
+            });
+        }
+
+        $this->setBuilder($newBuilder);
     }
 
     /**

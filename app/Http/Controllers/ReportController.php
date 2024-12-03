@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProductType;
 use App\Http\Requests\StoreReportRequest;
 use App\Models\ProductReport;
 use App\Models\Project;
@@ -87,11 +88,13 @@ class ReportController extends Controller
             ProductReport::where('report_id', $report->id)
         ))
             ->setOrdering(new Ordering('product_id'))
-            ->setRelation('product', ['id', 'name', 'internal_id'])
+            ->setRelation('product', ['id', 'name', 'internal_id', 'type'])
             ->setColumn('product.id', '#', true, true)
-            ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('product.type', 'Type', false, true)
+            ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
+            ->setEnumColumn('product.type', ProductType::class)
             ->run();
 
         return Inertia::render('Reports/Show', [

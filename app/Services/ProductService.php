@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ProductType;
 use App\Enums\Warehouse;
 use App\Events\MinimumQuantityReached;
 use App\Http\Requests\AddProductToProjectRequest;
@@ -98,14 +99,15 @@ class ProductService
 
         $dataTable->setColumn('id', '#', true, true)
             ->setColumn('name', 'Name', true, true)
+            ->setColumn('type', 'Type', true, true)
             ->setColumn('internal_id', 'Internal Id', true, true);
 
         if (isset($this->warehouseColumns[$slug])) {
             [$column, $label] = $this->warehouseColumns[$slug];
-            $dataTable->setColumn($column, $label, true);
+            $dataTable->setColumn($column, $label);
         } else {
             foreach ($this->warehouseColumns as [$column, $label]) {
-                $dataTable->setColumn($column, $label, true);
+                $dataTable->setColumn($column, $label);
             }
         }
 
@@ -113,6 +115,7 @@ class ProductService
             ->setColumn('created_at', 'Created', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('type', ProductType::class)
             ->run();
     }
 

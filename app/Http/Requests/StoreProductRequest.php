@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\ProductType;
 use App\Models\Product;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name'             => 'required|string|max:255|unique:' . Product::class,
+            'type'             => ['required', Rule::in(ProductType::values())],
             'internal_id'      => 'nullable|string|max:255|unique:' . Product::class,
             'minimum_quantity' => 'nullable|integer|max:2147483647',
             'quantities'       => ['required', 'array'],

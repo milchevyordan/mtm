@@ -9,13 +9,14 @@ import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductProductRequest, ProductRequest, ProductRequestForm} from "@/types";
-import {replaceEnumUnderscores} from "@/utils";
+import {findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
 const props = defineProps<{
     productRequest: ProductRequest;
@@ -112,6 +113,12 @@ const statuses = Object.entries(ProductRequestStatus)
                                             class="mt-2"
                                             :message="form.errors['products.' + item.product_id + '.actual_quantity']"
                                         />
+                                    </div>
+                                </template>
+
+                                <template #cell(product.type)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
                                     </div>
                                 </template>
 

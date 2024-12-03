@@ -3,10 +3,13 @@ import {Head, Link, useForm} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
+import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
@@ -63,6 +66,26 @@ const form = useForm<ProductForm>({
                                         class="mt-1 block w-full"
                                         disabled
                                         autocomplete="name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="type"
+                                        value="Type"
+                                    />
+
+                                    <Select
+                                        :selected-option-value="product.type"
+                                        :name="'type'"
+                                        :options="ProductType"
+                                        :placeholder="'Type'"
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.type"
                                     />
                                 </div>
 

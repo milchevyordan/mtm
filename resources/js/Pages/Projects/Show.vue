@@ -11,8 +11,9 @@ import {DataTable} from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, ProductProject, Project} from "@/types";
-import {dateTimeToLocaleString} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 import DocumentText from "@/Icons/DocumentText.vue";
+import {ProductType} from "@/Enums/ProductType";
 
 defineProps<{
     project: Project;
@@ -96,6 +97,12 @@ defineProps<{
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
+
+                                <template #cell(product.type)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
                                     </div>
                                 </template>
 

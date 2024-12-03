@@ -10,7 +10,9 @@ import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
+import IconDocument from "@/Icons/Document.vue";
 import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Plus from "@/Icons/Plus.vue";
@@ -28,9 +30,8 @@ import {
 import {
     dateTimeToLocaleString,
     findEnumKeyByValue,
-    findKeyByValue
+    findKeyByValue, replaceEnumUnderscores
 } from "@/utils";
-import IconDocument from "@/Icons/Document.vue";
 
 const props = defineProps<{
     dataTable: DataTable<Product>;
@@ -229,6 +230,12 @@ const handleDelete = () => {
                             <template #cell(created_at)="{ value, item }">
                                 <div class="flex gap-1.5">
                                     {{ dateTimeToLocaleString(value) }}
+                                </div>
+                            </template>
+
+                            <template #cell(type)="{ value, item }">
+                                <div class="flex gap-1.5">
+                                    {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, value)) }}
                                 </div>
                             </template>
 

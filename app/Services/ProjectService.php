@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ProductType;
 use App\Enums\Warehouse;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -149,14 +150,17 @@ class ProjectService
             ProductProject::where('project_id', $projectId)
         ))
             ->setRelation('creator')
-            ->setRelation('product', ['id', 'name'])
+            ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
             ->setColumn('product.id', '#', true, true)
             ->setColumn('creator.name', 'Creator', true, true)
             ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('product.type', 'Type', false, true)
+            ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Created', true, true)
+            ->setColumn('created_at', 'Added', true, true)
             ->setColumn('action', 'Action')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->setEnumColumn('product.type', ProductType::class)
             ->run();
     }
 }

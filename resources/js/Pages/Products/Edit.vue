@@ -8,9 +8,11 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Modal from "@/Components/Modal.vue";
+import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
@@ -32,6 +34,7 @@ const form = useForm<ProductForm>({
     _method: "put",
     id: props.product.id,
     name: props.product.name,
+    type: props.product.type,
     internal_id: props.product.internal_id,
     minimum_quantity: props.product.minimum_quantity,
     quantities: {
@@ -137,6 +140,26 @@ const handleDelete = () => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="type"
+                                        value="Type"
+                                    />
+
+                                    <Select
+                                        v-model="form.type"
+                                        :name="'type'"
+                                        :options="ProductType"
+                                        :placeholder="'Type'"
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.type"
                                     />
                                 </div>
 

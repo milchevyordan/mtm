@@ -1,5 +1,6 @@
 import {Warehouse} from "@/Enums/Warehouse";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
+import {ProductType} from "@/Enums/ProductType";
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
@@ -106,6 +107,7 @@ export interface Product {
     id: number;
     creator_id: number;
     name: string;
+    type: Enum<typeof ProductType>;
     internal_id: string;
     minimum_quantity: number;
     quantity: ProductQuantity[];

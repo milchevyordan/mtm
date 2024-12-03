@@ -9,6 +9,7 @@ import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
 import IconMinus from "@/Icons/Minus.vue";
@@ -16,7 +17,7 @@ import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconPlus from "@/Icons/Plus.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Product, ProductRequestForm} from "@/types";
-import {dateTimeToLocaleString} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Product>;
@@ -110,6 +111,12 @@ const filteredWarehouse = Object.fromEntries(
                                 <template #cell(created_at)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ dateTimeToLocaleString(value) }}
+                                    </div>
+                                </template>
+
+                                <template #cell(type)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, value)) }}
                                     </div>
                                 </template>
 

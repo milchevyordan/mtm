@@ -4,7 +4,9 @@ import {Head, useForm} from "@inertiajs/vue3";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
+import {ProductType} from "@/Enums/ProductType";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductForm} from "@/types";
 import {warehouses} from "@/utils";
@@ -13,6 +15,7 @@ const form = useForm<ProductForm>({
     id: null!,
     internal_id: null!,
     name: null!,
+    type: null!,
     minimum_quantity: 10,
     quantities: {
         Varna: null!,
@@ -40,7 +43,7 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Product'"/>
+    <Head :title="'Product'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -80,6 +83,26 @@ const save = async (only?: Array<string>) => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="type"
+                                        value="Type"
+                                    />
+
+                                    <Select
+                                        v-model="form.type"
+                                        :name="'type'"
+                                        :options="ProductType"
+                                        :placeholder="'Type'"
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.type"
                                     />
                                 </div>
 

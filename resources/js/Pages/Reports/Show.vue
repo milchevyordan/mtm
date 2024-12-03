@@ -9,7 +9,8 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductReport, Project, Report} from "@/types";
-import {downloadPdf} from "@/utils";
+import {downloadPdf, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
+import {ProductType} from "@/Enums/ProductType";
 
 const props = defineProps<{
     report: Report;
@@ -135,6 +136,12 @@ const handleDownloadPdf = async () => {
                                         >
                                             Download Pdf
                                         </button>
+                                    </div>
+                                </template>
+
+                                <template #cell(product.type)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
                                     </div>
                                 </template>
                             </Table>

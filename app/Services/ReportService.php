@@ -99,7 +99,7 @@ class ReportService
     public function createReportPdf(): string
     {
         $report = $this->getReport();
-        $report->load('products:id,name,internal_id', 'projects:id,name,warehouse,created_at', 'creator');
+        $report->load('products:id,name,internal_id,type', 'projects:id,name,warehouse,created_at', 'creator');
 
         $pdfService = new PdfService(
             'templates/report',

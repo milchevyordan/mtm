@@ -1,0 +1,1 @@
+var _=(a=>(a[a.PPE=1]="PPE",a[a.Blasting_equipment_and_spare_part=2]="Blasting_equipment_and_spare_part",a[a.Spray_pumps_equipment_and_spare_part=3]="Spray_pumps_equipment_and_spare_part",a[a.Materials_and_consumable=4]="Materials_and_consumable",a[a.Vacuum_machine=5]="Vacuum_machine",a[a.Other=6]="Other",a))(_||{});export{_ as P};

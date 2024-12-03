@@ -6,6 +6,7 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconDocument from "@/Icons/Document.vue";
 import DocumentText from "@/Icons/DocumentText.vue";
@@ -13,7 +14,7 @@ import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {DeleteForm, ProductProject, Project} from "@/types";
-import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
+import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Project>;
@@ -187,6 +188,12 @@ const handleDelete = () => {
                 <template #cell(created_at)="{ value, item }">
                     <div class="flex gap-1.5">
                         {{ dateTimeToLocaleString(value) }}
+                    </div>
+                </template>
+
+                <template #cell(product.type)="{ value, item }">
+                    <div class="flex gap-1.5">
+                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
                     </div>
                 </template>
 

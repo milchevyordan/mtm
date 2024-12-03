@@ -119,7 +119,7 @@ class UserController extends Controller
      * @param  User              $user
      * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
         DB::beginTransaction();
 

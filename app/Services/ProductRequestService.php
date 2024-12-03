@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\ProductRequestStatus;
+use App\Enums\ProductType;
 use App\Enums\Warehouse;
 use App\Http\Requests\StoreProductRequestRequest;
 use App\Http\Requests\UpdateProductRequestRequest;
@@ -173,12 +174,15 @@ class ProductRequestService
         return (new DataTable(
             ProductProductRequest::where('product_request_id', $productRequestId)
         ))
-            ->setRelation('product', ['id', 'name'])
+            ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
             ->setColumn('product.id', '#', true, true)
             ->setColumn('product.name', 'Name', true, true)
+            ->setColumn('product.type', 'Type', false, true)
+            ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('quantity', 'Quantity Ordered', true, true)
             ->setColumn('actual_quantity', 'Actual Quantity Received', true, true)
             ->setColumn('action', 'Action')
+            ->setEnumColumn('product.type', ProductType::class)
             ->run();
     }
 }

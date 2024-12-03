@@ -76,8 +76,9 @@
     <table class="w-full">
         <tr class="border-bottom">
             <th class="text-left py-1">#</th>
-            <th class="text-left py-1">Internal Id</th>
             <th class="text-left py-1">Name</th>
+            <th class="text-left py-1">Type</th>
+            <th class="text-left py-1">Internal Id</th>
             <th class="text-left py-1">Quantity</th>
         </tr>
 
@@ -89,12 +90,17 @@
                 </td>
 
                 <td class="py-1">
-                    {{ $product->internal_id }}
+                    {{ $product->name }}
                 </td>
 
                 <td class="py-1">
-                    {{ $product->name }}
+                    {{ str_replace('_', ' ', $product->type->name) }}
                 </td>
+
+                <td class="py-1">
+                    {{ $product->internal_id }}
+                </td>
+
 
                 <td class="py-1 fw-bold">
                     {{ $product->pivot->quantity }}

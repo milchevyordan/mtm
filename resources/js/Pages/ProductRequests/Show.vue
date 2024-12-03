@@ -13,7 +13,8 @@ import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductProductRequest, ProductRequest} from "@/types";
-import {replaceEnumUnderscores} from "@/utils";
+import {findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
+import {ProductType} from "@/Enums/ProductType";
 
 defineProps<{
     productRequest: ProductRequest;
@@ -59,6 +60,12 @@ const statuses = Object.entries(ProductRequestStatus)
                                 :global-search="true"
                                 :advanced-filters="false"
                             >
+                                <template #cell(product.type)="{ value, item }">
+                                    <div class="flex gap-1.5">
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
+                                    </div>
+                                </template>
+
                                 <template #cell(action)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         <Link

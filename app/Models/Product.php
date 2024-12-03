@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ProductType;
 use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
@@ -27,8 +28,18 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
+        'type',
         'internal_id',
         'minimum_quantity',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'type' => ProductType::class,
     ];
 
     /**

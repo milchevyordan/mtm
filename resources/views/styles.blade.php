@@ -1,4 +1,12 @@
 <style>
+    @font-face {
+        font-family: 'DejaVu Sans';
+        src: url('font/DejaVuLGCSans.ttf') format('truetype');
+    }
+
+    body {
+        font-family: 'DejaVu Sans', sans-serif;
+    }
 
     * {
         margin: 0;

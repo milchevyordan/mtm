@@ -11,7 +11,7 @@ class Paginator extends CanvasTextRenderer
     public function __construct(
         float $x,
         float $y,
-        string $text = 'Page {PAGE_NUM} of {PAGE_COUNT}',
+        string $text = 'Страница {PAGE_NUM} от {PAGE_COUNT}',
         ?string $font = null,
         ?int $size = 10,
         ?array $color = [0.5, 0.5, 0.5]

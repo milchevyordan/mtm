@@ -34,6 +34,7 @@ const form = useForm<ProductForm>({
     _method: "put",
     id: props.product.id,
     name: props.product.name,
+    specification: props.product.specification,
     type: props.product.type,
     internal_id: props.product.internal_id,
     minimum_quantity: props.product.minimum_quantity,
@@ -107,7 +108,7 @@ const handleDelete = () => {
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product
+                Продукт
             </h2>
         </template>
 
@@ -116,7 +117,7 @@ const handleDelete = () => {
                 <div
                     class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                         <div class="grid lg:grid-cols-1 xl:grid-cols-2 gap-4">
                             <form
                                 class="mt-6 space-y-6"
@@ -140,6 +141,27 @@ const handleDelete = () => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="specification"
+                                        value="Спецификация"
+                                    />
+
+                                    <TextInput
+                                        id="specification"
+                                        v-model="form.specification"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        required
+                                        autocomplete="specification"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.specification"
                                     />
                                 </div>
 
@@ -231,6 +253,15 @@ const handleDelete = () => {
                                     @reset="form.reset()"
                                 />
                             </form>
+                        </div>
+
+                        <div class="w-full flex gap-2">
+                            <Link
+                                class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                                :href="route('products.create')"
+                            >
+                                Създай Нов Продукт
+                            </Link>
                         </div>
                     </div>
                 </div>

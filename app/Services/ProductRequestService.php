@@ -174,9 +174,10 @@ class ProductRequestService
         return (new DataTable(
             ProductProductRequest::where('product_request_id', $productRequestId)
         ))
-            ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
+            ->setRelation('product', ['id', 'name', 'type', 'internal_id', 'specification'])
             ->setColumn('product.id', '№', true, true)
             ->setColumn('product.name', 'Име', true, true)
+            ->setColumn('product.specification', 'Спецификация', true, true)
             ->setColumn('product.type', 'Тип', false, true)
             ->setColumn('product.internal_id', 'Вътрешен №', true, true)
             ->setColumn('quantity', 'Количество Поръчано', true, true)

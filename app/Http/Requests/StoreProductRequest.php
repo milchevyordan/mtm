@@ -28,7 +28,8 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'             => 'required|string|max:255|unique:' . Product::class,
+            'name'             => 'required|string|max:255',
+            'specification'    => 'nullable|string|max:255',
             'type'             => ['required', Rule::in(ProductType::values())],
             'internal_id'      => 'nullable|string|max:255|unique:' . Product::class,
             'minimum_quantity' => 'nullable|integer|max:2147483647',

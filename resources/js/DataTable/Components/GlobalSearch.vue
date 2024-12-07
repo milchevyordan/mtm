@@ -54,7 +54,7 @@ const globalSearch = debounce(() => {
 </script>
 
 <template>
-    <div class="md:flex items-center justify-between space-x-2">
+    <div class="md:flex items-center justify-between space-y-2 sm:space-y-0 gap-2">
         <div class="md:w-80 lg:w-96 relative">
             <div
                 class="absolute inset-y-0 left-0 flex items-center pl-3 z-10 cursor-pointer"

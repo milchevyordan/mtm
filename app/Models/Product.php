@@ -28,6 +28,7 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
+        'specification',
         'type',
         'internal_id',
         'minimum_quantity',

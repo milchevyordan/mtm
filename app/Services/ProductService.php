@@ -99,6 +99,7 @@ class ProductService
 
         $dataTable->setColumn('id', '№', true, true)
             ->setColumn('name', 'Име', true, true)
+            ->setColumn('specification', 'Спецификация', true, true)
             ->setColumn('type', 'Тип', true, true)
             ->setColumn('internal_id', 'Вътрешен №', true, true);
 

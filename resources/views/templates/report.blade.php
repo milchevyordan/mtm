@@ -77,6 +77,7 @@
         <tr class="border-bottom">
             <th class="text-left py-1">№</th>
             <th class="text-left py-1">Име</th>
+            <th class="text-left py-1">Спецификация</th>
             <th class="text-left py-1">Тип</th>
             <th class="text-left py-1">Вътрешен №</th>
             <th class="text-left py-1">Количество</th>
@@ -91,6 +92,10 @@
 
                 <td class="py-1">
                     {{ $product->name }}
+                </td>
+
+                <td class="py-1">
+                    {{ $product->specification }}
                 </td>
 
                 <td class="py-1">

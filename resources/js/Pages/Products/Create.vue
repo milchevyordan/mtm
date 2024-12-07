@@ -15,6 +15,7 @@ const form = useForm<ProductForm>({
     id: null!,
     internal_id: null!,
     name: null!,
+    specification: null!,
     type: null!,
     minimum_quantity: 10,
     quantities: {
@@ -83,6 +84,27 @@ const save = async (only?: Array<string>) => {
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="specification"
+                                        value="Спецификация"
+                                    />
+
+                                    <TextInput
+                                        id="specification"
+                                        v-model="form.specification"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        required
+                                        autocomplete="specification"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.specification"
                                     />
                                 </div>
 

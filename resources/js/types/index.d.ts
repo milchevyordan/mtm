@@ -107,6 +107,7 @@ export interface Product {
     id: number;
     creator_id: number;
     name: string;
+    specification: string;
     type: Enum<typeof ProductType>;
     internal_id: string;
     minimum_quantity: number;

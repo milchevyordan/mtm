@@ -90,13 +90,13 @@ class ProjectService
             ->setColumn('id', '#', true, true);
 
         if (! $warehouseValue) {
-            $dataTable->setColumn('warehouse', 'Warehouse', true, true)
+            $dataTable->setColumn('warehouse', 'Склад', true, true)
                 ->setEnumColumn('warehouse', Warehouse::class);
         }
 
         return $dataTable->setColumn('name', 'Name', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('action', 'Action')
+            ->setColumn('created_at', 'Създаден', true, true)
+            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
     }
@@ -152,13 +152,13 @@ class ProjectService
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
             ->setColumn('product.id', '#', true, true)
-            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('product.name', 'Name', true, true)
             ->setColumn('product.type', 'Type', false, true)
             ->setColumn('product.internal_id', 'Internal Id', true, true)
             ->setColumn('quantity', 'Quantity', true, true)
             ->setColumn('created_at', 'Added', true, true)
-            ->setColumn('action', 'Action')
+            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('product.type', ProductType::class)
             ->run();

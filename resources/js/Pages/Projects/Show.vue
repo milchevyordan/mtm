@@ -45,7 +45,7 @@ defineProps<{
                                 <div>
                                     <InputLabel
                                         for="name"
-                                        value="Name"
+                                        value="Име"
                                     />
 
                                     <TextInput
@@ -60,14 +60,14 @@ defineProps<{
                                 <div>
                                     <InputLabel
                                         for="warehouse"
-                                        value="Warehouse"
+                                        value="Склад"
                                     />
 
                                     <Select
                                         :selected-option-value="project.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"
-                                        :placeholder="'Warehouse'"
+                                        :placeholder="'Склад'"
                                         disabled
                                         class="mt-1 block w-full mb-3.5"
                                     />

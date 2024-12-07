@@ -5,14 +5,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Табло" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Dashboard
+                Табло
             </h2>
         </template>
 
@@ -22,7 +22,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
                     class="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-                        You're logged in!
+                        Логнат си!
                     </div>
                 </div>
             </div>

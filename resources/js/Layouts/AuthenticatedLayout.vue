@@ -43,7 +43,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    Табло
                                 </NavLink>
                             </div>
 
@@ -54,7 +54,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('users.index')"
                                     :active="route().current('users.*')"
                                 >
-                                    User
+                                    Потребител
                                 </NavLink>
                             </div>
 
@@ -258,13 +258,13 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            Табло
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('users.index')"
                             :active="route().current('users.*')"
                         >
-                            User
+                            Потребител
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('products.index')"

@@ -125,7 +125,7 @@ const handleDelete = () => {
                                 <div>
                                     <InputLabel
                                         for="name"
-                                        value="Name"
+                                        value="Име"
                                     />
 
                                     <TextInput

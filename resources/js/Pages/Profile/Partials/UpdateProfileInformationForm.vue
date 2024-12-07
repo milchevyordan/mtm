@@ -38,7 +38,7 @@ const form = useForm({
             <div>
                 <InputLabel
                     for="name"
-                    value="Name"
+                    value="Име"
                 />
 
                 <TextInput

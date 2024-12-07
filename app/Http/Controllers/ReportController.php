@@ -64,7 +64,7 @@ class ReportController extends Controller
 
             DB::commit();
 
-            return redirect()->route('reports.show', ['report' => $this->service->getReport()->id])->with('success', 'The record has been successfully created.');
+            return redirect()->route('reports.show', ['report' => $this->service->getReport()->id])->with('success', 'Записа беше създаден успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 

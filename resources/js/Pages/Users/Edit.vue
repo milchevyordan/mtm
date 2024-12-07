@@ -52,7 +52,7 @@ const save = async (only?: Array<string>) => {
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                User
+                Потребител
             </h2>
         </template>
 
@@ -70,7 +70,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="name"
-                                        value="Name"
+                                        value="Име"
                                     />
 
                                     <TextInput
@@ -112,7 +112,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="warehouse"
-                                        value="Warehouse"
+                                        value="Склад"
                                     />
 
                                     <Select
@@ -120,7 +120,7 @@ const save = async (only?: Array<string>) => {
                                         v-model="form.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"
-                                        :placeholder="'Warehouse'"
+                                        :placeholder="'Склад'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
 

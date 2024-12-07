@@ -21,9 +21,9 @@ class ChangeLogService
             $model->changeLogs()->getQuery()
         ))
             ->setRelation('creator')
-            ->setColumn('creator.name', 'Creator', true, true)
+            ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('change', 'Change', true)
-            ->setColumn('created_at', 'Created', true, true)
+            ->setColumn('created_at', 'Създаден', true, true)
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
     }

@@ -22,7 +22,7 @@ defineProps<{
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                User
+                Потребител
             </h2>
         </template>
 
@@ -44,7 +44,7 @@ defineProps<{
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('users.create')"
                                     >
-                                        Create User
+                                        Създай Потребител
                                     </Link>
                                 </div>
                             </template>
@@ -65,7 +65,7 @@ defineProps<{
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit user'"
+                                        :title="'Редактирай потребител'"
                                         :href="route('users.edit', item.id)"
                                     >
                                         <IconPencilSquare

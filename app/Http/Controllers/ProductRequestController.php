@@ -61,7 +61,7 @@ class ProductRequestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('product-requests.edit', ['product_request' => $this->service->getProductRequest()->id])->with('success', 'The record has been successfully created.');
+            return redirect()->route('product-requests.edit', ['product_request' => $this->service->getProductRequest()->id])->with('success', 'Записа беше създаден успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -122,7 +122,7 @@ class ProductRequestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('product-requests.show', ['product_request' => $this->service->getProductRequest()->id])->with('success', 'The record has been successfully created.');
+            return redirect()->route('product-requests.show', ['product_request' => $this->service->getProductRequest()->id])->with('success', 'Записа беше създаден успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 

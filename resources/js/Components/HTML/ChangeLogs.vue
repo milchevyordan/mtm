@@ -42,14 +42,14 @@ const closeChangeLogModal = () => {
             <template #head>
                 <div class="mb-4 text-gray-900 dark:text-gray-100 flex justify-between">
                     <div class="font-semibold text-xl sm:text-2xl">
-                        Change Logs
+                        История на промените
                     </div>
 
                     <button
                         class="mr-10 md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                         @click="openChangeLogModal"
                     >
-                        Show All
+                        Покажи всички
                     </button>
                 </div>
             </template>
@@ -71,7 +71,7 @@ const closeChangeLogModal = () => {
                     <div class="lg:border-r border-[#E9E7E7] dark:border-gray-700 lg:pr-8 sm:gap-y-2 items-center flex flex-col">
                         <div class="element-center">
                             <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
-                                Creator
+                                Създател
                             </span>
                             <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
                                 {{ changeLog.creator.name }}
@@ -79,7 +79,7 @@ const closeChangeLogModal = () => {
                         </div>
                         <div class="element-center">
                             <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
-                                Date
+                                Дата
                             </span>
                             <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
                                 {{ dateTimeToLocaleString(changeLog.created_at) }}
@@ -130,7 +130,7 @@ const closeChangeLogModal = () => {
         <div
             class="px-3.5 p-3 text-xl font-medium"
         >
-            Change Logs
+            История на промените
         </div>
 
         <div

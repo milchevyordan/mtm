@@ -15,11 +15,11 @@ defineProps<{
             :disabled="processing"
             @click="$emit('reset')"
         >
-            Reset
+            Нулиране
         </SecondaryButton>
 
         <PrimaryButton :disabled="processing">
-            {{ isDelete ? 'Delete' : 'Save' }}
+            {{ isDelete ? 'Изтриване' : 'Запазване' }}
         </PrimaryButton>
 
         <Transition
@@ -32,7 +32,7 @@ defineProps<{
                 v-if="recentlySuccessful"
                 class="text-sm text-gray-600 dark:text-gray-400"
             >
-                Saved.
+                Запазено.
             </p>
         </Transition>
     </div>

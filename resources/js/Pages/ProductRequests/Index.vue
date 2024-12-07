@@ -78,7 +78,7 @@ const handleDelete = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('product-requests.create')"
                                     >
-                                        Create Product Request
+                                        Създай Product Request
                                     </Link>
                                 </div>
                             </template>

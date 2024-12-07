@@ -33,11 +33,11 @@ class UserController extends Controller
             User::select(User::$defaultSelectFields)
         ))
             ->setColumn('id', '#', true, true)
-            ->setColumn('name', 'Name', true, true)
-            ->setColumn('email', 'Email', true, true)
-            ->setColumn('warehouse', 'Warehouse', true, true)
-            ->setColumn('created_at', 'Created', true, true)
-            ->setColumn('action', 'Action')
+            ->setColumn('name', 'Име', true, true)
+            ->setColumn('email', 'Имейл', true, true)
+            ->setColumn('warehouse', 'Склад', true, true)
+            ->setColumn('created_at', 'Създаден', true, true)
+            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
@@ -77,7 +77,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            return redirect()->route('users.edit', ['user' => $user->id])->with('success', 'The record has been successfully created.');
+            return redirect()->route('users.edit', ['user' => $user->id])->with('success', 'Записа беше създаден успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -132,7 +132,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            return back()->with('success', 'The record has been successfully updated.');
+            return back()->with('success', 'Записа беше актуализиран успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 

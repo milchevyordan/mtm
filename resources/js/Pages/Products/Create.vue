@@ -68,7 +68,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="name"
-                                        value="Name"
+                                        value="Име"
                                     />
 
                                     <TextInput

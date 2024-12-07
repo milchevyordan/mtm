@@ -65,7 +65,7 @@ class ProjectController extends Controller
 
             DB::commit();
 
-            return redirect()->route('projects.edit', ['project' => $this->service->getProject()->id])->with('success', 'The record has been successfully created.');
+            return redirect()->route('projects.edit', ['project' => $this->service->getProject()->id])->with('success', 'Записа беше създаден успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 
@@ -125,7 +125,7 @@ class ProjectController extends Controller
 
             DB::commit();
 
-            return back()->with('success', 'The record has been successfully updated.');
+            return back()->with('success', 'Записа беше актуализиран успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 

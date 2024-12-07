@@ -20,10 +20,10 @@
                     Report Id: <span class="fw-bold">{{ $report->id }}</span>
                 </div>
                 <div class="pt-half">
-                    Date Created: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->created_at)->format('d-m-Y, H:i') }}</span>
+                    Дата на създаване: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->created_at)->format('d-m-Y, H:i') }}</span>
                 </div>
                 <div class="pt-half">
-                    User Created: {{ $report->creator->name }}
+                    Потребител който го е създал: {{ $report->creator->name }}
                 </div>
             </td>
 
@@ -47,7 +47,7 @@
             <th class="text-left py-1">#</th>
             <th class="text-left py-1">Warehouse</th>
             <th class="text-left py-1">Name</th>
-            <th class="text-left py-1">Created</th>
+            <th class="text-left py-1">Създаден</th>
         </tr>
 
         @foreach($report->projects as $project)

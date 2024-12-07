@@ -30,14 +30,14 @@ const statuses = Object.entries(ProductRequestStatus)
 </script>
 
 <template>
-    <Head :title="'Product Request'" />
+    <Head :title="'Заявка'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product Request
+                Заявка
             </h2>
         </template>
 
@@ -71,7 +71,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Edit product'"
+                                            :title="'Редактирай продукт'"
                                             :href="route('products.edit', item.product_id)"
                                         >
                                             <IconPencilSquare
@@ -81,7 +81,7 @@ const statuses = Object.entries(ProductRequestStatus)
 
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Show product'"
+                                            :title="'Покажи продукт'"
                                             :href="route('products.show', item.product_id)"
                                         >
                                             <DocumentText
@@ -104,7 +104,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                 <div>
                                     <InputLabel
                                         for="warehouse"
-                                        value="To Warehouse"
+                                        value="За Склад"
                                     />
 
                                     <Select
@@ -112,7 +112,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                         v-model="productRequest.warehouse"
                                         :name="'warehouse'"
                                         :options="Warehouse"
-                                        :placeholder="'To Warehouse'"
+                                        :placeholder="'За Склад'"
                                         disabled
                                         class="mt-1 block w-full mb-3.5"
                                     />

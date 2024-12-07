@@ -42,7 +42,7 @@ const save = async (only?: Array<string>) => {
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Проект
             </h2>
         </template>
 

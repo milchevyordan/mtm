@@ -45,14 +45,14 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Report'" />
+    <Head :title="'Отчет'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Report
+                Отчет
             </h2>
         </template>
 
@@ -75,7 +75,7 @@ const handleDelete = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('reports.create')"
                                     >
-                                        Създай Report
+                                        Създай Отчет
                                     </Link>
                                 </div>
                             </template>
@@ -102,7 +102,7 @@ const handleDelete = () => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show report'"
+                                        :title="'Покажи отчет'"
                                         :href="route('reports.show', item.id)"
                                     >
                                         <DocumentText
@@ -111,7 +111,7 @@ const handleDelete = () => {
                                     </Link>
 
                                     <button
-                                        :title="'Delete'"
+                                        :title="'Изтрий'"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
@@ -133,7 +133,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete report #{{ deleteForm?.id ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Изтрий отчет №{{ deleteForm?.id ?? '' }} създаден на {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

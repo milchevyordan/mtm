@@ -109,7 +109,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Вътрешно #"
+                                        value="Вътрешен №"
                                     />
 
                                     <TextInput

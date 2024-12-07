@@ -280,7 +280,7 @@ const handleDelete = () => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit product'"
+                                        :title="'Редактирай продукт'"
                                         :href="route('products.edit', item.id)"
                                     >
                                         <IconPencilSquare
@@ -290,7 +290,7 @@ const handleDelete = () => {
 
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show product'"
+                                        :title="'Покажи продукт'"
                                         :href="route('products.show', item.id)"
                                     >
                                         <DocumentText
@@ -308,14 +308,14 @@ const handleDelete = () => {
 
                                     <button
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show products'"
+                                        :title="'Покажи products'"
                                         @click="openShowProjectsDataTableModal(item.id)"
                                     >
                                         <IconDocument classes="w-4 h-4 text-[#909090]" />
                                     </button>
 
                                     <button
-                                        :title="'Delete'"
+                                        :title="'Изтрий'"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
@@ -383,7 +383,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Добави продукт #{{ addToProjectForm?.product_id }} към проект</div>
+            <div>Добави продукт №{{ addToProjectForm?.product_id }} към проект</div>
         </div>
 
         <form
@@ -473,7 +473,7 @@ const handleDelete = () => {
         <div
             class="px-3.5 p-3 text-xl font-medium"
         >
-            Projects
+            Проекти
         </div>
 
         <div
@@ -503,7 +503,7 @@ const handleDelete = () => {
                     <div class="flex gap-1.5">
                         <Link
                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                            :title="'Show проект'"
+                            :title="'Покажи проект'"
                             :href="route('projects.show', item.project_id)"
                         >
                             <DocumentText

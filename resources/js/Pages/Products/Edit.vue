@@ -166,7 +166,7 @@ const handleDelete = () => {
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Вътрешно #"
+                                        value="Вътрешен №"
                                     />
 
                                     <TextInput
@@ -246,7 +246,7 @@ const handleDelete = () => {
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Projects
+                                Проекти
                             </div>
                         </template>
 
@@ -273,7 +273,7 @@ const handleDelete = () => {
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Edit проект'"
+                                            :title="'Редактирай проект'"
                                             :href="route('projects.edit', item.project_id)"
                                         >
                                             <IconPencilSquare
@@ -282,7 +282,7 @@ const handleDelete = () => {
                                         </Link>
 
                                         <button
-                                            :title="'Delete product'"
+                                            :title="'Изтрий'"
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             @click="showDeleteForm(item)"
                                         >

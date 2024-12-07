@@ -95,7 +95,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('projects.index')"
                                     :active="route().current('projects.*')"
                                 >
-                                    Project
+                                    Проект
 
                                     <template #content>
                                         <div
@@ -125,7 +125,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('product-requests.index')"
                                     :active="route().current('product-requests.*')"
                                 >
-                                    Request
+                                    Заявка
                                 </NavLink>
                             </div>
 
@@ -136,7 +136,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('reports.index')"
                                     :active="route().current('reports.*')"
                                 >
-                                    Report
+                                    Отчет
                                 </NavLink>
                             </div>
 
@@ -276,19 +276,19 @@ const showingNavigationDropdown = ref(false);
                             :href="route('projects.index')"
                             :active="route().current('projects.*')"
                         >
-                            Project
+                            Проект
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('product-requests.index')"
                             :active="route().current('product-requests.*')"
                         >
-                            Request
+                            Заявка
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('reports.index')"
                             :active="route().current('reports.*')"
                         >
-                            Report
+                            Отчет
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('notifications.index')"

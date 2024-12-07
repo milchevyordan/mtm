@@ -76,14 +76,14 @@ const filteredWarehouse = Object.fromEntries(
 </script>
 
 <template>
-    <Head :title="'Product Request'" />
+    <Head :title="'Заявка'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product Request
+                Заявка
             </h2>
         </template>
 
@@ -159,6 +159,7 @@ const filteredWarehouse = Object.fromEntries(
                                         <button
                                             v-if="form.productIds.includes(item.id)"
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            :title="'Премахни от заявка'"
                                             @click="removeProduct(item.id)"
                                         >
                                             <IconMinus
@@ -168,6 +169,7 @@ const filteredWarehouse = Object.fromEntries(
                                         <button
                                             v-else
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            :title="'Добави към заявка'"
                                             @click="addProduct(item)"
                                         >
                                             <IconPlus
@@ -176,7 +178,7 @@ const filteredWarehouse = Object.fromEntries(
                                         </button>
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Edit product'"
+                                            :title="'Редактирай продукт'"
                                             :href="route('products.edit', item.id)"
                                         >
                                             <IconPencilSquare
@@ -186,7 +188,7 @@ const filteredWarehouse = Object.fromEntries(
 
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Show product'"
+                                            :title="'Покажи продукт'"
                                             :href="route('products.show', item.id)"
                                         >
                                             <DocumentText
@@ -203,7 +205,7 @@ const filteredWarehouse = Object.fromEntries(
                                             :id="'quantities_' + item.id"
                                             v-model="form.products[item.id].quantity"
                                             type="number"
-                                            :placeholder="'Order Quantity'"
+                                            :placeholder="'Количество'"
                                             step="1"
                                             class="block w-full"
                                         />
@@ -231,7 +233,7 @@ const filteredWarehouse = Object.fromEntries(
                                 <div>
                                     <InputLabel
                                         for="warehouse"
-                                        value="To Warehouse"
+                                        value="За Склад"
                                     />
 
                                     <Select
@@ -239,7 +241,7 @@ const filteredWarehouse = Object.fromEntries(
                                         v-model="form.warehouse"
                                         :name="'warehouse'"
                                         :options="filteredWarehouse"
-                                        :placeholder="'To Warehouse'"
+                                        :placeholder="'за кой склад'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
 

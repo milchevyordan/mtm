@@ -89,10 +89,10 @@ class ReportController extends Controller
         ))
             ->setOrdering(new Ordering('product_id'))
             ->setRelation('product', ['id', 'name', 'internal_id', 'type'])
-            ->setColumn('product.id', '#', true, true)
+            ->setColumn('product.id', '№', true, true)
             ->setColumn('product.name', 'Име', true, true)
             ->setColumn('product.type', 'Тип', false, true)
-            ->setColumn('product.internal_id', 'Вътрешно #', true, true)
+            ->setColumn('product.internal_id', 'Вътрешен №', true, true)
             ->setColumn('quantity', 'Количество', true, true)
             ->setEnumColumn('product.type', ProductType::class)
             ->run();

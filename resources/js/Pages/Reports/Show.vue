@@ -7,10 +7,10 @@ import SelectMultiple from "@/Components/SelectMultiple.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable, Multiselect} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductReport, Project, Report} from "@/types";
 import {downloadPdf, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
-import {ProductType} from "@/Enums/ProductType";
 
 const props = defineProps<{
     report: Report;
@@ -40,14 +40,14 @@ const handleDownloadPdf = async () => {
 </script>
 
 <template>
-    <Head :title="'Report'" />
+    <Head :title="'Отчет'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Report
+                Отчет
             </h2>
         </template>
 
@@ -62,7 +62,7 @@ const handleDownloadPdf = async () => {
                                 <div>
                                     <InputLabel
                                         for="date_from"
-                                        value="Date From"
+                                        value="Дата От"
                                     />
 
                                     <TextInput
@@ -77,7 +77,7 @@ const handleDownloadPdf = async () => {
                                 <div>
                                     <InputLabel
                                         for="date_to"
-                                        value="Date To"
+                                        value="Дата До"
                                     />
 
                                     <TextInput
@@ -135,7 +135,7 @@ const handleDownloadPdf = async () => {
                                             class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                             @click="handleDownloadPdf"
                                         >
-                                            Download Pdf
+                                            Изтегли Pdf
                                         </button>
                                     </div>
                                 </template>

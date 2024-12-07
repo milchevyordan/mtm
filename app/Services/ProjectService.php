@@ -87,7 +87,7 @@ class ProjectService
                 $query->where('warehouse', $warehouseValue);
             })
         ))
-            ->setColumn('id', '#', true, true);
+            ->setColumn('id', '№', true, true);
 
         if (! $warehouseValue) {
             $dataTable->setColumn('warehouse', 'Склад', true, true)
@@ -151,11 +151,11 @@ class ProjectService
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
-            ->setColumn('product.id', '#', true, true)
+            ->setColumn('product.id', '№', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('product.name', 'Име', true, true)
             ->setColumn('product.type', 'Тип', false, true)
-            ->setColumn('product.internal_id', 'Вътрешно #', true, true)
+            ->setColumn('product.internal_id', 'Вътрешен №', true, true)
             ->setColumn('quantity', 'Количество', true, true)
             ->setColumn('created_at', 'Добавен', true, true)
             ->setColumn('action', 'Действие')

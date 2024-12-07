@@ -32,7 +32,7 @@ class UserController extends Controller
         $dataTable = (new DataTable(
             User::select(User::$defaultSelectFields)
         ))
-            ->setColumn('id', '#', true, true)
+            ->setColumn('id', '№', true, true)
             ->setColumn('name', 'Име', true, true)
             ->setColumn('email', 'Имейл', true, true)
             ->setColumn('warehouse', 'Склад', true, true)

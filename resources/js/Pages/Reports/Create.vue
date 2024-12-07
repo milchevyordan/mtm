@@ -41,14 +41,14 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Report'" />
+    <Head :title="'Отчет'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Report
+                Отчет
             </h2>
         </template>
 
@@ -66,7 +66,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="date_from"
-                                        value="Date From"
+                                        value="Дата От"
                                     />
 
                                     <TextInput
@@ -87,7 +87,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="date_to"
-                                        value="Date To"
+                                        value="Дата До"
                                     />
 
                                     <TextInput

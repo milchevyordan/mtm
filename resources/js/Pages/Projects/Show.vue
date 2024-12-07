@@ -30,7 +30,7 @@ defineProps<{
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Проект
             </h2>
         </template>
 
@@ -111,7 +111,7 @@ defineProps<{
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Show product'"
+                                            :title="'Покажи продукт'"
                                             :href="route('products.show', item.product_id)"
                                         >
                                             <DocumentText

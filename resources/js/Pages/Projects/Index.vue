@@ -77,7 +77,7 @@ const handleDelete = () => {
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Project
+                Проект
             </h2>
         </template>
 
@@ -100,7 +100,7 @@ const handleDelete = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('projects.create')"
                                     >
-                                        Създай Project
+                                        Създай Проект
                                     </Link>
                                 </div>
                             </template>
@@ -121,7 +121,7 @@ const handleDelete = () => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit проект'"
+                                        :title="'Редактирай проект'"
                                         :href="route('projects.edit', item.id)"
                                     >
                                         <IconPencilSquare
@@ -131,7 +131,7 @@ const handleDelete = () => {
 
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show проект'"
+                                        :title="'Покажи проект'"
                                         :href="route('projects.show', item.id)"
                                     >
                                         <DocumentText
@@ -141,14 +141,14 @@ const handleDelete = () => {
 
                                     <button
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show products'"
+                                        :title="'Покажи проект'"
                                         @click="openShowProductsDataTableModal(item.id)"
                                     >
                                         <IconDocument classes="w-4 h-4 text-[#909090]" />
                                     </button>
 
                                     <button
-                                        :title="'Delete'"
+                                        :title="'Изтрий проект'"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
@@ -202,7 +202,7 @@ const handleDelete = () => {
                     <div class="flex gap-1.5">
                         <Link
                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                            :title="'Show product'"
+                            :title="'Покажи проект'"
                             :href="route('products.show', item.product_id)"
                         >
                             <DocumentText

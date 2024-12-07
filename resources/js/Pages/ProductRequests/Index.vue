@@ -48,14 +48,14 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Product Request'"/>
+    <Head :title="'Заявка'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product Request
+                Заявка
             </h2>
         </template>
 
@@ -78,7 +78,7 @@ const handleDelete = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('product-requests.create')"
                                     >
-                                        Създай Product Request
+                                        Създай Заявка
                                     </Link>
                                 </div>
                             </template>
@@ -112,7 +112,7 @@ const handleDelete = () => {
                                     <Link
                                         v-if="item.status == ProductRequestStatus.Not_delivered_yet"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit product request'"
+                                        :title="'Редактирай заявка'"
                                         :href="route('product-requests.edit', item.id)"
                                     >
                                         <IconPencilSquare
@@ -122,7 +122,7 @@ const handleDelete = () => {
 
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show product request'"
+                                        :title="'Покажи заявка'"
                                         :href="route('product-requests.show', item.id)"
                                     >
                                         <DocumentText
@@ -131,7 +131,7 @@ const handleDelete = () => {
                                     </Link>
 
                                     <button
-                                        :title="'Delete'"
+                                        :title="'Изтрий заявка'"
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
@@ -153,7 +153,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete product request #{{ deleteForm?.id ?? '' }} added on
+            Изтрий заявка №{{ deleteForm?.id ?? '' }} added on
             {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>{{ __('Report') }} {{ $report->id }}</title>
+    <title>{{ __('Отчет') }} {{ $report->id }}</title>
 
     @include('styles')
 </head>
@@ -11,42 +11,42 @@
 <body>
 
 <div class="container text-s">
-    <h1 class="heading">REPORT</h1>
+    <h1 class="heading">Отчет</h1>
 
     <table class="w-full pt-1">
         <tr>
             <td class="width-fifteen align-top px-half">
                 <div class="pt-half">
-                    Report Id: <span class="fw-bold">{{ $report->id }}</span>
+                    Отчет №: <span class="fw-bold">{{ $report->id }}</span>
                 </div>
                 <div class="pt-half">
                     Дата на създаване: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->created_at)->format('d-m-Y, H:i') }}</span>
                 </div>
                 <div class="pt-half">
-                    Потребител който го е създал: {{ $report->creator->name }}
+                    Създател: {{ $report->creator->name }}
                 </div>
             </td>
 
             {{-- Second column column --}}
             <td class="width-fifteen align-top px-half">
                 <div class="pt-half">
-                    Date from: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->date_from)->format('d-m-Y') }}</span>
+                    Дата От: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->date_from)->format('d-m-Y') }}</span>
                 </div>
 
                 <div class="pt-half">
-                    Date to: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->date_to)->format('d-m-Y') }}</span>
+                    Дата До: <span class="fw-bold">{{ \Carbon\Carbon::parse($report->date_to)->format('d-m-Y') }}</span>
                 </div>
             </td>
         </tr>
     </table>
 
-    <h1 class="heading pt-3">Projects</h1>
+    <h1 class="heading pt-3">Проекти</h1>
 
     <table class="w-full pt-1">
         <tr class="border-bottom">
-            <th class="text-left py-1">#</th>
-            <th class="text-left py-1">Warehouse</th>
-            <th class="text-left py-1">Name</th>
+            <th class="text-left py-1">№</th>
+            <th class="text-left py-1">Склад</th>
+            <th class="text-left py-1">Име</th>
             <th class="text-left py-1">Създаден</th>
         </tr>
 
@@ -75,11 +75,11 @@
 
     <table class="w-full">
         <tr class="border-bottom">
-            <th class="text-left py-1">#</th>
-            <th class="text-left py-1">Name</th>
-            <th class="text-left py-1">Type</th>
-            <th class="text-left py-1">Internal Id</th>
-            <th class="text-left py-1">Quantity</th>
+            <th class="text-left py-1">№</th>
+            <th class="text-left py-1">Име</th>
+            <th class="text-left py-1">Тип</th>
+            <th class="text-left py-1">Вътрешен №</th>
+            <th class="text-left py-1">Количество</th>
         </tr>
 
 

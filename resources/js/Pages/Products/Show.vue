@@ -92,7 +92,7 @@ const form = useForm<ProductForm>({
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Вътрешно #"
+                                        value="Вътрешен №"
                                     />
 
                                     <TextInput
@@ -154,7 +154,7 @@ const form = useForm<ProductForm>({
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Projects
+                                Проекти
                             </div>
                         </template>
 
@@ -181,7 +181,7 @@ const form = useForm<ProductForm>({
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Show проект'"
+                                            :title="'Покажи проект'"
                                             :href="route('projects.show', item.project_id)"
                                         >
                                             <DocumentText

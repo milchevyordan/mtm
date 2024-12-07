@@ -100,7 +100,7 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Product'" />
+    <Head :title="'Продукт'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -146,14 +146,14 @@ const handleDelete = () => {
                                 <div>
                                     <InputLabel
                                         for="type"
-                                        value="Type"
+                                        value="Тип"
                                     />
 
                                     <Select
                                         v-model="form.type"
                                         :name="'type'"
                                         :options="ProductType"
-                                        :placeholder="'Type'"
+                                        :placeholder="'Тип'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
 
@@ -166,7 +166,7 @@ const handleDelete = () => {
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Internal Id"
+                                        value="Вътрешно #"
                                     />
 
                                     <TextInput
@@ -185,7 +185,7 @@ const handleDelete = () => {
                                 <div>
                                     <InputLabel
                                         for="minimum_quantity"
-                                        value="Minimum Quantity"
+                                        value="Минимално Количество"
                                     />
 
                                     <TextInput
@@ -208,7 +208,7 @@ const handleDelete = () => {
                                 >
                                     <InputLabel
                                         :for="'quantities_' + warehouse.name"
-                                        :value="`Quantity ${warehouse.name}`"
+                                        :value="`Количество ${warehouse.name}`"
                                     />
 
                                     <TextInput
@@ -273,7 +273,7 @@ const handleDelete = () => {
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Edit project'"
+                                            :title="'Edit проект'"
                                             :href="route('projects.edit', item.project_id)"
                                         >
                                             <IconPencilSquare
@@ -305,7 +305,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete from project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Delete from проекта {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

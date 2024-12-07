@@ -35,7 +35,7 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Project'"/>
+    <Head :title="'Проект'"/>
 
     <AuthenticatedLayout>
         <template #header>

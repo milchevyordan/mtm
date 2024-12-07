@@ -95,7 +95,7 @@ const filteredWarehouse = Object.fromEntries(
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Products
+                                Продукти
                             </div>
                         </template>
 

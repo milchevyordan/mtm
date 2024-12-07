@@ -32,14 +32,14 @@ const form = useForm<ProductForm>({
 </script>
 
 <template>
-    <Head :title="'Product'" />
+    <Head :title="'Продукт'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product
+                Продукт
             </h2>
         </template>
 
@@ -72,14 +72,14 @@ const form = useForm<ProductForm>({
                                 <div>
                                     <InputLabel
                                         for="type"
-                                        value="Type"
+                                        value="Тип"
                                     />
 
                                     <Select
                                         :selected-option-value="product.type"
                                         :name="'type'"
                                         :options="ProductType"
-                                        :placeholder="'Type'"
+                                        :placeholder="'Тип'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
 
@@ -92,7 +92,7 @@ const form = useForm<ProductForm>({
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Internal Id"
+                                        value="Вътрешно #"
                                     />
 
                                     <TextInput
@@ -107,7 +107,7 @@ const form = useForm<ProductForm>({
                                 <div>
                                     <InputLabel
                                         for="minimum_quantity"
-                                        value="Minimum Quantity"
+                                        value="Минимално Количество"
                                     />
 
                                     <TextInput
@@ -126,7 +126,7 @@ const form = useForm<ProductForm>({
                                 >
                                     <InputLabel
                                         :for="'quantities_' + warehouse.name"
-                                        :value="`Quantity ${warehouse.name}`"
+                                        :value="`Количество ${warehouse.name}`"
                                     />
 
                                     <TextInput
@@ -181,7 +181,7 @@ const form = useForm<ProductForm>({
                                     <div class="flex gap-1.5">
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                            :title="'Show project'"
+                                            :title="'Show проект'"
                                             :href="route('projects.show', item.project_id)"
                                         >
                                             <DocumentText

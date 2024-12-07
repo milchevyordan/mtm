@@ -7,6 +7,7 @@ import Select from "@/Components/Select.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
@@ -14,7 +15,6 @@ import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductProductRequest, ProductRequest} from "@/types";
 import {findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
-import {ProductType} from "@/Enums/ProductType";
 
 defineProps<{
     productRequest: ProductRequest;
@@ -49,7 +49,7 @@ const statuses = Object.entries(ProductRequestStatus)
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Products
+                                Продукти
                             </div>
                         </template>
 

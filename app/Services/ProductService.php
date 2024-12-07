@@ -98,9 +98,9 @@ class ProductService
         }
 
         $dataTable->setColumn('id', '#', true, true)
-            ->setColumn('name', 'Name', true, true)
-            ->setColumn('type', 'Type', true, true)
-            ->setColumn('internal_id', 'Internal Id', true, true);
+            ->setColumn('name', 'Име', true, true)
+            ->setColumn('type', 'Тип', true, true)
+            ->setColumn('internal_id', 'Вътрешно #', true, true);
 
         if (isset($this->warehouseColumns[$slug])) {
             [$column, $label] = $this->warehouseColumns[$slug];
@@ -299,9 +299,9 @@ class ProductService
             ->setRelation('creator')
             ->setColumn('project.id', '#', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
-            ->setColumn('project.name', 'Name', true, true)
+            ->setColumn('project.name', 'Име', true, true)
             ->setColumn('project.warehouse', 'Склад', false, true)
-            ->setColumn('quantity', 'Quantity', true, true)
+            ->setColumn('quantity', 'Количество', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
             ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')

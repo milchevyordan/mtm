@@ -70,7 +70,7 @@ const globalSearch = debounce(() => {
                 <input
                     v-model="inputValue"
                     class="border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-300 pl-10 pr-4 text-sm rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-900 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 block w-full p-2.5 placeholder-gray-400 dark:placeholder-gray-500 peer transition hover:bg-gray-50 dark:hover:bg-gray-800 focus:bg-gray-50 dark:focus:bg-gray-900 z-0"
-                    :placeholder="'Search...'"
+                    :placeholder="'Търсене...'"
                     @input="globalSearch"
                 >
             </div>
@@ -84,7 +84,7 @@ const globalSearch = debounce(() => {
                 v-model="selectValue"
                 :name="'type'"
                 :options="ProductType"
-                :placeholder="'Select Type'"
+                :placeholder="'Тип'"
                 class="block w-full"
                 @select="globalSearch"
                 @remove="globalSearch"

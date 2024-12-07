@@ -43,14 +43,14 @@ const save = async (only?: Array<string>) => {
 </script>
 
 <template>
-    <Head :title="'Product'" />
+    <Head :title="'Продукт'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product
+                Продукт
             </h2>
         </template>
 
@@ -89,14 +89,14 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="type"
-                                        value="Type"
+                                        value="Тип"
                                     />
 
                                     <Select
                                         v-model="form.type"
                                         :name="'type'"
                                         :options="ProductType"
-                                        :placeholder="'Type'"
+                                        :placeholder="'Тип'"
                                         class="mt-1 block w-full mb-3.5"
                                     />
 
@@ -109,7 +109,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="internal_id"
-                                        value="Internal Id"
+                                        value="Вътрешно #"
                                     />
 
                                     <TextInput
@@ -128,7 +128,7 @@ const save = async (only?: Array<string>) => {
                                 <div>
                                     <InputLabel
                                         for="minimum_quantity"
-                                        value="Minimum Quantity"
+                                        value="Минимално Количество"
                                     />
 
                                     <TextInput
@@ -151,7 +151,7 @@ const save = async (only?: Array<string>) => {
                                 >
                                     <InputLabel
                                         :for="'quantities_' + warehouse.name"
-                                        :value="`Quantity ${warehouse.name}`"
+                                        :value="`Количество ${warehouse.name}`"
                                     />
 
                                     <TextInput

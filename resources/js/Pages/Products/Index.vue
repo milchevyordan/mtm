@@ -192,14 +192,14 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Product'" />
+    <Head :title="'Продукт'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Product
+                Продукт
             </h2>
         </template>
 
@@ -223,7 +223,7 @@ const handleDelete = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         :href="route('products.create')"
                                     >
-                                        Създай Product
+                                        Създай Продукт
                                     </Link>
                                 </div>
                             </template>
@@ -300,7 +300,7 @@ const handleDelete = () => {
 
                                     <button
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Add to project'"
+                                        :title="'Add to проект'"
                                         @click="openAddToProjectModal(item)"
                                     >
                                         <Plus classes="w-4 h-4 text-[#909090]" />
@@ -348,7 +348,7 @@ const handleDelete = () => {
             <div>
                 <InputLabel
                     for="quantity"
-                    :value="`Quantity ${findEnumKeyByValue(Warehouse, updateQuantityForm?.warehouse)}`"
+                    :value="`Количество ${findEnumKeyByValue(Warehouse, updateQuantityForm?.warehouse)}`"
                 />
 
                 <TextInput
@@ -383,7 +383,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Add product # {{ addToProjectForm?.product_id }} to project</div>
+            <div>Добави продукт #{{ addToProjectForm?.product_id }} към проект</div>
         </div>
 
         <form
@@ -393,14 +393,14 @@ const handleDelete = () => {
             <div>
                 <InputLabel
                     for="project"
-                    :value="'Project'"
+                    :value="'Проект'"
                 />
 
                 <Select
                     v-model="addToProjectForm.project_id"
                     :name="'project_id'"
                     :options="projects"
-                    :placeholder="'Project'"
+                    :placeholder="'Проект'"
                     class="mt-1 block w-full mb-3.5"
                     @select="updateAvailableQuantity"
                 />
@@ -414,14 +414,14 @@ const handleDelete = () => {
             <div>
                 <InputLabel
                     for="available_quantity"
-                    :value="`Available quantity in ${findEnumKeyByValue(Warehouse, addToProjectForm.warehouse) ?? 'warehouse'}`"
+                    :value="`Налично количество в ${findEnumKeyByValue(Warehouse, addToProjectForm.warehouse) ?? 'склада'}`"
                 />
 
                 <TextInput
                     id="quantity"
                     :model-value="addToProjectForm.available_quantity"
                     type="number"
-                    :placeholder="'Available quantity'"
+                    :placeholder="'Налично количество'"
                     :disabled="true"
                     class="mt-1 block w-full mb-3.5"
                 />
@@ -435,14 +435,14 @@ const handleDelete = () => {
             <div>
                 <InputLabel
                     for="quantity"
-                    :value="`Quantity to add to ${findKeyByValue(props.projects, addToProjectForm.project_id) ?? 'project'}`"
+                    :value="`Количество да се добави към ${findKeyByValue(props.projects, addToProjectForm.project_id) ?? 'проект'}`"
                 />
 
                 <TextInput
                     id="quantity"
                     v-model="addToProjectForm.quantity"
                     type="number"
-                    :placeholder="'Quantity to add'"
+                    :placeholder="'Количество да се добави'"
                     step="1"
                     :min="1"
                     :max="addToProjectForm.available_quantity"
@@ -503,7 +503,7 @@ const handleDelete = () => {
                     <div class="flex gap-1.5">
                         <Link
                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                            :title="'Show project'"
+                            :title="'Show проект'"
                             :href="route('projects.show', item.project_id)"
                         >
                             <DocumentText
@@ -523,7 +523,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Delete проект {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

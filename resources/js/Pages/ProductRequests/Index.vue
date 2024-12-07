@@ -9,11 +9,11 @@ import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
 import {Warehouse} from "@/Enums/Warehouse";
 import DocumentText from "@/Icons/DocumentText.vue";
+import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {DeleteForm, ProductRequest} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
-import IconPencilSquare from "@/Icons/PencilSquare.vue";
 
 defineProps<{
     dataTable: DataTable<ProductRequest>;

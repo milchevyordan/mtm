@@ -8,12 +8,12 @@ import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
+import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
+import DocumentText from "@/Icons/DocumentText.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
-import DocumentText from "@/Icons/DocumentText.vue";
-import {ProductType} from "@/Enums/ProductType";
 
 defineProps<{
     project: Project;
@@ -23,7 +23,7 @@ defineProps<{
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Проект'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -83,7 +83,7 @@ defineProps<{
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Products
+                                Продукти
                             </div>
                         </template>
 

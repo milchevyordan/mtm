@@ -70,7 +70,7 @@ const handleDelete = () => {
 </script>
 
 <template>
-    <Head :title="'Project'" />
+    <Head :title="'Проект'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -121,7 +121,7 @@ const handleDelete = () => {
                                 <div class="flex gap-1.5">
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Edit project'"
+                                        :title="'Edit проект'"
                                         :href="route('projects.edit', item.id)"
                                     >
                                         <IconPencilSquare
@@ -131,7 +131,7 @@ const handleDelete = () => {
 
                                     <Link
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
-                                        :title="'Show project'"
+                                        :title="'Show проект'"
                                         :href="route('projects.show', item.id)"
                                     >
                                         <DocumentText
@@ -171,7 +171,7 @@ const handleDelete = () => {
         <div
             class="px-3.5 p-3 text-xl font-medium"
         >
-            Products
+            Продукти
         </div>
 
         <div
@@ -222,7 +222,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete project {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Delete проект {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

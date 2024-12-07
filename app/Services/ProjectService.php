@@ -94,7 +94,7 @@ class ProjectService
                 ->setEnumColumn('warehouse', Warehouse::class);
         }
 
-        return $dataTable->setColumn('name', 'Name', true, true)
+        return $dataTable->setColumn('name', 'Име', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
             ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
@@ -153,11 +153,11 @@ class ProjectService
             ->setRelation('product', ['id', 'name', 'type', 'internal_id'])
             ->setColumn('product.id', '#', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
-            ->setColumn('product.name', 'Name', true, true)
-            ->setColumn('product.type', 'Type', false, true)
-            ->setColumn('product.internal_id', 'Internal Id', true, true)
-            ->setColumn('quantity', 'Quantity', true, true)
-            ->setColumn('created_at', 'Added', true, true)
+            ->setColumn('product.name', 'Име', true, true)
+            ->setColumn('product.type', 'Тип', false, true)
+            ->setColumn('product.internal_id', 'Вътрешно #', true, true)
+            ->setColumn('quantity', 'Количество', true, true)
+            ->setColumn('created_at', 'Добавен', true, true)
             ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('product.type', ProductType::class)

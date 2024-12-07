@@ -65,7 +65,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('products.index')"
                                     :active="route().current('products.*')"
                                 >
-                                    Product
+                                    Продукт
 
                                     <template #content>
                                         <div
@@ -270,7 +270,7 @@ const showingNavigationDropdown = ref(false);
                             :href="route('products.index')"
                             :active="route().current('products.*')"
                         >
-                            Product
+                            Продукт
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('projects.index')"

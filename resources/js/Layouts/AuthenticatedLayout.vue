@@ -148,7 +148,7 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('notifications.*')"
                                     :notifications-count="usePage().props.auth.notificationsCount"
                                 >
-                                    Notification
+                                    Известие
                                 </NavLink>
                             </div>
                         </div>
@@ -188,14 +188,14 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink
                                             :href="route('profile.edit')"
                                         >
-                                            Profile
+                                            Профил
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Изход
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -295,7 +295,7 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('notifications.*')"
                             :notifications-count="usePage().props.auth.notificationsCount"
                         >
-                            Notification
+                            Известие
                         </ResponsiveNavLink>
                     </div>
 
@@ -316,14 +316,14 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
+                                Профил
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
                             >
-                                Log Out
+                                Изход
                             </ResponsiveNavLink>
                         </div>
                     </div>

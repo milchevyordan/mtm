@@ -35,7 +35,7 @@ class SendProductNotification
                 continue;
             }
 
-            $message = "Product {$event->product->name} is running out of stock in {$quantity->warehouse->name}.";
+            $message = "Продукт №{$event->product->id} е под минимално количество в склад {$quantity->warehouse->name}.";
             Notification::send($users, new DatabaseNotification($message));
         }
 

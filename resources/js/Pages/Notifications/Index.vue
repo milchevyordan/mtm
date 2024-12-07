@@ -48,14 +48,14 @@ const markAllRead = () => {
 </script>
 
 <template>
-    <Head :title="'Notifications'"/>
+    <Head :title="'Известия'" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-                Notifications
+                Известия
             </h2>
         </template>
 
@@ -78,7 +78,7 @@ const markAllRead = () => {
                                         class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
                                         @click="markAllRead"
                                     >
-                                        Mark all as read
+                                        Маркиране всички като прочетени
                                     </button>
                                 </div>
                             </template>

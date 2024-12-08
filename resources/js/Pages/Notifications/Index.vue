@@ -5,12 +5,12 @@ import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import Check from "@/Icons/Check.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {FormMethod} from "@/types";
+import {FormMethod, Notification} from "@/types";
 import {dateTimeToLocaleString} from "@/utils";
+import {computed} from "vue";
 
-defineProps<{
+const props = defineProps<{
     dataTable: DataTable<Notification>;
-    unreadNotificationIds: Array<number>;
 }>();
 
 const updateForm = useForm<{
@@ -45,6 +45,12 @@ const markAllRead = () => {
         onError: () => {},
     });
 };
+
+const notReadYet = computed(() =>
+    props.dataTable.data
+        .filter((item: Notification) => item.read_at == null)
+        .map(item => item.id)
+);
 </script>
 
 <template>
@@ -69,7 +75,7 @@ const markAllRead = () => {
                             :data-table="dataTable"
                             :per-page-options="[5, 10, 15, 20, 50]"
                             :global-search="true"
-                            :selected-row-indexes="unreadNotificationIds"
+                            :selected-row-indexes="notReadYet"
                             :selected-row-column="'id'"
                         >
                             <template #additionalContent>

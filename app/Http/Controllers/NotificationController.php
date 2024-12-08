@@ -23,8 +23,6 @@ class NotificationController extends Controller
     {
         $user = auth()->user();
 
-        $unreadNotificationIds = $user->unreadNotifications()->pluck('id')->all();
-
         $dataTable = (new DataTable(
             $user->notifications()->orderByRaw('read_at IS NULL DESC')->getQuery()
         ))
@@ -35,8 +33,7 @@ class NotificationController extends Controller
             ->setDateColumn('read_at', 'dd.mm.YYYY H:i');
 
         return Inertia::render('Notifications/Index', [
-            'dataTable'             => fn () => $dataTable->run(),
-            'unreadNotificationIds' => fn () => $unreadNotificationIds,
+            'dataTable' => fn () => $dataTable->run(),
         ]);
     }
 

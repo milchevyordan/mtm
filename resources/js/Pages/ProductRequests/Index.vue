@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Head, Link, useForm} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import Modal from "@/Components/Modal.vue";
@@ -15,7 +15,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {DeleteForm, ProductRequest} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
-defineProps<{
+const props = defineProps<{
     dataTable: DataTable<ProductRequest>;
 }>();
 
@@ -45,6 +45,12 @@ const handleDelete = () => {
     });
     closeDeleteModal();
 };
+
+const notDeliveredYet = computed(() =>
+    props.dataTable.data
+        .filter((item: ProductRequest) => item.status == ProductRequestStatus.Not_delivered_yet)
+        .map(item => item.id)
+);
 </script>
 
 <template>
@@ -71,6 +77,8 @@ const handleDelete = () => {
                             :global-search="true"
                             :show-trashed="true"
                             :advanced-filters="false"
+                            :selected-row-indexes="notDeliveredYet"
+                            :selected-row-column="'id'"
                         >
                             <template #additionalContent>
                                 <div class="w-full flex gap-2">

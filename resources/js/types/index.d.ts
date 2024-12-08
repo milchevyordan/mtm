@@ -64,6 +64,7 @@ interface ChangeLogsChange {
 export interface Notification {
     readonly id: number;
     creator: User;
+    read_at: Date | null;
     data: {
         user_name: string;
         model_name: string;

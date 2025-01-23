@@ -303,6 +303,7 @@ class ProductService
             ->setColumn('project.name', 'Име', true, true)
             ->setColumn('project.warehouse', 'Склад', false, true)
             ->setColumn('quantity', 'Количество', true, true)
+            ->setColumn('comment', 'Коментар', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
             ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')

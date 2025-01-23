@@ -23,6 +23,7 @@ class ProductProject extends Model
         'product_id',
         'project_id',
         'quantity',
+        'comment',
     ];
 
     /**

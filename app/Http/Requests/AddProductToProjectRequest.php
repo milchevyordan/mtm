@@ -32,6 +32,7 @@ class AddProductToProjectRequest extends FormRequest
             'quantity'           => ['required', 'integer', 'min:1', 'max:2147483647', 'lte:available_quantity'],
             'available_quantity' => ['required', 'integer'],
             'warehouse'          => ['required', Rule::in(Warehouse::values())],
+            'comment'            => ['nullable', 'string', 'max:255'],
         ];
     }
 }

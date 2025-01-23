@@ -86,7 +86,8 @@ const addToProjectForm = useForm<ProductProjectForm>({
     quantity: null!,
     available_quantity: null!,
     warehouse: null!,
-    quantities: null!
+    quantities: null!,
+    comment: null!
 });
 
 const openChangeQuantityModal = (item: ProductQuantity) => {
@@ -446,6 +447,26 @@ const handleDelete = () => {
                     step="1"
                     :min="1"
                     :max="addToProjectForm.available_quantity"
+                    class="mt-1 block w-full mb-3.5"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="addToProjectForm.errors.quantity"
+                />
+            </div>
+
+            <div>
+                <InputLabel
+                    for="comment"
+                    :value="'Коментар'"
+                />
+
+                <TextInput
+                    id="comment"
+                    v-model="addToProjectForm.comment"
+                    type="text"
+                    :placeholder="'Напиши Коментар'"
                     class="mt-1 block w-full"
                 />
 

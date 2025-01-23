@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 import GlobalSearch from "./Components/GlobalSearch.vue";
 import Pagination from "./Components/Pagination.vue";
@@ -46,7 +47,8 @@ const isRowClickLinkSet: boolean = props.rowClickLink
     ? props.rowClickLink.includes("?id")
     : false;
 
-// Extract initial global search filter value from query parameters
+// State to track the selected row
+const selectedRow = ref<number | null>(null);
 
 const getRelationData = (
     rowData: any,
@@ -67,13 +69,14 @@ const getRelationData = (
 };
 
 const handleRowClick = (event: MouseEvent, dataId: number) => {
-    if (
-        typeof props.rowClickLink !== "undefined" &&
-        !isTrashed() &&
-        isRowClickLinkSet &&
-        ["DIV", "TD"].includes((event.target as HTMLElement).tagName)
-    ) {
-        router.get(replacePlaceholder(props.rowClickLink, dataId));
+    if (isTrashed() || !["DIV", "TD"].includes((event.target as HTMLElement).tagName)) {
+        return;
+    }
+
+    if (selectedRow.value === dataId) {
+        selectedRow.value = null; // Deselect if the same row is clicked again
+    } else {
+        selectedRow.value = dataId; // Select the new row
     }
 };
 
@@ -196,17 +199,18 @@ const handleRestoreRecord = async (id: number) => {
                         rowIndex !== dataTable.data.length - 1
                             ? 'border-b dark:border-gray-600'
                             : '',
-                        selectedRowIndexes &&
+                        (selectedRowIndexes &&
                             selectedRowColumn &&
                             (selectedRowIndexes.includes(
                                 Number(rowData[selectedRowColumn])
                             ) ||
                                 selectedRowIndexes.includes(
                                     rowData[selectedRowColumn]
-                                ))
+                                ))) ||
+                            selectedRow === rowData.id
                             ? 'bg-indigo-400 dark:bg-indigo-600 text-white'
                             : 'bg-white dark:bg-gray-800',
-                        { 'cursor-pointer': isRowClickLinkSet && !isTrashed() },
+                        { 'cursor-pointer': !isTrashed() },
                     ]"
                     @click="handleRowClick($event, rowData.id)"
                 >
@@ -246,10 +250,10 @@ const handleRestoreRecord = async (id: number) => {
                                     column.relation.relationColumn
                                 )
                             }}
-                            <!-- {{
-                            rowData[column.relationTable][column.relationColumn]
-                        }} -->
-                            <!-- {{ getNestedData(rowData, column.relation) }} -->
+                        <!-- {{
+                        rowData[column.relationTable][column.relationColumn]
+                    }} -->
+                        <!-- {{ getNestedData(rowData, column.relation) }} -->
                         </div>
 
                         <div

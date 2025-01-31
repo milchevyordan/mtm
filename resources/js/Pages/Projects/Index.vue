@@ -125,7 +125,7 @@ const handleDelete = () => {
                                         :href="route('projects.edit', item.id)"
                                     >
                                         <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
+                                            classes="w-4 h-4 "
                                         />
                                     </Link>
 
@@ -135,7 +135,7 @@ const handleDelete = () => {
                                         :href="route('projects.show', item.id)"
                                     >
                                         <DocumentText
-                                            classes="w-4 h-4 text-[#909090]"
+                                            classes="w-4 h-4 "
                                         />
                                     </Link>
 
@@ -144,7 +144,7 @@ const handleDelete = () => {
                                         :title="'Покажи проект'"
                                         @click="openShowProductsDataTableModal(item.id)"
                                     >
-                                        <IconDocument classes="w-4 h-4 text-[#909090]" />
+                                        <IconDocument classes="w-4 h-4 " />
                                     </button>
 
                                     <button
@@ -152,7 +152,7 @@ const handleDelete = () => {
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
-                                        <IconTrash classes="w-4 h-4 text-[#909090]" />
+                                        <IconTrash classes="w-4 h-4 " />
                                     </button>
                                 </div>
                             </template>
@@ -206,7 +206,7 @@ const handleDelete = () => {
                             :href="route('products.show', item.product_id)"
                         >
                             <DocumentText
-                                classes="w-4 h-4 text-[#909090]"
+                                classes="w-4 h-4 "
                             />
                         </Link>
                     </div>

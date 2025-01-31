@@ -124,7 +124,7 @@ const notDeliveredYet = computed(() =>
                                         :href="route('product-requests.edit', item.id)"
                                     >
                                         <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
+                                            classes="w-4 h-4 "
                                         />
                                     </Link>
 
@@ -134,7 +134,7 @@ const notDeliveredYet = computed(() =>
                                         :href="route('product-requests.show', item.id)"
                                     >
                                         <DocumentText
-                                            classes="w-4 h-4 text-[#909090]"
+                                            classes="w-4 h-4 "
                                         />
                                     </Link>
 
@@ -143,7 +143,7 @@ const notDeliveredYet = computed(() =>
                                         class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                         @click="openDeleteModal(item)"
                                     >
-                                        <IconTrash classes="w-4 h-4 text-[#909090]"/>
+                                        <IconTrash classes="w-4 h-4 "/>
                                     </button>
                                 </div>
                             </template>

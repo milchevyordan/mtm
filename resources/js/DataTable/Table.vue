@@ -11,7 +11,6 @@ import { limitCharacters, relationWithColumn } from "./js/utils.js";
 import { DataTable, ThisRoute } from "./types";
 
 import IconRestore from "@/Icons/Restore.vue";
-import { replacePlaceholder } from "@/utils";
 
 const props = withDefaults(
     defineProps<{
@@ -23,7 +22,6 @@ const props = withDefaults(
         advancedFilters?: boolean;
         selectedRowIndexes?: Array<string | number>;
         selectedRowColumn?: string;
-        rowClickLink?: string;
         perPageOptions?: number[];
     }>(),
     {
@@ -42,10 +40,6 @@ const isTrashed = () => {
 
 let previousOrderingKey: string = null!;
 let previousOrderingDirection: string = null!;
-
-const isRowClickLinkSet: boolean = props.rowClickLink
-    ? props.rowClickLink.includes("?id")
-    : false;
 
 // State to track the selected row
 const selectedRow = ref<number | null>(null);
@@ -69,7 +63,7 @@ const getRelationData = (
 };
 
 const handleRowClick = (event: MouseEvent, dataId: number) => {
-    if (isTrashed() || !["DIV", "TD"].includes((event.target as HTMLElement).tagName)) {
+    if (!["DIV", "TD"].includes((event.target as HTMLElement).tagName)) {
         return;
     }
 
@@ -195,6 +189,7 @@ const handleRestoreRecord = async (id: number) => {
                 <tr
                     v-for="(rowData, rowIndex) in dataTable.data"
                     v-if="dataTable.data.length > 0"
+                    class="cursor-pointer"
                     :class="[
                         rowIndex !== dataTable.data.length - 1
                             ? 'border-b dark:border-gray-600'
@@ -210,7 +205,6 @@ const handleRestoreRecord = async (id: number) => {
                             selectedRow === rowData.id
                             ? 'bg-indigo-400 dark:bg-indigo-600 text-white'
                             : 'bg-white dark:bg-gray-800',
-                        { 'cursor-pointer': !isTrashed() },
                     ]"
                     @click="handleRowClick($event, rowData.id)"
                 >

@@ -115,7 +115,7 @@ defineProps<{
                                             :href="route('products.show', item.product_id)"
                                         >
                                             <DocumentText
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 "
                                             />
                                         </Link>
                                     </div>

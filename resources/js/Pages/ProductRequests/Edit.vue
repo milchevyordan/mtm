@@ -131,7 +131,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                             :href="route('products.edit', item.product_id)"
                                         >
                                             <IconPencilSquare
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 text-gray-700 dark:text-gray-300"
                                             />
                                         </Link>
 
@@ -141,7 +141,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                             :href="route('products.show', item.product_id)"
                                         >
                                             <DocumentText
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 text-gray-700 dark:text-gray-300"
                                             />
                                         </Link>
                                     </div>

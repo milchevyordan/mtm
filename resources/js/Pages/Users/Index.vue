@@ -69,7 +69,7 @@ defineProps<{
                                         :href="route('users.edit', item.id)"
                                     >
                                         <IconPencilSquare
-                                            classes="w-4 h-4 text-[#909090]"
+                                            classes="w-4 h-4 "
                                         />
                                     </Link>
                                 </div>

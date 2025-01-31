@@ -163,7 +163,7 @@ const filteredWarehouse = Object.fromEntries(
                                             @click="removeProduct(item.id)"
                                         >
                                             <IconMinus
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 "
                                             />
                                         </button>
                                         <button
@@ -173,7 +173,7 @@ const filteredWarehouse = Object.fromEntries(
                                             @click="addProduct(item)"
                                         >
                                             <IconPlus
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 "
                                             />
                                         </button>
                                         <Link
@@ -182,7 +182,7 @@ const filteredWarehouse = Object.fromEntries(
                                             :href="route('products.edit', item.id)"
                                         >
                                             <IconPencilSquare
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 "
                                             />
                                         </Link>
 
@@ -192,7 +192,7 @@ const filteredWarehouse = Object.fromEntries(
                                             :href="route('products.show', item.id)"
                                         >
                                             <DocumentText
-                                                classes="w-4 h-4 text-[#909090]"
+                                                classes="w-4 h-4 "
                                             />
                                         </Link>
                                     </div>

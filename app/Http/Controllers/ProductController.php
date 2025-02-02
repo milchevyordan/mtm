@@ -40,10 +40,10 @@ class ProductController extends Controller
     {
         return Inertia::render('Products/Index', [
             'dataTable'             => fn () => $this->service->getIndexMethodDatatable($slug),
+            'changeLogsLimited'     => ChangeLogService::getChangeLogsLimited(Product::class),
             'projects'              => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
             'projectWarehouse'      => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
             'showProjectsDataTable' => Inertia::lazy(fn () => $this->service->getShowProjectsDataTable()),
-            'changeLogsLimited'     => ChangeLogService::getChangeLogsLimited(Product::class),
             'changeLogs'            => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable(Product::class)),
         ]);
     }

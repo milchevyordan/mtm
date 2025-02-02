@@ -149,9 +149,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $id
+     * @param  User             $user
+     * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(User $user): RedirectResponse
     {
+        try {
+            $user->delete();
+
+            return redirect()->back()->with('success', 'The record has been successfully deleted.');
+        } catch (Throwable $th) {
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error deleting record.']);
+        }
     }
 }

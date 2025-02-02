@@ -26,6 +26,7 @@ defineProps<{
 const form = useForm<ProductRequestForm>({
     id: null!,
     warehouse: usePage().props.auth.user.warehouse != Warehouse.Varna ? usePage().props.auth.user.warehouse : null!,
+    comment: null!,
     products: [],
     productIds: [],
 });
@@ -248,6 +249,27 @@ const filteredWarehouse = Object.fromEntries(
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.warehouse"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="comment"
+                                        value="Коментар"
+                                    />
+
+                                    <TextInput
+                                        id="comment"
+                                        v-model="form.comment"
+                                        type="text"
+                                        :placeholder="'Коментар'"
+                                        step="1"
+                                        class="block w-full"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.comment"
                                     />
                                 </div>
 

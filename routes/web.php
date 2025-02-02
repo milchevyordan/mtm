@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('users', UserController::class)->except('destroy')->except(['show', 'destroy']);
+    Route::resource('users', UserController::class)->except(['show']);
 
     Route::put('/products/update-quantity', [ProductController::class, 'updateQuantity'])->name('products.update-quantity');
     Route::get('/products-table/{slug?}', [ProductController::class, 'index'])->name('products.table');

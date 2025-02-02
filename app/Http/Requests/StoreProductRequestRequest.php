@@ -28,6 +28,7 @@ class StoreProductRequestRequest extends FormRequest
     {
         return [
             'warehouse'             => ['required', Rule::in(Warehouse::values())],
+            'comment'               => ['nullable', 'string', 'max:255'],
             'products'              => ['array'],
             'products.*.product_id' => ['required', 'integer'],
             'products.*.quantity'   => ['required', 'integer'],

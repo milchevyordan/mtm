@@ -81,7 +81,10 @@ const closeChangeLogModal = () => {
                                 {{ changeLog.changeable_id }}
                             </span>
                         </div>
-                        <div class="element-center">
+                        <div
+                            v-if="changeLog.creator?.name"
+                            class="element-center"
+                        >
                             <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
                                 Създател
                             </span>

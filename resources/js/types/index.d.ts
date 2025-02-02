@@ -161,6 +161,7 @@ export interface ProductRequest {
     creator_id: number;
     status: Enum<typeof ProductRequestStatus>;
     warehouse: Enum<typeof Warehouse>;
+    comment: string;
     creator?: User;
     products?: Product[];
     readonly created_at?: Date;

@@ -9,6 +9,7 @@ use App\Enums\Warehouse;
 use App\Traits\HasChangeLogs;
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use HasCreator;
     use HasChangeLogs;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

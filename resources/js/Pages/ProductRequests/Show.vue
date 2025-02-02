@@ -4,6 +4,7 @@ import {Head, Link} from "@inertiajs/vue3";
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
+import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
@@ -63,7 +64,7 @@ const statuses = Object.entries(ProductRequestStatus)
                             >
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}
                                     </div>
                                 </template>
 
@@ -113,6 +114,22 @@ const statuses = Object.entries(ProductRequestStatus)
                                         :name="'warehouse'"
                                         :options="Warehouse"
                                         :placeholder="'За Склад'"
+                                        disabled
+                                        class="mt-1 block w-full mb-3.5"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="comment"
+                                        value="Коментар"
+                                    />
+
+                                    <TextInput
+                                        id="comment"
+                                        :model-value="productRequest.comment"
+                                        :name="'comment'"
+                                        :placeholder="'Коментар'"
                                         disabled
                                         class="mt-1 block w-full mb-3.5"
                                     />

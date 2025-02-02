@@ -88,7 +88,15 @@ class ProductService
      */
     public function getIndexMethodDatatable(?string $slug): DataTable
     {
-        $dataTable = (new DataTable(Product::query()))
+        if ($slug) {
+            $query = Product::whereHas('creator', function ($query) use ($slug) {
+                $query->where('warehouse', Warehouse::getCaseByName($slug));
+            });
+        } else {
+            $query = Product::query();
+        }
+
+        $dataTable = (new DataTable($query))
             ->setRelation('quantity');
 
         if (isset($this->warehouseRelations[$slug])) {

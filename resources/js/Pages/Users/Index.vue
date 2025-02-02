@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { Head, Link } from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
+import {ref} from "vue";
 
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
+import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
+import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
 import { DataTable } from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
+import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ChangeLog, User} from "@/types";
+import {ChangeLog, DeleteForm, Project, User} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
 
 defineProps<{
@@ -15,6 +19,34 @@ defineProps<{
     changeLogsLimited: ChangeLog[];
     changeLogs?: DataTable<ChangeLog>;
 }>();
+
+const showDeleteModal = ref<boolean>(false);
+
+const deleteForm = useForm<DeleteForm>({
+    id: null!,
+    name: null!,
+    created_at: null!,
+});
+
+const openDeleteModal = (item: Project) => {
+    deleteForm.id = item.id;
+    deleteForm.name = item.name;
+    deleteForm.created_at = item.created_at as Date;
+
+    showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+    showDeleteModal.value = false;
+    deleteForm.reset();
+};
+
+const handleDelete = () => {
+    deleteForm.delete(route("users.destroy", deleteForm.id as number), {
+        preserveScroll: true,
+    });
+    closeDeleteModal();
+};
 </script>
 
 <template>
@@ -39,6 +71,7 @@ defineProps<{
                             :data-table="dataTable"
                             :per-page-options="[5, 10, 15, 20, 50]"
                             :global-search="true"
+                            :show-trashed="true"
                             :advanced-filters="false"
                         >
                             <template #additionalContent>
@@ -75,6 +108,14 @@ defineProps<{
                                             classes="w-4 h-4 "
                                         />
                                     </Link>
+
+                                    <button
+                                        :title="'Изтрий'"
+                                        class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                        @click="openDeleteModal(item)"
+                                    >
+                                        <IconTrash classes="w-4 h-4 " />
+                                    </button>
                                 </div>
                             </template>
                         </Table>
@@ -89,4 +130,27 @@ defineProps<{
             </div>
         </div>
     </AuthenticatedLayout>
+
+    <Modal
+        :show="showDeleteModal"
+        @close="closeDeleteModal"
+    >
+        <div
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
+        >
+            Изтриване на потребител <span class="font-bold">{{ deleteForm?.name ?? '' }}</span> добавен на {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+        </div>
+
+        <form
+            class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4"
+            @submit.prevent="handleDelete"
+        >
+            <ResetSaveButtons
+                :processing="deleteForm.processing"
+                :recently-successful="deleteForm.recentlySuccessful"
+                :is-delete="true"
+                @reset="closeDeleteModal"
+            />
+        </form>
+    </Modal>
 </template>

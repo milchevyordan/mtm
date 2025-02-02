@@ -28,6 +28,7 @@ const form = useForm<ProductRequestForm>({
     _method: 'put',
     id: props.productRequest.id,
     warehouse: props.productRequest.warehouse,
+    comment: props.productRequest.comment,
     status: null!,
     products: props.productProductRequest
 });
@@ -176,6 +177,28 @@ const statuses = Object.entries(ProductRequestStatus)
                                     <InputError
                                         class="mt-2"
                                         :message="form.errors.warehouse"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        for="comment"
+                                        value="Коментар"
+                                    />
+
+                                    <TextInput
+                                        id="comment"
+                                        :model-value="form.comment"
+                                        type="text"
+                                        :placeholder="'Коментар'"
+                                        step="1"
+                                        disabled
+                                        class="block w-full"
+                                    />
+
+                                    <InputError
+                                        class="mt-2"
+                                        :message="form.errors.comment"
                                     />
                                 </div>
 

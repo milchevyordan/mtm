@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Enums\Warehouse;
 use App\Models\User;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,8 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Factory::create();
-
         User::factory()->create([
             'name'      => 'Valentin Makarov',
             'email'     => 'valentin.makarov64@gmail.com',

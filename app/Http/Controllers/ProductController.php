@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddProductToProjectRequest;
+use App\Http\Requests\MoveProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -108,9 +109,11 @@ class ProductController extends Controller
         $product->load(['changeLogsLimited', 'quantity', 'creator']);
 
         return Inertia::render('Products/Edit', [
-            'product'    => $product,
-            'dataTable'  => fn () => $this->service->getProjectsDataTable($product->id),
-            'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($product)),
+            'product'          => $product,
+            'dataTable'        => fn () => $this->service->getProjectsDataTable($product->id),
+            'changeLogs'       => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($product)),
+            'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
+            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
         ]);
     }
 
@@ -185,7 +188,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Add the product to project.
      *
      * @param  AddProductToProjectRequest $request
      * @return RedirectResponse
@@ -196,6 +199,31 @@ class ProductController extends Controller
 
         try {
             $this->service->addProductToProject($request);
+
+            DB::commit();
+
+            return back()->with('success', 'Записа беше актуализиран успешно.');
+        } catch (Throwable $th) {
+            DB::rollBack();
+
+            Log::error($th->getMessage(), ['exception' => $th]);
+
+            return redirect()->back()->withErrors(['Error updating record.']);
+        }
+    }
+
+    /**
+     * Move the product to project.
+     *
+     * @param  MoveProductToProjectRequest $request
+     * @return RedirectResponse
+     */
+    public function moveToProject(MoveProductToProjectRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->service->moveProductToProject($request);
 
             DB::commit();
 

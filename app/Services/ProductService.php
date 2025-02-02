@@ -8,12 +8,14 @@ use App\Enums\ProductType;
 use App\Enums\Warehouse;
 use App\Events\MinimumQuantityReached;
 use App\Http\Requests\AddProductToProjectRequest;
+use App\Http\Requests\MoveProductToProjectRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductQuantityRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductProject;
 use App\Models\ProductQuantity;
+use App\Models\Project;
 use App\Services\DataTable\DataTable;
 
 class ProductService
@@ -239,11 +241,6 @@ class ProductService
     {
         $validatedRequest = $request->validated();
 
-        $productProject = new ProductProject();
-        $productProject->fill($validatedRequest);
-        $productProject->creator_id = auth()->id();
-        $productProject->save();
-
         $productQuantity = ProductQuantity::where('product_id', $validatedRequest['product_id'])
             ->where('warehouse', $validatedRequest['warehouse'])
             ->with('product')
@@ -254,14 +251,82 @@ class ProductService
         }
 
         $product = $productQuantity->product;
-        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity', 'projects']);
 
+        $productProject = new ProductProject();
+        $productProject->fill($validatedRequest);
+        $productProject->creator_id = auth()->id();
+        $productProject->save();
+
+        $newQuantity = $productQuantity->quantity - $validatedRequest['quantity'];
         $productQuantity->update([
-            'quantity' => $productQuantity->quantity - $validatedRequest['quantity'],
+            'quantity' => $newQuantity,
         ]);
 
-        if ($validatedRequest['quantity'] < $product->minimum_quantity) {
+        if ($productQuantity->quantity - $validatedRequest['quantity'] < $product->minimum_quantity) {
             event(new MinimumQuantityReached($product));
+        }
+
+        $changeLoggerService->logChanges($product);
+
+        return $this;
+    }
+
+    /**
+     * Update the product's quantity.
+     *
+     * @param  MoveProductToProjectRequest $request
+     * @return self
+     */
+    public function moveProductToProject(MoveProductToProjectRequest $request): self
+    {
+        $validatedRequest = $request->validated();
+
+        $productProject = ProductProject::find($validatedRequest['id']);
+        if ($productProject->project_id == $validatedRequest['project_id']) {
+            return $this;
+        }
+
+        $originProjectWarehouse = $productProject->project->warehouse->value;
+        $moveProjectWarehouse = Project::find($validatedRequest['project_id'])->warehouse->value;
+
+        $productQuantity = ProductQuantity::where('product_id', $productProject->product_id)
+            ->where('warehouse', $originProjectWarehouse)
+            ->with('product')
+            ->first();
+
+        if (! $productQuantity) {
+            return $this;
+        }
+
+        $product = $productQuantity->product;
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity', 'projects']);
+
+        $productProject->project_id = $validatedRequest['project_id'];
+        $productProject->save();
+
+        if ($originProjectWarehouse != $moveProjectWarehouse) {
+            $newQuantityOldWarehouse = $productQuantity->quantity + $productProject->quantity;
+            $productQuantity->update([
+                'quantity' => $newQuantityOldWarehouse,
+            ]);
+
+            if ($newQuantityOldWarehouse < $product->minimum_quantity) {
+                event(new MinimumQuantityReached($product));
+            }
+
+            $newProductQuantity = ProductQuantity::where('product_id', $productProject->product_id)
+                ->where('warehouse', $moveProjectWarehouse)
+                ->first();
+
+            $newQuantityNewWarehouse = $newProductQuantity->quantity - $productProject->quantity;
+            $newProductQuantity->update([
+                'quantity' => $newQuantityNewWarehouse,
+            ]);
+
+            if ($newQuantityNewWarehouse < $product->minimum_quantity) {
+                event(new MinimumQuantityReached($product));
+            }
         }
 
         $changeLoggerService->logChanges($product);
@@ -298,9 +363,9 @@ class ProductService
         ))
             ->setRelation('project', ['id', 'name', 'warehouse'])
             ->setRelation('creator')
-            ->setColumn('project.id', '№', true, true)
+            ->setColumn('project.id', '№ Проект', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
-            ->setColumn('project.name', 'Име', true, true)
+            ->setColumn('project.name', 'Име Проект', true, true)
             ->setColumn('project.warehouse', 'Склад', false, true)
             ->setColumn('quantity', 'Количество', true, true)
             ->setColumn('comment', 'Коментар', true, true)

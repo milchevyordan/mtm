@@ -10,6 +10,7 @@ use App\Models\ProductProject;
 use App\Models\Project;
 use App\Services\ChangeLoggerService;
 use App\Services\ChangeLogService;
+use App\Services\MultiSelectService;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -105,9 +106,11 @@ class ProjectController extends Controller
         $project->load(['changeLogsLimited', 'creator']);
 
         return Inertia::render('Projects/Edit', [
-            'project'    => $project,
-            'dataTable'  => fn () => $this->service->getProductsDataTable($project->id),
-            'changeLogs' => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
+            'project'          => $project,
+            'dataTable'        => fn () => $this->service->getProductsDataTable($project->id),
+            'changeLogs'       => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable($project)),
+            'projects'         => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
+            'projectWarehouse' => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
         ]);
     }
 

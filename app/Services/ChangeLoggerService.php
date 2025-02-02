@@ -45,7 +45,7 @@ class ChangeLoggerService
      *
      * @var array|string[]
      */
-    private array $omittedFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'real_name'];
+    private array $omittedFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'real_name', 'creator_id'];
 
     /**
      * Convert model casts to appropriate format.
@@ -85,8 +85,14 @@ class ChangeLoggerService
                         $convertedDiff[$differanceKey][$attributeKeyReadable]['new'] = $attribute['new'];
                     }
                 } elseif ('pivot' == $attributeKey) {
-                    $convertedDiff[$differanceKey]['Invoice']['old'] = isset($attribute['old']['invoice']) ? ($attribute['old']['invoice'] ? 'Yes' : 'No') : null;
-                    $convertedDiff[$differanceKey]['Invoice']['new'] = isset($attribute['new']['invoice']) ? ($attribute['new']['invoice'] ? 'Yes' : 'No') : null;
+                    foreach ($attribute['new'] as $newAttributeKey => $newAttributeValue) {
+                        if (in_array($newAttributeKey, ['product_id', 'project_id'], true) || ! $newAttributeValue) {
+                            continue;
+                        }
+
+                        $convertedDiff[$differanceKey][ucfirst($newAttributeKey)]['old'] = null;
+                        $convertedDiff[$differanceKey][ucfirst($newAttributeKey)]['new'] = $newAttributeValue;
+                    }
                 } else {
                     $convertedDiff[$differanceKey][$attributeKeyReadable]['old'] = $attribute['old'];
                     $convertedDiff[$differanceKey][$attributeKeyReadable]['new'] = $attribute['new'];
@@ -385,7 +391,7 @@ class ChangeLoggerService
                 if ('quantity' == $relation) {
                     $indexed[$key]['real_name'] = EnumHelper::getEnumName(Warehouse::class, $item['warehouse']);
                 } else {
-                    $indexed[$key]['real_name'] = $relationName . ' ' . $key + 1;
+                    $indexed[$key]['real_name'] = $relationName;
                 }
             }
         } else {

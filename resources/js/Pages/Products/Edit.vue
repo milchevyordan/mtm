@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {Head, Link, useForm} from "@inertiajs/vue3";
+import {Head, Link, router, useForm} from "@inertiajs/vue3";
 import {ref, watch} from "vue";
 
+import Creator from "@/Components/Creator.vue";
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
@@ -11,20 +12,30 @@ import Modal from "@/Components/Modal.vue";
 import Select from "@/Components/Select.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
-import {DataTable} from "@/DataTable/types";
+import {DataTable, Multiselect} from "@/DataTable/types";
 import {ProductType} from "@/Enums/ProductType";
 import {Warehouse} from "@/Enums/Warehouse";
+import Move from "@/Icons/Move.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {ChangeLog, DeleteForm, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
-import {dateTimeToLocaleString, findEnumKeyByValue, warehouses, withFlash} from "@/utils";
-import Creator from "@/Components/Creator.vue";
+import {
+    ChangeLog,
+    DeleteForm,
+    Product,
+    ProductForm,
+    ProductProject,
+    ProductProjectForm,
+    ProductQuantity, Project, SelectInput
+} from "@/types";
+import {dateTimeToLocaleString, findEnumKeyByValue, findKeyByValue, warehouses, withFlash} from "@/utils";
 
 const props = defineProps<{
     product: Product;
     dataTable: DataTable<ProductProject>;
     changeLogs?: DataTable<ChangeLog>;
+    projects?: Multiselect<Project>;
+    projectWarehouse?: Record<number, number>;
 }>();
 
 const getWarehouseQuantity = (quantities: ProductQuantity[] | undefined, warehouse: Warehouse): number | null => {
@@ -98,6 +109,68 @@ const handleDelete = () => {
         preserveScroll: true,
     });
     closeDeleteModal();
+};
+
+const showAddToProjectModal = ref(false);
+
+const closeAddToProjectModal = () => {
+    showAddToProjectModal.value = false;
+    moveToProjectForm.reset();
+};
+
+const moveToProjectForm = useForm<ProductProjectForm>({
+    id: null!,
+    product_id: props.product.id,
+    project_id: null!,
+    quantity: null!,
+    available_quantity: null!,
+    warehouse: null!,
+    comment: null!
+});
+
+const updateAvailableQuantity = (input: SelectInput) => {
+    if (!props.projectWarehouse){
+        return;
+    }
+
+    moveToProjectForm.warehouse = props.projectWarehouse[input.value as number] ?? null!;
+};
+
+const openMoveToProjectModal = async (item: ProductProject) => {
+    moveToProjectForm.id = item.id;
+    moveToProjectForm.quantity = item.quantity;
+    moveToProjectForm.comment = item.comment;
+
+    if (!props.projects || !props.projectWarehouse) {
+        await new Promise((resolve, reject) => {
+            router.reload({
+                only: ["projects", "projectWarehouse"],
+                onSuccess: resolve,
+                onError: reject,
+            });
+        });
+    }
+
+    showAddToProjectModal.value = true;
+};
+
+const handleAddProductToProject = () => {
+    return new Promise<void>((resolve, reject) => {
+        moveToProjectForm.post(
+            route("products.move-to-project"),
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    resolve();
+                },
+                onError: () => {
+                    reject();
+                },
+            }
+        );
+        closeAddToProjectModal();
+    });
 };
 </script>
 
@@ -280,7 +353,7 @@ const handleDelete = () => {
                     <Accordion>
                         <template #head>
                             <div class="font-semibold text-xl sm:text-2xl mb-4 text-gray-900 dark:text-gray-100">
-                                Проекти
+                                Зачисления
                             </div>
                         </template>
 
@@ -316,6 +389,16 @@ const handleDelete = () => {
                                         </Link>
 
                                         <button
+                                            class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
+                                            :title="'Премести към проект'"
+                                            @click="openMoveToProjectModal(item)"
+                                        >
+                                            <Move
+                                                classes="w-4 h-4 "
+                                            />
+                                        </button>
+
+                                        <button
                                             :title="'Изтрий'"
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             @click="showDeleteForm(item)"
@@ -333,13 +416,104 @@ const handleDelete = () => {
     </AuthenticatedLayout>
 
     <Modal
+        :show="showAddToProjectModal"
+        max-width="lg"
+        @close="closeAddToProjectModal"
+    >
+        <div
+            class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
+        >
+            <div>Премести продукт <span class="font-bold">{{ form.name }}</span> към проект</div>
+        </div>
+
+        <form
+            class="p-6"
+            @submit.prevent="handleAddProductToProject"
+        >
+            <div>
+                <InputLabel
+                    for="project"
+                    :value="'Проект'"
+                />
+
+                <Select
+                    v-model="moveToProjectForm.project_id"
+                    :name="'project_id'"
+                    :options="projects"
+                    :placeholder="'Проект'"
+                    class="mt-1 block w-full mb-3.5"
+                    @select="updateAvailableQuantity"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="moveToProjectForm.errors.project_id"
+                />
+            </div>
+
+            <div>
+                <InputLabel
+                    for="quantity"
+                    :value="`Количество да се добави към ${findKeyByValue(props.projects, moveToProjectForm.project_id) ?? 'проект'}`"
+                />
+
+                <TextInput
+                    id="quantity"
+                    v-model="moveToProjectForm.quantity"
+                    type="number"
+                    :placeholder="'Количество да се добави'"
+                    step="1"
+                    :min="1"
+                    disabled
+                    :max="moveToProjectForm.available_quantity"
+                    class="mt-1 block w-full mb-3.5"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="moveToProjectForm.errors.quantity"
+                />
+            </div>
+
+            <div>
+                <InputLabel
+                    for="comment"
+                    :value="'Коментар'"
+                />
+
+                <TextInput
+                    id="comment"
+                    v-model="moveToProjectForm.comment"
+                    type="text"
+                    :placeholder="'Напиши Коментар'"
+                    disabled
+                    class="mt-1 block w-full"
+                />
+
+                <InputError
+                    class="mt-2"
+                    :message="moveToProjectForm.errors.quantity"
+                />
+            </div>
+
+            <div class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4">
+                <ResetSaveButtons
+                    :processing="moveToProjectForm.processing"
+                    :recently-successful="moveToProjectForm.recentlySuccessful"
+                    @reset="closeAddToProjectModal"
+                />
+            </div>
+        </form>
+    </Modal>
+
+    <Modal
         :show="showDeleteModal"
         @close="closeDeleteModal"
     >
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete from проекта {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Изтрии проекта {{ deleteForm?.name ?? '' }} зачислен на {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form

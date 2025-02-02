@@ -13,6 +13,7 @@ import { dateTimeToLocaleString } from "@/utils";
 defineProps<{
     changeLogsLimited?: ChangeLog[];
     changeLogs?: DataTable<ChangeLog>;
+    showId?: boolean;
 }>();
 
 const showChangeLogModal = ref<boolean>(false);
@@ -69,6 +70,17 @@ const closeChangeLogModal = () => {
                     ]"
                 >
                     <div class="lg:border-r border-[#E9E7E7] dark:border-gray-700 lg:pr-8 sm:gap-y-2 items-center flex flex-col">
+                        <div
+                            v-if="showId"
+                            class="element-center"
+                        >
+                            <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
+                                №
+                            </span>
+                            <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
+                                {{ changeLog.changeable_id }}
+                            </span>
+                        </div>
                         <div class="element-center">
                             <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
                                 Създател

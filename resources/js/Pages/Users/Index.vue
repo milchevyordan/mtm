@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3";
 
+import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import Table from "@/DataTable/Table.vue";
 import { DataTable } from "@/DataTable/types";
 import {Warehouse} from "@/Enums/Warehouse";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { User } from "@/types";
+import {ChangeLog, User} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<User>;
+    changeLogsLimited: ChangeLog[];
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 </script>
 
@@ -77,6 +80,12 @@ defineProps<{
                         </Table>
                     </div>
                 </div>
+
+                <ChangeLogs
+                    :change-logs-limited="changeLogsLimited"
+                    :change-logs="changeLogs"
+                    :show-id="true"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

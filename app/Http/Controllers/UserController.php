@@ -42,7 +42,11 @@ class UserController extends Controller
             ->setEnumColumn('warehouse', Warehouse::class)
             ->run();
 
-        return Inertia::render('Users/Index', compact('dataTable'));
+        return Inertia::render('Users/Index', [
+            'dataTable'         => $dataTable,
+            'changeLogsLimited' => ChangeLogService::getChangeLogsLimited(User::class),
+            'changeLogs'        => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable(User::class)),
+        ]);
     }
 
     /**

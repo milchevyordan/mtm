@@ -2,6 +2,7 @@
 import {Head, Link, useForm, router} from "@inertiajs/vue3";
 import {ref} from "vue";
 
+import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -19,6 +20,7 @@ import Plus from "@/Icons/Plus.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {
+    ChangeLog,
     DeleteForm,
     Product, ProductProject,
     ProductProjectForm,
@@ -38,6 +40,8 @@ const props = defineProps<{
     projects?: Multiselect<Project>;
     projectWarehouse?: Record<number, number>;
     showProjectsDataTable?: DataTable<ProductProject>;
+    changeLogsLimited: ChangeLog[];
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 
 const showProjectsDataTableModal = ref<boolean>(false);
@@ -330,6 +334,12 @@ const handleDelete = () => {
                         </Table>
                     </div>
                 </div>
+
+                <ChangeLogs
+                    :change-logs-limited="changeLogsLimited"
+                    :change-logs="changeLogs"
+                    :show-id="true"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {Head, useForm} from "@inertiajs/vue3";
 
+import Creator from "@/Components/Creator.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
@@ -12,7 +13,6 @@ import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, User, UserForm} from "@/types";
 import {withFlash} from "@/utils";
-import Creator from "@/Components/Creator.vue";
 
 const props = defineProps<{
     user: User;

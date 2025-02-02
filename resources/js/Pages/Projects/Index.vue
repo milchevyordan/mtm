@@ -2,6 +2,7 @@
 import {Head, Link, router, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 
+import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import Modal from "@/Components/Modal.vue";
 import Table from "@/DataTable/Table.vue";
@@ -13,12 +14,14 @@ import DocumentText from "@/Icons/DocumentText.vue";
 import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {DeleteForm, ProductProject, Project} from "@/types";
+import {ChangeLog, DeleteForm, ProductProject, Project} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
 defineProps<{
     dataTable: DataTable<Project>;
     showProductsDataTable?: DataTable<ProductProject>;
+    changeLogsLimited: ChangeLog[];
+    changeLogs?: DataTable<ChangeLog>;
 }>();
 
 const showProductsDataTableModal = ref<boolean>(false);
@@ -159,6 +162,12 @@ const handleDelete = () => {
                         </Table>
                     </div>
                 </div>
+
+                <ChangeLogs
+                    :change-logs-limited="changeLogsLimited"
+                    :change-logs="changeLogs"
+                    :show-id="true"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

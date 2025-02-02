@@ -39,6 +39,8 @@ class ProjectController extends Controller
         return Inertia::render('Projects/Index', [
             'dataTable'             => fn () => $this->service->getIndexMethodDataTable($slug),
             'showProductsDataTable' => Inertia::lazy(fn () => $this->service->getShowProductsDataTable()),
+            'changeLogsLimited'     => ChangeLogService::getChangeLogsLimited(Project::class),
+            'changeLogs'            => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable(Project::class)),
         ]);
     }
 

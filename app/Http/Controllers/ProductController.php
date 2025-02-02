@@ -42,6 +42,8 @@ class ProductController extends Controller
             'projects'              => Inertia::lazy(fn () => (new MultiSelectService(Project::query()))->dataForSelect()),
             'projectWarehouse'      => Inertia::lazy(fn () => Project::pluck('warehouse', 'id')->toArray()),
             'showProjectsDataTable' => Inertia::lazy(fn () => $this->service->getShowProjectsDataTable()),
+            'changeLogsLimited'     => ChangeLogService::getChangeLogsLimited(Product::class),
+            'changeLogs'            => Inertia::lazy(fn () => ChangeLogService::getChangeLogsDataTable(Product::class)),
         ]);
     }
 

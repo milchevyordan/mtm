@@ -83,7 +83,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project): Response
     {
-        $project->load(['changeLogsLimited']);
+        $project->load(['changeLogsLimited', 'creator']);
 
         return Inertia::render('Projects/Show', [
             'project'    => $project,
@@ -100,7 +100,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): Response
     {
-        $project->load(['changeLogsLimited']);
+        $project->load(['changeLogsLimited', 'creator']);
 
         return Inertia::render('Projects/Edit', [
             'project'    => $project,

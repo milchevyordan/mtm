@@ -104,7 +104,7 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
-        $user->load(['changeLogsLimited']);
+        $user->load(['changeLogsLimited', 'creator']);
 
         return Inertia::render('Users/Edit', [
             'user'       => $user,

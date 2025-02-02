@@ -19,6 +19,7 @@ import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, DeleteForm, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, warehouses, withFlash} from "@/utils";
+import Creator from "@/Components/Creator.vue";
 
 const props = defineProps<{
     product: Product;
@@ -253,6 +254,8 @@ const handleDelete = () => {
                                     @reset="form.reset()"
                                 />
                             </form>
+
+                            <Creator :creator-name="product.creator?.name" />
                         </div>
 
                         <div class="w-full flex gap-2">

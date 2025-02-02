@@ -15,7 +15,7 @@ defineProps<{
             :disabled="processing"
             @click="$emit('reset')"
         >
-            Нулиране
+            Отказ
         </SecondaryButton>
 
         <PrimaryButton :disabled="processing">

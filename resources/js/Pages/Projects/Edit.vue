@@ -20,6 +20,7 @@ import IconTrash from "@/Icons/Trash.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, DeleteForm, ProductProject, Project, ProjectForm} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, replaceEnumUnderscores, withFlash} from "@/utils";
+import Creator from "@/Components/Creator.vue";
 
 const props = defineProps<{
     project: Project;
@@ -149,6 +150,8 @@ const handleDelete = () => {
                                     @reset="form.reset()"
                                 />
                             </form>
+
+                            <Creator :creator-name="project.creator?.name" />
                         </div>
                     </div>
                 </div>
@@ -179,16 +182,19 @@ const handleDelete = () => {
 
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}
                                     </div>
                                 </template>
 
                                 <template #cell(action)="{ value, item }">
-                                    <div class="flex gap-1.5">
+                                    <div
+                                        v-if="item.product?.id"
+                                        class="flex gap-1.5"
+                                    >
                                         <Link
                                             class="border border-[#E9E7E7] dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Редактирай продукт'"
-                                            :href="route('products.edit', item.product?.id)"
+                                            :href="route('products.edit', item.product.id)"
                                         >
                                             <IconPencilSquare
                                                 classes="w-4 h-4 "
@@ -198,7 +204,7 @@ const handleDelete = () => {
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Покажи продукт'"
-                                            :href="route('products.show', item.product?.id)"
+                                            :href="route('products.show', item.product.id)"
                                         >
                                             <DocumentText
                                                 classes="w-4 h-4 "

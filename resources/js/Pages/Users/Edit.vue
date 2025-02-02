@@ -12,6 +12,7 @@ import {Warehouse} from "@/Enums/Warehouse";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, User, UserForm} from "@/types";
 import {withFlash} from "@/utils";
+import Creator from "@/Components/Creator.vue";
 
 const props = defineProps<{
     user: User;
@@ -136,6 +137,8 @@ const save = async (only?: Array<string>) => {
                                     @reset="form.reset()"
                                 />
                             </form>
+
+                            <Creator :creator-name="user.creator?.name" />
                         </div>
                     </div>
                 </div>

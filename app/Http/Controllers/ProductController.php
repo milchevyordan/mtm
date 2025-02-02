@@ -86,7 +86,7 @@ class ProductController extends Controller
      */
     public function show(Product $product): Response
     {
-        $product->load(['changeLogsLimited', 'quantity']);
+        $product->load(['changeLogsLimited', 'quantity', 'creator']);
 
         return Inertia::render('Products/Show', [
             'product'    => $product,
@@ -103,7 +103,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product): Response
     {
-        $product->load(['changeLogsLimited', 'quantity']);
+        $product->load(['changeLogsLimited', 'quantity', 'creator']);
 
         return Inertia::render('Products/Edit', [
             'product'    => $product,

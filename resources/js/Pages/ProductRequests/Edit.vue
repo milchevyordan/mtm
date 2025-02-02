@@ -119,7 +119,7 @@ const statuses = Object.entries(ProductRequestStatus)
 
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}
                                     </div>
                                 </template>
 

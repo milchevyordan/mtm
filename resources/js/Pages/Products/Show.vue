@@ -15,6 +15,7 @@ import DocumentText from "@/Icons/DocumentText.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ChangeLog, Product, ProductForm, ProductProject, ProductQuantity} from "@/types";
 import {dateTimeToLocaleString, findEnumKeyByValue, warehouses} from "@/utils";
+import Creator from "@/Components/Creator.vue";
 
 const props = defineProps<{
     product: Product;
@@ -139,6 +140,8 @@ const form = useForm<ProductForm>({
                                     />
                                 </div>
                             </div>
+
+                            <Creator :creator-name="product.creator?.name" />
                         </div>
                     </div>
                 </div>

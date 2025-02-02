@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {Head, Link} from "@inertiajs/vue3";
 
+import Creator from "@/Components/Creator.vue";
 import Accordion from "@/Components/HTML/Accordion.vue";
 import ChangeLogs from "@/Components/HTML/ChangeLogs.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -73,6 +74,8 @@ defineProps<{
                                     />
                                 </div>
                             </div>
+
+                            <Creator :creator-name="project.creator?.name" />
                         </div>
                     </div>
                 </div>
@@ -103,12 +106,15 @@ defineProps<{
 
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product.type)) }}
+                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}
                                     </div>
                                 </template>
 
                                 <template #cell(action)="{ value, item }">
-                                    <div class="flex gap-1.5">
+                                    <div
+                                        v-if="item.product_id"
+                                        class="flex gap-1.5"
+                                    >
                                         <Link
                                             class="border border-gray-300 dark:border-gray-700 rounded-md p-1 active:scale-90 transition"
                                             :title="'Покажи продукт'"

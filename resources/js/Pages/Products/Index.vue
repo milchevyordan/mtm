@@ -75,6 +75,7 @@ const closeAddToProjectModal = () => {
 const updateQuantityForm = useForm<ProductQuantityForm>({
     _method: "put",
     id: null!,
+    name: null!,
     product_id: null!,
     warehouse: null!,
     quantity: null!
@@ -83,6 +84,7 @@ const updateQuantityForm = useForm<ProductQuantityForm>({
 const addToProjectForm = useForm<ProductProjectForm>({
     product_id: null!,
     project_id: null!,
+    name: null!,
     quantity: null!,
     available_quantity: null!,
     warehouse: null!,
@@ -101,6 +103,7 @@ const openChangeQuantityModal = (item: ProductQuantity) => {
 
 const openAddToProjectModal = async (item: Product) => {
     addToProjectForm.product_id = item.id;
+    addToProjectForm.name = item.name;
     addToProjectForm.quantities = item.quantity;
 
     if (!props.projects || !props.projectWarehouse) {
@@ -339,7 +342,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Change quantity of product # {{ updateQuantityForm?.product_id }}</div>
+            <div>Промени количеството на продукт <span class="font-bold">{{ updateQuantityForm?.product_id }}</span></div>
         </div>
 
         <form
@@ -370,7 +373,7 @@ const handleDelete = () => {
                 <ResetSaveButtons
                     :processing="updateQuantityForm.processing"
                     :recently-successful="updateQuantityForm.recentlySuccessful"
-                    @reset="updateQuantityForm.reset()"
+                    @reset="closeChangeQuantityModal"
                 />
             </div>
         </form>
@@ -384,7 +387,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            <div>Добави продукт №{{ addToProjectForm?.product_id }} към проект</div>
+            <div>Добави продукт <span class="font-bold">{{ addToProjectForm?.name }}</span> към проект</div>
         </div>
 
         <form
@@ -478,9 +481,9 @@ const handleDelete = () => {
 
             <div class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4">
                 <ResetSaveButtons
-                    :processing="updateQuantityForm.processing"
-                    :recently-successful="updateQuantityForm.recentlySuccessful"
-                    @reset="updateQuantityForm.reset()"
+                    :processing="addToProjectForm.processing"
+                    :recently-successful="addToProjectForm.recentlySuccessful"
+                    @reset="closeAddToProjectModal"
                 />
             </div>
         </form>
@@ -544,7 +547,7 @@ const handleDelete = () => {
         <div
             class="border-b border-gray-100 dark:border-gray-700 px-3.5 p-3 text-xl font-medium"
         >
-            Delete проект {{ deleteForm?.name ?? '' }} added on {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
+            Изтриване на проект <span class="font-bold">{{ deleteForm?.name ?? '' }}</span> добавен на {{ dateTimeToLocaleString(deleteForm?.created_at) }} ?
         </div>
 
         <form
@@ -555,7 +558,7 @@ const handleDelete = () => {
                 :processing="deleteForm.processing"
                 :recently-successful="deleteForm.recentlySuccessful"
                 :is-delete="true"
-                @reset="deleteForm.reset()"
+                @reset="closeDeleteModal"
             />
         </form>
     </Modal>

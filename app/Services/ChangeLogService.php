@@ -20,21 +20,25 @@ class ChangeLogService
     {
         $all = 'string' == gettype($model);
 
-        $dataTable = (new DataTable(
-            $all ? ChangeLog::where('changeable_type', $model) : $model->changeLogs()->getQuery()
-        ))
-            ->setRelation('creator');
-
         if ($all) {
-            $dataTable->setColumn('changeable_id', '№', true, true);
+            $dataTable = (new DataTable(
+                ChangeLog::where('changeable_type', $model)
+            ))
+                ->setRelation('creator')
+                ->setRelation('changeable', ['id', 'name'])
+                ->setColumn('changeable.name', 'Име на промененото', true, true);
+        } else {
+            $dataTable = (new DataTable(
+                $model->changeLogs()->getQuery()
+            ))
+                ->setRelation('creator');
         }
 
-        return
-            $dataTable->setColumn('creator.name', 'Създател', true, true)
-                ->setColumn('change', 'Change', true)
-                ->setColumn('created_at', 'Създаден', true, true)
-                ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
-                ->run();
+        return $dataTable->setColumn('creator.name', 'Създател', true, true)
+            ->setColumn('change', 'Промяна', true)
+            ->setColumn('created_at', 'Създаден', true, true)
+            ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
+            ->run();
     }
 
     /**
@@ -45,6 +49,6 @@ class ChangeLogService
      */
     public static function getChangeLogsLimited(string $model): mixed
     {
-        return ChangeLog::where('changeable_type', $model)->with(['creator'])->latest()->limit(20)->get();
+        return ChangeLog::where('changeable_type', $model)->with(['creator', 'changeable:id,name'])->latest()->limit(20)->get();
     }
 }

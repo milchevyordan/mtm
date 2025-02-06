@@ -50,6 +50,7 @@ export interface ChangeLog {
     id: string;
     creator_id: number;
     creator: User;
+    changeable: Record<string, string>;
     changeable_type: string;
     changeable_id: number;
     change: string;

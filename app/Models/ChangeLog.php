@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasCreator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ChangeLog extends Model
 {
@@ -23,4 +24,12 @@ class ChangeLog extends Model
         'action',
         'change',
     ];
+
+    /**
+     * Get the parent changeable model (e.g., Order, Product, etc.).
+     */
+    public function changeable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

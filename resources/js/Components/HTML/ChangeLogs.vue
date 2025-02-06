@@ -75,10 +75,10 @@ const closeChangeLogModal = () => {
                             class="element-center"
                         >
                             <span class="mr-2 text-[#C7C7CC] dark:text-gray-500">
-                                №
+                                Име на промененото
                             </span>
                             <span class="text-[#6D6D73] dark:text-gray-200 bg-[#F2F2F7] dark:bg-gray-700 cursor-default rounded px-3 py-1 font-light m-1">
-                                {{ changeLog.changeable_id }}
+                                {{ changeLog.changeable?.name }}
                             </span>
                         </div>
                         <div

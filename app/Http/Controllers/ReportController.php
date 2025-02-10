@@ -102,7 +102,7 @@ class ReportController extends Controller
             'report'    => $report,
             'projects'  => fn () => (new MultiSelectService(Project::whereIn('id', $report->projects->pluck('id'))))->dataForSelect(),
             'dataTable' => fn () => $dataTable,
-            'pdfPath'   => Inertia::lazy(fn () => $this->service->setReport($report)->createReportPdf()),
+            'propsPath' => Inertia::lazy(fn () => $this->service->setReport($report)->createReportPdf()),
         ]);
     }
 

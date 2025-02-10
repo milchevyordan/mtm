@@ -45,7 +45,7 @@ class ProductRequest extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_product_requests');
+        return $this->belongsToMany(Product::class, 'product_product_requests')->withPivot('quantity');
     }
 
     /**

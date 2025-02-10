@@ -7,11 +7,13 @@ namespace App\Services;
 use App\Enums\ProductRequestStatus;
 use App\Enums\ProductType;
 use App\Enums\Warehouse;
+use App\Exports\ProductRequestExport;
 use App\Http\Requests\StoreProductRequestRequest;
 use App\Http\Requests\UpdateProductRequestRequest;
 use App\Models\ProductProductRequest;
 use App\Models\ProductRequest;
 use App\Services\DataTable\DataTable;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductRequestService
 {
@@ -72,6 +74,25 @@ class ProductRequestService
         $this->syncProducts($validatedRequest['products']);
 
         return $this;
+    }
+
+    /**
+     * Create pdf and return its name or path.
+     *
+     * @return string
+     */
+    public function createProductRequestExcel(): string
+    {
+        $productRequest = $this->getProductRequest();
+        $productRequest->load('products:id,name,internal_id,type,specification');
+        $uniqueName = "заявка_{$productRequest->id}_{$productRequest->warehouse->name}" . '_' . time() . '_' . uniqid() . '.xlsx';
+
+        Excel::store(new ProductRequestExport($productRequest), $uniqueName, 'public');
+
+        $productRequest->excel_path = $uniqueName;
+        $productRequest->save();
+
+        return $uniqueName;
     }
 
     /**

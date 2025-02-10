@@ -1,5 +1,6 @@
 import {Warehouse} from "@/Enums/Warehouse";
 import {computed} from "vue";
+import {router} from "@inertiajs/vue3";
 
 export function dateToLocaleString(date: Date | string | null | undefined) {
     if (date === null || date === undefined) {
@@ -20,6 +21,25 @@ export function dateToLocaleString(date: Date | string | null | undefined) {
         year: "numeric",
     });
 }
+
+export const handleDownloadFile = async (modelPath?: string, propsPath?: string) => {
+    if (modelPath) {
+        downloadFile(modelPath);
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        router.reload({
+            only: ["propsPath"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    if (propsPath){
+        downloadFile(propsPath);
+    }
+};
 
 export function enumToOptions(
     enumObject: any,
@@ -65,7 +85,7 @@ export function replaceUnderscores(object: { [key: string]: any }) {
     return newObject;
 }
 
-export const downloadPdf = (path: string) => {
+export const downloadFile = (path: string) => {
     const encodedPath = encodeURIComponent(path);
     location.replace(route("files.download", encodedPath as string));
 }

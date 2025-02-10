@@ -82,6 +82,7 @@ class ProductRequestController extends Controller
         return Inertia::render('ProductRequests/Show', [
             'productRequest' => $productRequest,
             'dataTable'      => fn () => $this->service->getProductsDataTable($productRequest->id),
+            'propsPath'      => Inertia::lazy(fn () => $this->service->setProductRequest($productRequest)->createProductRequestExcel()),
         ]);
     }
 

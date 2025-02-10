@@ -162,6 +162,7 @@ export interface ProductRequest {
     creator_id: number;
     status: Enum<typeof ProductRequestStatus>;
     warehouse: Enum<typeof Warehouse>;
+    excel_path: string;
     comment: string;
     creator?: User;
     products?: Product[];

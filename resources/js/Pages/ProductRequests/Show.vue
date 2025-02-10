@@ -15,11 +15,12 @@ import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductProductRequest, ProductRequest} from "@/types";
-import {findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
+import {findEnumKeyByValue, handleDownloadFile, replaceEnumUnderscores} from "@/utils";
 
 defineProps<{
     productRequest: ProductRequest;
     dataTable: DataTable<ProductProductRequest>;
+    propsPath?: string;
 }>();
 
 const statuses = Object.entries(ProductRequestStatus)
@@ -62,6 +63,17 @@ const statuses = Object.entries(ProductRequestStatus)
                                 :type-search="true"
                                 :advanced-filters="false"
                             >
+                                <template #additionalContent>
+                                    <div class="w-full flex gap-2">
+                                        <button
+                                            class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                                            @click="handleDownloadFile(productRequest.excel_path, propsPath)"
+                                        >
+                                            Изтегли Excel
+                                        </button>
+                                    </div>
+                                </template>
+
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}

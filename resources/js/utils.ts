@@ -22,25 +22,6 @@ export function dateToLocaleString(date: Date | string | null | undefined) {
     });
 }
 
-export const handleDownloadFile = async (modelPath?: string, propsPath?: string) => {
-    if (modelPath) {
-        downloadFile(modelPath);
-        return;
-    }
-
-    await new Promise((resolve, reject) => {
-        router.reload({
-            only: ["propsPath"],
-            onSuccess: resolve,
-            onError: reject,
-        });
-    });
-
-    if (propsPath){
-        downloadFile(propsPath);
-    }
-};
-
 export function enumToOptions(
     enumObject: any,
     capitalize: boolean = false

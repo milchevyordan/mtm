@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -15,9 +15,9 @@ import IconPencilSquare from "@/Icons/PencilSquare.vue";
 import Tick from "@/Icons/Tick.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductProductRequest, ProductRequest} from "@/types";
-import {findEnumKeyByValue, handleDownloadFile, replaceEnumUnderscores} from "@/utils";
+import {downloadFile, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
-defineProps<{
+const props = defineProps<{
     productRequest: ProductRequest;
     dataTable: DataTable<ProductProductRequest>;
     propsPath?: string;
@@ -29,6 +29,25 @@ const statuses = Object.entries(ProductRequestStatus)
         name,
         value,
     }));
+
+const handleDownloadFile = async () => {
+    if (props.productRequest.excel_path) {
+        downloadFile(props.productRequest.excel_path);
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        router.reload({
+            only: ["propsPath"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    if (props.propsPath){
+        downloadFile(props.propsPath);
+    }
+};
 </script>
 
 <template>
@@ -67,7 +86,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                     <div class="w-full flex gap-2">
                                         <button
                                             class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
-                                            @click="handleDownloadFile(productRequest.excel_path, propsPath)"
+                                            @click="handleDownloadFile"
                                         >
                                             Изтегли Excel
                                         </button>

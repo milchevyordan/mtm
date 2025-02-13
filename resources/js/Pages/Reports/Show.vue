@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Head} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -10,15 +10,33 @@ import {DataTable, Multiselect} from "@/DataTable/types";
 import {ProductType} from "@/Enums/ProductType";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {ProductReport, Project, Report} from "@/types";
-import {findEnumKeyByValue, handleDownloadFile, replaceEnumUnderscores} from "@/utils";
+import {downloadFile, findEnumKeyByValue, replaceEnumUnderscores} from "@/utils";
 
-defineProps<{
+const props = defineProps<{
     report: Report;
     projects: Multiselect<Project>;
     dataTable: DataTable<ProductReport>;
     propsPath?: string;
 }>();
 
+const handleDownloadFile = async () => {
+    if (props.report.pdf_path) {
+        downloadFile(props.report.pdf_path);
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        router.reload({
+            only: ["propsPath"],
+            onSuccess: resolve,
+            onError: reject,
+        });
+    });
+
+    if (props.propsPath){
+        downloadFile(props.propsPath);
+    }
+};
 </script>
 
 <template>
@@ -115,7 +133,7 @@ defineProps<{
                                     <div class="w-full flex gap-2">
                                         <button
                                             class="w-full md:w-auto border border-gray-300 dark:border-gray-700 rounded-md px-5 py-1.5 active:scale-95 transition hover:bg-gray-50 dark:hover:bg-gray-800"
-                                            @click="handleDownloadFile(report.pdf_path, propsPath)"
+                                            @click="handleDownloadFile"
                                         >
                                             Изтегли Pdf
                                         </button>

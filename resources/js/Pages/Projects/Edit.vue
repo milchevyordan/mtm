@@ -391,6 +391,13 @@ const handleAddProductToProject = () => {
                 />
             </div>
 
+
+            <InputLabel
+                class="mt-2 p-3"
+                for="comment"
+                :value="'Може да се избира към кой проект да се премести, останалите неща не могат да се сменят.'"
+            />
+
             <div class="col-span-2 flex justify-end gap-3 my-2 pt-1 px-4">
                 <ResetSaveButtons
                     :processing="moveToProjectForm.processing"

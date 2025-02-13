@@ -6,10 +6,12 @@ namespace App\Exports;
 
 use App\Models\ProductRequest;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class ProductRequestExport implements FromCollection, WithHeadings, WithMapping
+class ProductRequestExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
     private ProductRequest $productRequest;
 
@@ -52,6 +54,22 @@ class ProductRequestExport implements FromCollection, WithHeadings, WithMapping
             $row->type?->name ? str_replace('_', ' ', $row->type->name) : '',
             $row->internal_id,
             $row->pivot->quantity,
+        ];
+    }
+
+    /**
+     * Auto stretch columns.
+     *
+     * @return mixed
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                foreach (range('A', 'F') as $columnID) {
+                    $event->sheet->getDelegate()->getColumnDimension($columnID)->setAutoSize(true);
+                }
+            },
         ];
     }
 }

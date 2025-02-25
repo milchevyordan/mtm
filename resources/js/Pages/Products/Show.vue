@@ -81,6 +81,7 @@ const form = useForm<ProductForm>({
                                         :name="'type'"
                                         :options="ProductType"
                                         :placeholder="'Тип'"
+                                        disabled
                                         class="mt-1 block w-full mb-3.5"
                                     />
 

@@ -2,6 +2,7 @@
 import {Head, Link, useForm} from "@inertiajs/vue3";
 
 import Accordion from "@/Components/HTML/Accordion.vue";
+import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
@@ -29,7 +30,7 @@ const form = useForm<ProductRequestForm>({
     id: props.productRequest.id,
     warehouse: props.productRequest.warehouse,
     comment: props.productRequest.comment,
-    status: null!,
+    status: props.productRequest.status,
     products: props.productProductRequest
 });
 
@@ -38,12 +39,16 @@ const checkClickableStatus = (status: number) => {
 };
 
 const handleStatusUpdate = async (status: number) => {
-    if (!checkClickableStatus(status)){
+    if (!checkClickableStatus(status)) {
         return;
     }
 
     form.status = status;
 
+    await save();
+};
+
+const save = async () => {
     return new Promise<void>((resolve, reject) => {
         form.post(route("product-requests.update", props.productRequest.id as number), {
             preserveScroll: true,
@@ -67,7 +72,7 @@ const statuses = Object.entries(ProductRequestStatus)
 </script>
 
 <template>
-    <Head :title="'Заявка'" />
+    <Head :title="'Заявка'"/>
 
     <AuthenticatedLayout>
         <template #header>
@@ -90,7 +95,10 @@ const statuses = Object.entries(ProductRequestStatus)
                             </div>
                         </template>
 
-                        <div class="text-gray-900 dark:text-gray-100">
+                        <form
+                            class="text-gray-900 dark:text-gray-100"
+                            @submit.prevent="save"
+                        >
                             <Table
                                 :data-table="dataTable"
                                 :per-page-options="[5, 10, 15, 20, 50]"
@@ -120,7 +128,9 @@ const statuses = Object.entries(ProductRequestStatus)
 
                                 <template #cell(product.type)="{ value, item }">
                                     <div class="flex gap-1.5">
-                                        {{ replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type)) }}
+                                        {{
+                                            replaceEnumUnderscores(findEnumKeyByValue(ProductType, item.product?.type))
+                                        }}
                                     </div>
                                 </template>
 
@@ -148,7 +158,15 @@ const statuses = Object.entries(ProductRequestStatus)
                                     </div>
                                 </template>
                             </Table>
-                        </div>
+
+                            <div class="col-span-2 flex gap-3 my-2 pt-3 px-4">
+                                <ResetSaveButtons
+                                    :processing="form.processing"
+                                    :recently-successful="form.recentlySuccessful"
+                                    @reset="form.reset()"
+                                />
+                            </div>
+                        </form>
                     </Accordion>
                 </div>
 

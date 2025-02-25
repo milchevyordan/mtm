@@ -123,7 +123,12 @@ class ProductRequestController extends Controller
 
             DB::commit();
 
-            return redirect()->route('product-requests.show', ['product_request' => $this->service->getProductRequest()->id])->with('success', 'Записа беше създаден успешно.');
+            $productRequest = $this->service->getProductRequest();
+            if ($productRequest->status->value != ProductRequestStatus::Not_delivered_yet->value) {
+                return redirect()->route('product-requests.show', ['product_request' => $productRequest->id])->with('success', 'Записа беше актуализиран успешно.');
+            }
+
+            return redirect()->back()->with('success', 'Записа беше актуализиран успешно.');
         } catch (Throwable $th) {
             DB::rollBack();
 

@@ -133,6 +133,8 @@ class ProductRequestService
             $changeLoggerService->logChanges($product);
         }
 
+        $this->setProductRequest($productRequest);
+
         return $this;
     }
 

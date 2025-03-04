@@ -117,7 +117,7 @@ class ProductRequestService
         );
 
         $validatedProducts = collect($validatedRequest['products']);
-        foreach ($productRequest->productQuantities()->with('product')->get() as $productQuantity) {
+        foreach ($productRequest->productQuantities()->whereIn('product_quantities.product_id', $validatedRequest['changedProductIds'])->with('product')->get() as $productQuantity) {
             $matchingProduct = $validatedProducts->firstWhere('product_id', $productQuantity->product_id);
 
             if (! $matchingProduct) {

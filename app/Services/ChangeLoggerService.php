@@ -45,7 +45,7 @@ class ChangeLoggerService
      *
      * @var array|string[]
      */
-    private array $omittedFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'real_name', 'creator_id'];
+    private array $omittedFields = ['id', 'created_at', 'updated_at', 'deleted_at', 'real_name', 'creator_id', 'pivot_created_at'];
 
     /**
      * Convert model casts to appropriate format.

@@ -90,6 +90,6 @@ class Product extends Model
      */
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'product_projects')->withPivot('quantity', 'comment');
+        return $this->belongsToMany(Project::class, 'product_projects')->withPivot('quantity', 'comment', 'created_at');
     }
 }

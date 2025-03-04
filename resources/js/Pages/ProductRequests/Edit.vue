@@ -31,11 +31,18 @@ const form = useForm<ProductRequestForm>({
     warehouse: props.productRequest.warehouse,
     comment: props.productRequest.comment,
     status: props.productRequest.status,
-    products: props.productProductRequest
+    products: props.productProductRequest,
+    changedProductIds: [],
 });
 
 const checkClickableStatus = (status: number) => {
     return status > props.productRequest.status;
+};
+
+const addToChangedProductIds = (id: number) => {
+    if (!form.changedProductIds.includes(id)) {
+        form.changedProductIds.push(id);
+    }
 };
 
 const handleStatusUpdate = async (status: number) => {
@@ -54,6 +61,7 @@ const save = async () => {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
+                form.reset('changedProductIds');
                 resolve();
             },
             onError: () => {
@@ -117,6 +125,7 @@ const statuses = Object.entries(ProductRequestStatus)
                                             :placeholder="'Количество Пристигнало'"
                                             step="1"
                                             class="block w-full"
+                                            @change="addToChangedProductIds(item.product_id)"
                                         />
 
                                         <InputError

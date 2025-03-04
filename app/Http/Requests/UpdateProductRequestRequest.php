@@ -36,6 +36,7 @@ class UpdateProductRequestRequest extends FormRequest
                 'nullable', 'integer',
                 Rule::requiredIf(fn () => request('status') === ProductRequestStatus::Accepted->value),
             ],
+            'changedProductIds' => ['nullable', 'array'],
         ];
     }
 }

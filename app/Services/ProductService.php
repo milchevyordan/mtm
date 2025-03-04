@@ -259,7 +259,6 @@ class ProductService
         }
 
         $product = $productQuantity->product;
-        //        dd($product->load(['quantity', 'projects']));
         $changeLoggerService = new ChangeLoggerService($product, ['quantity', 'projects']);
 
         $productProject = new ProductProject();

@@ -31,7 +31,7 @@ class StoreProductRequest extends FormRequest
             'name'             => 'required|string|max:255',
             'specification'    => 'nullable|string|max:255',
             'type'             => ['required', Rule::in(ProductType::values())],
-            'internal_id'      => 'nullable|string|max:255|unique:' . Product::class,
+            'internal_id'      => 'nullable|string|max:255|unique:'.Product::class,
             'minimum_quantity' => 'nullable|integer|max:2147483647',
             'quantities'       => ['required', 'array'],
             'quantities.*'     => ['nullable', 'integer', 'max:2147483647'],

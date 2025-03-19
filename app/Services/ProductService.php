@@ -259,7 +259,7 @@ class ProductService
         }
 
         $product = $productQuantity->product;
-        $changeLoggerService = new ChangeLoggerService($product, ['quantity', 'projects']);
+        $changeLoggerService = new ChangeLoggerService($product, ['quantity']);
 
         $productProject = new ProductProject();
         $productProject->fill($validatedRequest);

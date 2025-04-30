@@ -4,7 +4,7 @@ import {Head, Link, router} from "@inertiajs/vue3";
 import Accordion from "@/Components/HTML/Accordion.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
-import TextInput from "@/Components/TextInput.vue";
+import Textarea from "@/Components/Textarea.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
 import {ProductRequestStatus} from "@/Enums/ProductRequestStatus";
@@ -156,12 +156,13 @@ const handleDownloadFile = async () => {
                                         value="Коментар"
                                     />
 
-                                    <TextInput
+                                    <Textarea
                                         id="comment"
                                         :model-value="productRequest.comment"
                                         :name="'comment'"
                                         :placeholder="'Коментар'"
                                         disabled
+                                        rows="5"
                                         class="mt-1 block w-full mb-3.5"
                                     />
                                 </div>

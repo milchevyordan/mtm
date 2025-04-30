@@ -6,6 +6,7 @@ import ResetSaveButtons from "@/Components/HTML/ResetSaveButtons.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Select from "@/Components/Select.vue";
+import Textarea from "@/Components/Textarea.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Table from "@/DataTable/Table.vue";
 import {DataTable} from "@/DataTable/types";
@@ -213,12 +214,11 @@ const statuses = Object.entries(ProductRequestStatus)
                                         value="Коментар"
                                     />
 
-                                    <TextInput
+                                    <Textarea
                                         id="comment"
                                         :model-value="form.comment"
-                                        type="text"
                                         :placeholder="'Коментар'"
-                                        step="1"
+                                        rows="5"
                                         disabled
                                         class="block w-full"
                                     />

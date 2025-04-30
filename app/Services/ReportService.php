@@ -110,7 +110,7 @@ class ReportService
 
         $fileOutput = $pdfService->setPaginator(new Paginator(x: 40, y: 800))->setCanvasImageRenderers()->generate();
 
-        $uniqueName = "отчет_{$report->id}" . '_' . time() . '_' . uniqid() . '.pdf';
+        $uniqueName = "отчет_{$report->id}".'_'.time().'_'.uniqid().'.pdf';
 
         Storage::disk('public')->put($uniqueName, $fileOutput);
 
@@ -131,12 +131,12 @@ class ReportService
             Report::query()
         ))
             ->setRelation('creator')
+            ->setColumn('action', 'Действие')
             ->setColumn('id', '№', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('date_from', 'Дата От', true, true)
             ->setColumn('date_to', 'Дата До', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setDateColumn('date_from', 'dd.mm.YYYY')
             ->setDateColumn('date_to', 'dd.mm.YYYY')

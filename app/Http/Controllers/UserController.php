@@ -32,12 +32,12 @@ class UserController extends Controller
         $dataTable = (new DataTable(
             User::select(User::$defaultSelectFields)
         ))
+            ->setColumn('action', 'Действие')
             ->setColumn('id', '№', true, true)
             ->setColumn('name', 'Име', true, true)
             ->setColumn('email', 'Имейл', true, true)
             ->setColumn('warehouse', 'Склад', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('warehouse', Warehouse::class)
             ->run();

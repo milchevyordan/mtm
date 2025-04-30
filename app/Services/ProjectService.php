@@ -87,6 +87,7 @@ class ProjectService
                 $query->where('warehouse', $warehouseValue);
             })
         ))
+            ->setColumn('action', 'Действие')
             ->setColumn('id', '№', true, true);
 
         if (! $warehouseValue) {
@@ -96,7 +97,6 @@ class ProjectService
 
         return $dataTable->setColumn('name', 'Име', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->run();
     }
@@ -151,6 +151,7 @@ class ProjectService
         ))
             ->setRelation('creator')
             ->setRelation('product', ['id', 'name', 'type', 'internal_id', 'specification'])
+            ->setColumn('action', 'Действие')
             ->setColumn('product.id', '№', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('product.name', 'Име', true, true)
@@ -160,7 +161,6 @@ class ProjectService
             ->setColumn('quantity', 'Количество', true, true)
             ->setColumn('comment', 'Коментар', true, true)
             ->setColumn('created_at', 'Добавен', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('product.type', ProductType::class)
             ->run();

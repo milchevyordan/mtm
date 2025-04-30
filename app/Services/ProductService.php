@@ -107,7 +107,8 @@ class ProductService
             }
         }
 
-        $dataTable->setColumn('id', '№', true, true)
+        $dataTable->setColumn('action', 'Действие')
+            ->setColumn('id', '№', true, true)
             ->setColumn('name', 'Име', true, true)
             ->setColumn('specification', 'Спецификация', true, true)
             ->setColumn('type', 'Тип', true, true)
@@ -124,7 +125,6 @@ class ProductService
 
         return $dataTable
             ->setColumn('created_at', 'Създаден', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('type', ProductType::class)
             ->run();
@@ -371,6 +371,7 @@ class ProductService
         ))
             ->setRelation('project', ['id', 'name', 'warehouse'])
             ->setRelation('creator')
+            ->setColumn('action', 'Действие')
             ->setColumn('project.id', '№ Проект', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('project.name', 'Име Проект', true, true)
@@ -378,7 +379,6 @@ class ProductService
             ->setColumn('quantity', 'Количество', true, true)
             ->setColumn('comment', 'Коментар', true, true)
             ->setColumn('created_at', 'Създаден', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('project.warehouse', Warehouse::class)
             ->run();

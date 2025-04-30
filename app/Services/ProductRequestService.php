@@ -85,7 +85,7 @@ class ProductRequestService
     {
         $productRequest = $this->getProductRequest();
         $productRequest->load('products:id,name,internal_id,type,specification');
-        $uniqueName = "заявка_{$productRequest->id}_{$productRequest->warehouse->name}" . '_' . time() . '_' . uniqid() . '.xlsx';
+        $uniqueName = "заявка_{$productRequest->id}_{$productRequest->warehouse->name}".'_'.time().'_'.uniqid().'.xlsx';
 
         Excel::store(new ProductRequestExport($productRequest), $uniqueName, 'public');
 
@@ -172,13 +172,13 @@ class ProductRequestService
             ProductRequest::query()
         ))
             ->setRelation('creator')
+            ->setColumn('action', 'Действие')
             ->setColumn('id', '№', true, true)
             ->setColumn('creator.name', 'Създател', true, true)
             ->setColumn('warehouse', 'За Склад', true, true)
             ->setColumn('status', 'Статус', true, true)
             ->setColumn('created_at', 'Създадена', true, true)
             ->setColumn('updated_at', 'Последна промяна', true, true)
-            ->setColumn('action', 'Действие')
             ->setDateColumn('created_at', 'dd.mm.YYYY H:i')
             ->setDateColumn('updated_at', 'dd.mm.YYYY H:i')
             ->setEnumColumn('status', ProductRequestStatus::class)
@@ -198,6 +198,7 @@ class ProductRequestService
             ProductProductRequest::where('product_request_id', $productRequestId)
         ))
             ->setRelation('product', ['id', 'name', 'type', 'internal_id', 'specification'])
+            ->setColumn('action', 'Действие')
             ->setColumn('product.id', '№', true, true)
             ->setColumn('product.name', 'Име', true, true)
             ->setColumn('product.specification', 'Спецификация', true, true)
@@ -205,7 +206,6 @@ class ProductRequestService
             ->setColumn('product.internal_id', 'Вътрешен №', true, true)
             ->setColumn('quantity', 'Количество Поръчано', true, true)
             ->setColumn('actual_quantity', 'Реално Количество Пристигнало', true, true)
-            ->setColumn('action', 'Действие')
             ->setEnumColumn('product.type', ProductType::class)
             ->run();
     }

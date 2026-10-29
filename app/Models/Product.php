@@ -84,6 +84,16 @@ class Product extends Model
     }
 
     /**
+     * Product quantity in the Belgium.
+     *
+     * @return mixed
+     */
+    public function quantityBelgium(): mixed
+    {
+        return $this->quantity()->where('warehouse', Warehouse::Belgium->value);
+    }
+
+    /**
      * Relation to the projects that this product has been added to.
      *
      * @return BelongsToMany

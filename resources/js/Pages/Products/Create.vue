@@ -22,6 +22,7 @@ const form = useForm<ProductForm>({
         Varna: null!,
         France: null!,
         Netherlands: null!,
+        Belgium: null!,
     }
 });
 

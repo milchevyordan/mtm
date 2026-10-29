@@ -81,6 +81,7 @@ export interface ProductQuantity {
     Varna?: number;
     France?: number;
     Netherlands?: number;
+    Belgium?: number;
 }
 
 export interface ProductQuantityForm extends ProductQuantity, Form, FormMethod {
@@ -119,6 +120,7 @@ export interface Product {
         Varna: number;
         France: number;
         Netherlands: number;
+        Belgium: number;
     };
     creator?: User;
     change_logs?: ChangeLog[];

@@ -29,6 +29,7 @@ class ProductService
         Warehouse::Varna->name       => 'quantityVarna',
         Warehouse::France->name      => 'quantityFrance',
         Warehouse::Netherlands->name => 'quantityNetherlands',
+        Warehouse::Belgium->name     => 'quantityBelgium',
     ];
 
     /**
@@ -40,6 +41,7 @@ class ProductService
         Warehouse::Varna->name       => ['quantity_varna', 'Varna'],
         Warehouse::France->name      => ['quantity_france', 'France'],
         Warehouse::Netherlands->name => ['quantity_netherlands', 'Netherlands'],
+        Warehouse::Belgium->name     => ['quantity_belgium', 'Belgium'],
     ];
 
     /**

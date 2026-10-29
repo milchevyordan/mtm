@@ -28,6 +28,7 @@ const form = useForm<ProductForm>({
         Varna: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Varna)?.quantity ?? null!,
         France: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.France)?.quantity ?? null!,
         Netherlands: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Netherlands)?.quantity ?? null!,
+        Belgium: props.product.quantity?.find((item: ProductQuantity) => item.warehouse == Warehouse.Belgium)?.quantity ?? null!,
     }
 });
 </script>

@@ -156,6 +156,17 @@ const filteredWarehouse = Object.fromEntries(
                                     </div>
                                 </template>
 
+                                <template #cell(quantity_belgium)="{ value, item }">
+                                    <div
+                                        class="text-center rounded"
+                                        :class="{
+                                            'bg-red-500 text-white': (value[0]?.quantity ?? null) < item.minimum_quantity,
+                                        }"
+                                    >
+                                        {{ value[0]?.quantity ?? '' }}
+                                    </div>
+                                </template>
+
                                 <template #cell(action)="{ value, item }">
                                     <div class="flex gap-1.5">
                                         <button

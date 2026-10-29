@@ -54,6 +54,7 @@ const form = useForm<ProductForm>({
         Varna: getWarehouseQuantity(props.product.quantity, Warehouse.Varna),
         France: getWarehouseQuantity(props.product.quantity, Warehouse.France),
         Netherlands: getWarehouseQuantity(props.product.quantity, Warehouse.Netherlands),
+        Belgium: getWarehouseQuantity(props.product.quantity, Warehouse.Belgium),
     }
 });
 
@@ -63,6 +64,7 @@ watch(
         form.quantities.Varna = getWarehouseQuantity(newQuantities, Warehouse.Varna);
         form.quantities.France = getWarehouseQuantity(newQuantities, Warehouse.France);
         form.quantities.Netherlands = getWarehouseQuantity(newQuantities, Warehouse.Netherlands);
+        form.quantities.Belgium = getWarehouseQuantity(newQuantities, Warehouse.Belgium);
     }
 );
 

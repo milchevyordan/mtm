@@ -13,4 +13,5 @@ enum Warehouse: int
     case Varna = 1;
     case France = 2;
     case Netherlands = 3;
+    case Belgium = 4;
 }
